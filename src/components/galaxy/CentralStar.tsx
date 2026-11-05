@@ -55,7 +55,7 @@ export function CentralStar() {
     <group>
       <mesh ref={surface}>
         <sphereGeometry args={[STAR_RADIUS, 96, 64]} />
-        <meshBasicMaterial map={texture} color={[3.2, 2.3, 1.5]} toneMapped={false} />
+        <meshBasicMaterial map={texture} color={[1.9, 1.45, 1.05]} toneMapped={false} />
       </mesh>
       <Billboard>
         <mesh renderOrder={2}>

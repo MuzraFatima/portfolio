@@ -13,7 +13,7 @@ const MODEL_URL = `${import.meta.env.BASE_URL}assets/models/astronaut.glb`;
 // landing view, smaller in the corner everywhere else so it never covers what you are looking at.
 const ANCHORS = {
   hero: { offset: new Vector3(3.6, -1.6, -12.5), scale: 2.0 },
-  corner: { offset: new Vector3(6.4, -3.6, -12), scale: 1.25 },
+  corner: { offset: new Vector3(6.6, -0.4, -12), scale: 1.15 },
 };
 
 const tmpV = new Vector3();

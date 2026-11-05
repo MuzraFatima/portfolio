@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+import { useReveal } from '@/animations/useReveal';
 import { projectById, projects } from '@/data/projects';
 import { planetConfigs } from '@/scenes/ProjectSolarSystem/planetConfigs';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-6">
+    <section className="mt-6" data-reveal>
       <h3 className="mb-2 font-display text-xs tracking-[0.2em] text-muted uppercase">{title}</h3>
       {children}
     </section>
@@ -19,11 +20,14 @@ export function ProjectPanel() {
   const selectProject = useGalaxyStore((s) => s.selectProject);
   const goTo = useGalaxyStore((s) => s.goTo);
   const heading = useRef<HTMLHeadingElement>(null);
+  const scroller = useRef<HTMLElement>(null);
 
   const project = selected ? projectById[selected] : null;
   const index = project ? projects.findIndex((p) => p.id === project.id) : -1;
   const prev = index > 0 ? projects[index - 1] : null;
   const next = index >= 0 && index < projects.length - 1 ? projects[index + 1] : null;
+
+  useReveal(scroller, [selected]);
 
   // Move keyboard focus into the panel when it opens, for screen-reader and keyboard users.
   useEffect(() => {
@@ -35,6 +39,7 @@ export function ProjectPanel() {
       {project && (
         <motion.aside
           key={project.id}
+          ref={scroller}
           aria-labelledby="project-title"
           initial={{ x: 60, opacity: 0 }}
           animate={{ x: 0, opacity: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}

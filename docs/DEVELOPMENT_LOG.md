@@ -160,3 +160,18 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless Chrome: clicking a planet label flies to the planet and opens its panel; no console errors.
 
 **Checkpoint:** All regions reachable; navigation always recovers to the solar system. **Passed.**
+
+## Phase 08 — Animations and interactions
+
+**Work completed**
+
+- Cinematic intro: a six-second GSAP approach from deep space on first visit; 1.6 s on later visits; instant under reduced motion; "Skip intro" ends it at once.
+- Scroll storytelling in guided mode: one wheel step or vertical swipe moves to the next/previous tour stop, with a cooldown; panels still scroll normally.
+- Tour progress rail (Framer Motion) whose dots double as shortcuts.
+- ScrollTrigger reveals of panel sections, scoped to the panel's own scroller.
+- Spring-based hover swell on planets; orbit paths brighten on hover (Phase 04); pointer parallax (Phase 05).
+- Animation ownership: GSAP owns the camera and in-panel reveals; Framer Motion owns panels, buttons and the progress rail; per-frame springs own 3D object motion. No property has two owners.
+
+**Checks:** typecheck, lint, build; headless Chrome: a wheel event advances the tour from Home to About; no console errors.
+
+**Checkpoint:** No abrupt transitions or conflicting animation controllers. **Passed.**

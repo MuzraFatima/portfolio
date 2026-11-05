@@ -60,6 +60,8 @@ export function CameraRig() {
   const reducedMotion = useGalaxyStore((s) => s.reducedMotion);
   const travelling = useGalaxyStore((s) => s.travelling);
   const setTravelling = useGalaxyStore((s) => s.setTravelling);
+  const introActive = useGalaxyStore((s) => s.introActive);
+  const firstFlight = useRef(true);
 
   // Fly whenever the destination changes.
   useEffect(() => {
@@ -81,7 +83,12 @@ export function CameraRig() {
 
     // Longer trips take a little longer, within limits.
     const distance = from.pos.distanceTo(dest.pos);
-    const duration = reducedMotion ? 0.01 : Math.min(3.2, 1.4 + distance / 140);
+    let duration = reducedMotion ? 0.01 : Math.min(3.2, 1.4 + distance / 140);
+    // The first flight is the cinematic intro: a slow approach from deep space.
+    const { introSeen, introActive: introPlaying, finishIntro } = useGalaxyStore.getState();
+    const isIntro = firstFlight.current;
+    firstFlight.current = false;
+    if (isIntro && !reducedMotion) duration = introSeen || !introPlaying ? 1.6 : 6;
     // Arc above the straight line so long flights sweep past the system instead of through it.
     const lift = Math.min(40, distance * 0.18);
 
@@ -91,7 +98,7 @@ export function CameraRig() {
     tween.current = gsap.to(progress, {
       k: 1,
       duration,
-      ease: 'power2.inOut',
+      ease: isIntro ? 'power3.inOut' : 'power2.inOut',
       onUpdate: () => {
         resolve(); // planets keep moving during the flight
         const k = progress.k;
@@ -103,12 +110,18 @@ export function CameraRig() {
       onComplete: () => {
         if (selected) v.lastPlanet.copy(planetPositions.get(selected) ?? v.target);
         setTravelling(false);
+        if (isIntro) finishIntro();
       },
     });
     return () => {
       tween.current?.kill();
     };
   }, [region, selected, reducedMotion, setTravelling]);
+
+  // "Skip intro" ends the intro flight immediately.
+  useEffect(() => {
+    if (!introActive && tween.current?.isActive()) tween.current.progress(1);
+  }, [introActive]);
 
   // On wide screens the project panel covers the right side, so shift the view to keep the planet
   // visible on the left.
