@@ -1,5 +1,6 @@
 import { OrbitControls } from '@react-three/drei';
-import { Suspense } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import type { Group } from 'three';
 import { AsteroidField } from '@/components/galaxy/AsteroidField';
 import { CentralStar } from '@/components/galaxy/CentralStar';
 import { DeepSpaceImage } from '@/components/galaxy/DeepSpaceImage';
@@ -10,7 +11,12 @@ import { StarField } from '@/components/galaxy/StarField';
 import { regionById } from '@/data/regions';
 import { ProjectSolarSystem } from './ProjectSolarSystem';
 import { Regions } from './Regions';
+import { usePointerParallax } from '@/physics/motion';
+import { useEffectiveQuality } from '@/store/useGalaxyStore';
 import type { RegionId } from '@/types/content';
+
+// Rapier's WebAssembly is only downloaded when the debris field is actually shown.
+const DebrisField = lazy(() => import('@/physics/DebrisField'));
 
 /** Puts a backdrop image behind a region, on the far side from where the camera will view it. */
 function behind(id: RegionId, distance: number): [number, number, number] {
@@ -28,6 +34,21 @@ function behind(id: RegionId, distance: number): [number, number, number] {
  * appear as soon as their own textures arrive instead of waiting for everything.
  */
 export function GalaxyScene() {
+  const quality = useEffectiveQuality();
+  const nearLayer = useRef<Group>(null);
+  const farLayer = useRef<Group>(null);
+  // Near layers sway more than far ones, which reads as depth.
+  usePointerParallax(nearLayer, 0.035);
+  usePointerParallax(farLayer, 0.012);
+
+  // Defer the physics bundle until the galaxy has had time to load, so it never delays first paint.
+  const [physicsReady, setPhysicsReady] = useState(false);
+  useEffect(() => {
+    if (quality === 'low') return;
+    const t = window.setTimeout(() => setPhysicsReady(true), 3500);
+    return () => window.clearTimeout(t);
+  }, [quality]);
+
   return (
     <>
       <ambientLight intensity={0.035} color="#8fa4ff" />
@@ -36,8 +57,12 @@ export function GalaxyScene() {
       <Suspense fallback={null}>
         <SkySphere />
       </Suspense>
-      <StarField />
-      <SpaceDust />
+      <group ref={farLayer}>
+        <StarField />
+      </group>
+      <group ref={nearLayer}>
+        <SpaceDust />
+      </group>
 
       <Suspense fallback={null}>
         <CentralStar />
@@ -62,6 +87,11 @@ export function GalaxyScene() {
       </Suspense>
 
       <ProjectSolarSystem />
+      {physicsReady && (
+        <Suspense fallback={null}>
+          <DebrisField position={[30, 48, 104]} />
+        </Suspense>
+      )}
       <Regions />
 
       {/* Temporary free camera until the camera rig arrives in Phase 07. */}
