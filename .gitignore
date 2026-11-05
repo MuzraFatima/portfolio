@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+*.local
+
+# env files (keep the example)
+.env
+.env.*
+!.env.example
+
+# editor and OS noise
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# private planning document kept out of the public repo
+/Muzra_Fatima_Galaxy_Portfolio_Blueprint.pdf
+
+# vercel
+.vercel
