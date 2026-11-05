@@ -1,0 +1,286 @@
+{
+  "$comment": "Verified portfolio content. Sources: repository audit (docs/PROJECT_AUDIT.md), GitHub profile, and the resume supplied by Muzra Fatima on 2026-11-05. Order of projects is fixed by the blueprint.",
+  "profile": {
+    "name": "Muzra Fatima",
+    "headline": "Aspiring AI/ML Engineer | Generative AI | Multi-Agent Systems | Intelligent Systems",
+    "summary": "Final-year B.Tech student in Artificial Intelligence and Machine Learning seeking entry-level AI/ML and Generative AI roles. Python developer experienced in building LLM-powered multi-agent systems, confidence-based model routing and retrieval-augmented generation pipelines, with FastAPI backends and automated test suites.",
+    "location": "Mahbubnagar, Telangana, India",
+    "email": "muzrafatima@gmail.com",
+    "github": "https://github.com/MuzraFatima",
+    "linkedin": "https://www.linkedin.com/in/muzra-fatima-7150452bb/",
+    "interests": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Generative AI",
+      "Agentic AI",
+      "Multi-Agent Systems",
+      "LLM Engineering",
+      "Reinforcement Learning",
+      "Intelligent resource allocation"
+    ],
+    "education": [
+      {
+        "degree": "B.Tech, Artificial Intelligence and Machine Learning",
+        "institution": "Jayaprakash Narayan College of Engineering",
+        "period": "2023 – 2027",
+        "detail": "CGPA 7.97 (through semester 3-2)"
+      },
+      {
+        "degree": "Intermediate (MPC)",
+        "institution": "ARK Junior College",
+        "detail": "90.2%"
+      }
+    ],
+    "publication": {
+      "title": "Smartphone Usage to Addiction: A Predictive Approach Using Machine Learning",
+      "venue": "HBRP Publication",
+      "year": 2025,
+      "summary": "Explored predictive machine-learning techniques and behavioural / usage features to support early risk assessment."
+    }
+  },
+  "projects": [
+    {
+      "id": "gateorchestra",
+      "order": 1,
+      "flagship": true,
+      "name": "GateOrchestra",
+      "tagline": "Token-budget-calibrated gating for multi-agent orchestration",
+      "repo": "https://github.com/FarhanAaqil/GateOrchestra",
+      "demo": null,
+      "team": true,
+      "overview": "A lightweight, trainable gate that sits in front of a multi-agent orchestrator and decides, before any expensive compute is spent, whether a cheap single-agent answer is good enough.",
+      "problem": "Multi-agent systems such as ReAct, Debate and Reflexion can improve answers, but running them on every task burns far more tokens than a single agent — often for no gain.",
+      "solution": "A CoT self-consistency probe answers first. A gate trained on pre-execution signals then chooses STOP (keep the probe answer) or ESCALATE to the full multi-agent orchestrator, with the escalation budget capped at k × the probe's tokens.",
+      "architecture": [
+        "Probe agent — CoT self-consistency, 3 samples",
+        "Feature extractor — 8 pre-execution features",
+        "Gate — learned (LogReg / GBT / MLP), rule-based or random",
+        "MAS orchestrator — ReAct, Debate, Reflexion sub-agents",
+        "Token accountant — budgets enforced before every call",
+        "FastAPI backend and React + three.js console"
+      ],
+      "technologies": [
+        "Python",
+        "Groq",
+        "Ollama",
+        "FastAPI",
+        "scikit-learn",
+        "React",
+        "TypeScript",
+        "three.js",
+        "pytest"
+      ],
+      "features": [
+        "STOP / ESCALATE gating calibrated over accuracy tolerance and budget multiplier",
+        "ReAct, Debate and Reflexion sub-agents behind one orchestrator",
+        "Optional LinUCB contextual-bandit strategy router",
+        "True provider token totals with pre-call budget enforcement",
+        "Wilson confidence intervals and exact McNemar tests",
+        "Honest results reporting — no verified real-LLM headline yet; simulated figures are labelled as such"
+      ],
+      "contribution": [
+        "Owned the agent layer (Person 2): CoT-SC probe agent, MAS orchestrator and the ReAct, Debate and Reflexion sub-agents",
+        "Added the LinUCB contextual bandit router, early exit and semantic soft voting",
+        "Integrated the Groq cloud provider with an Ollama local fallback",
+        "Retrained the GBT gate on real Groq traces",
+        "Built the batch evaluation pipeline and the agent performance / error analysis modules"
+      ],
+      "screenshots": ["docs/screenshots/console_overview.png", "docs/screenshots/execution_details.png"],
+      "palette": ["#2f6bff", "#8b5cf6"]
+    },
+    {
+      "id": "whototrust",
+      "order": 2,
+      "name": "WhoToTrust",
+      "tagline": "When labels disagree, who should you trust?",
+      "repo": "https://github.com/MuzraFatima/WhoToTrust",
+      "demo": null,
+      "team": false,
+      "overview": "LabelTriage decides, vote by vote, whether a disagreement between human annotators is a mistake or a genuine difference of opinion — then trains on each differently.",
+      "problem": "Pipelines either delete minority votes as noise or keep every vote as a soft label. Both are wrong part of the time: some disagreement is error, some is real ambiguity.",
+      "solution": "Score each vote's probability of being an error from five evidence groups, then route each item to a hard label (clear), a soft label (ambiguous) or a down-weighted target (unreliable).",
+      "architecture": [
+        "AmbiNoise benchmark — real many-annotator votes with injected, labelled errors",
+        "Five evidence groups — vote split, annotator reliability, model plausibility, neighbours, probe learning",
+        "Calibrated out-of-fold error model and three-way router",
+        "Harm analysis via counterfactual retraining",
+        "Python API and React explorer"
+      ],
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "Hugging Face Transformers",
+        "LightGBM",
+        "scikit-learn",
+        "Hydra",
+        "FastAPI",
+        "React",
+        "Vite"
+      ],
+      "features": [
+        "Benchmark over CIFAR-10H images and ChaosNLI text, with VariErr NLI as a transfer test",
+        "Spammer, swap, lazy and plausible-wrong error processes",
+        "On images, beats majority vote and soft labels for every error type, within about 1 point of the oracle",
+        "Web explorer for every item, vote, error score and the reasons behind it",
+        "Runs end to end on a laptop CPU; 219 Python tests plus unit and end-to-end web tests"
+      ],
+      "contribution": ["Sole author — method, benchmark, experiments, web app and tests"],
+      "screenshots": ["docs/screenshots/overview.png", "docs/screenshots/explorer-image.png"],
+      "palette": ["#22d3ee", "#f8fafc", "#a855f7"]
+    },
+    {
+      "id": "neurolens",
+      "order": 3,
+      "name": "NeuroLens",
+      "subtitle": "TopoCircuit-SAE",
+      "tagline": "Looking inside language models: multi-parent feature absorption in sparse autoencoders",
+      "repo": "https://github.com/MuzraFatima/NeuroLens",
+      "demo": null,
+      "team": false,
+      "overview": "A mechanistic-interpretability study that measures how sparse autoencoders hide general concepts inside specific ones when a token has several parents, and tests whether DAG routing reduces it.",
+      "problem": "Feature absorption — a specific latent silently taking over a general one — has only been measured with single-parent tasks, yet real concepts have several parents at once.",
+      "solution": "MPAbs, a benchmark with three parents per token on real Pythia-70M activations, and DR-SAE, an autoencoder that learns an acyclic parent graph between latents and routes each child's activation to its ancestors.",
+      "architecture": [
+        "Activation extraction from Pythia-70M, layer 3",
+        "Seven SAE variants trained on identical data",
+        "MPAbs benchmark scored per parent and jointly",
+        "Synthetic tier with known ground-truth graph",
+        "Circuit faithfulness test on subject–verb agreement",
+        "Local API, SQLite and interactive explorer"
+      ],
+      "technologies": ["Python", "PyTorch", "Pythia-70M", "NLTK / WordNet", "SQLite", "LaTeX"],
+      "features": [
+        "Pre-registered hypotheses, with falsified results reported openly",
+        "DR-SAE leaves a parent latent silent 37% less often than Matryoshka at matched effective L0 (exploratory)",
+        "Interactive DAG hierarchy explorer and routing simulator",
+        "Runs entirely on CPU; paper source generated from results"
+      ],
+      "contribution": ["Sole author — research design, models, benchmark, experiments, explorer and paper"],
+      "screenshots": [
+        "demo/screenshots/01_dag_hierarchy_explorer.png",
+        "demo/screenshots/02_live_routing_simulator.png"
+      ],
+      "palette": ["#10b981", "#22d3ee"]
+    },
+    {
+      "id": "caar",
+      "order": 4,
+      "name": "Cost-Aware Agent Router",
+      "shortName": "CAAR",
+      "tagline": "Route every query to the cheapest agent that can handle it",
+      "repo": "https://github.com/MuzraFatima/Cost-aware-agent",
+      "demo": null,
+      "team": false,
+      "overview": "A confidence-based, four-tier LLM routing cascade that starts each query at the lowest-cost capable tier and escalates only when confidence is too low and budget allows.",
+      "problem": "Sending every query to a frontier model wastes money; sending everything to a small model fails on reasoning, code and strict structured output.",
+      "solution": "Classify complexity to pick a starting tier, score the answer's confidence from syntax checks and hedging detection, and escalate through Cheap → RAG → Frontier → Consensus only when needed.",
+      "architecture": [
+        "Complexity pre-classifier",
+        "Four agent tiers — Cheap, RAG, Frontier, Consensus",
+        "Confidence evaluator — syntactic + semantic hedging",
+        "Cost tracker and per-step latency profiling",
+        "FastAPI service with SQLite audit logs and a live dashboard"
+      ],
+      "technologies": ["Python", "FastAPI", "LiteLLM", "Groq", "SQLite", "SQLAlchemy", "pytest"],
+      "features": [
+        "Dynamic escalation with step-by-step audit trail",
+        "Token-level cost and latency tracking",
+        "Daily and monthly budget controls with policy sliders",
+        "Offline deterministic mock mode plus live providers",
+        "Benchmark harness with Wilson confidence intervals (mock mode validates routing and cost, not real accuracy)"
+      ],
+      "contribution": ["Sole author — router, agents, evaluation, API and dashboard"],
+      "screenshots": ["docs/dashboard_sandbox.png", "docs/dashboard_analytics.png"],
+      "palette": ["#f5b301", "#2f80ff"]
+    },
+    {
+      "id": "compute-bazaar",
+      "order": 5,
+      "name": "Compute Bazaar",
+      "tagline": "A combinatorial auction market where AI agents bid for compute",
+      "repo": "https://github.com/MuzraFatima/Compute-bazar",
+      "demo": null,
+      "team": false,
+      "overview": "An AI-agent compute marketplace where agents place budget-aware bundle bids for GPU, CPU, RAM and API budget, and allocation is solved as a combinatorial auction with VCG pricing.",
+      "problem": "Queue-based schedulers block high-value jobs behind early arrivals, and per-unit spot markets leave agents holding half a bundle they cannot use.",
+      "solution": "Treat allocation as a winner-determination problem solved by binary integer linear programming, with VCG Clarke-pivot pricing so truthful bidding pays off, plus fairness tracking against starvation.",
+      "architecture": [
+        "Agent layer — Coding, Research, Data and Analysis agents with optional Groq reasoning",
+        "Auction engine — PuLP / CBC ILP solver and VCG pricing",
+        "Marketplace with scarcity pricing and fairness tracker",
+        "FastAPI gateway with JWT / API-key auth and WebSocket feed",
+        "SQLAlchemy persistence and Chart.js dashboard"
+      ],
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "Groq",
+        "PuLP (ILP)",
+        "WebSocket",
+        "SQLAlchemy",
+        "Chart.js",
+        "Docker",
+        "pytest"
+      ],
+      "features": [
+        "Atomic bundle bids — no partial allocations",
+        "VCG pricing with adaptive bidding strategies",
+        "Jain fairness index and anti-starvation guards",
+        "In a seeded 25-round simulation, highest social welfare and utilisation of five schedulers (38% above round-robin)",
+        "Live WebSocket dashboard with bidding ticker and round history"
+      ],
+      "contribution": ["Sole author — auction engine, agents, API, dashboard and benchmarks"],
+      "screenshots": [
+        "docs/screenshots/dashboard-hero-metrics.jpg",
+        "docs/screenshots/dashboard-bidding-ticker.jpg"
+      ],
+      "palette": ["#fb923c", "#9333ea", "#3b82f6"]
+    },
+    {
+      "id": "jocky",
+      "order": 6,
+      "name": "JOCKY Forensics",
+      "tagline": "A domain-specific language for safe, verifiable forensic triage",
+      "repo": "https://github.com/MuzraFatima/jocky-forensics",
+      "demo": "https://jocky-forensic.netlify.app",
+      "team": false,
+      "award": "Winner — Smart India Hackathon 2026 Internal Hackathon",
+      "overview": "A domain-specific language and execution framework for authorized, read-only computer and network forensic analysis across Windows, Linux and macOS, built for SIH problem statement SIH26148.",
+      "problem": "Ad-hoc admin scripts used during incident response are fragile, hard to reproduce and frequently trip antivirus and EDR alerts.",
+      "solution": "Investigators write declarative JOCKY scripts that compile to a validated intermediate representation and run only read-only collectors; evidence is sealed with SHA-256 and tracked through a chain of custody.",
+      "architecture": [
+        "JOCKY DSL — lexer, recursive-descent parser, validator, IR v1.0",
+        "IR executor with read-only policy and hardening",
+        "Cross-platform collectors and authenticated endpoint agent",
+        "Evidence vault with SHA-256 verification and custody log",
+        "Correlation, timeline and MITRE ATT&CK mapping",
+        "Report engine and React dashboard"
+      ],
+      "technologies": ["Python", "FastAPI", "psutil", "SHA-256", "React", "Vite", "pytest"],
+      "features": [
+        "Windows, Linux and macOS evidence collection",
+        "SHA-256 integrity sealing and tamper detection",
+        "Chain-of-custody tracking",
+        "Endpoint agent with pairing, heartbeat and job polling",
+        "JSON, HTML and Markdown forensic reports"
+      ],
+      "contribution": [
+        "Sole author of the repository — language, engine, collectors, vault, analysis and dashboard"
+      ],
+      "screenshots": [],
+      "palette": ["#ef4444", "#1e3a8a", "#cbd5e1"]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Winner, Smart India Hackathon (SIH) 2026 Internal Hackathon",
+      "detail": "For JOCKY Forensics, a digital forensics platform (problem statement SIH26148).",
+      "source": "Resume; SIH26148 confirmed in the JOCKY repository"
+    },
+    {
+      "title": "Research publication",
+      "detail": "Smartphone Usage to Addiction: A Predictive Approach Using Machine Learning — HBRP Publication, 2025.",
+      "source": "Resume"
+    }
+  ]
+}
