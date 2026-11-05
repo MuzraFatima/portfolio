@@ -34,10 +34,15 @@ body {
   overflow-x: hidden;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent-2);
-  outline-offset: 3px;
-  border-radius: 4px;
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-accent-2);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  [tabindex='-1']:focus {
+    outline: none;
+  }
 }
 
 .sr-only-focusable:not(:focus) {

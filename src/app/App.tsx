@@ -1,7 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense, useEffect } from 'react';
 import { GuideBubble } from '@/components/characters/GuideBubble';
+import { MiniMap } from '@/components/navigation/MiniMap';
+import { Navigation } from '@/components/navigation/Navigation';
 import { HeroAbout } from '@/components/panels/HeroAbout';
+import { ProjectPanel } from '@/components/panels/ProjectPanel';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
@@ -63,6 +66,9 @@ export default function App() {
         <AnimatePresence mode="wait">{region === 'gateway' && <HeroAbout key="hero" />}</AnimatePresence>
       </main>
 
+      <Navigation />
+      <MiniMap />
+      <ProjectPanel />
       <GuideBubble />
     </>
   );

@@ -145,3 +145,18 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless render shows the About panel, lit astronaut and guide with no console errors.
 
 **Checkpoint:** Character animations work and guidance can be disabled. **Passed.**
+
+## Phase 07 — Camera and navigation
+
+**Work completed**
+
+- `CameraRig`: GSAP-driven flights (one animation system owns the camera) with an arc over long trips; camera-controls for orbit and zoom between flights; follows a selected planet along its orbit; shifts the view so the planet stays visible beside the panel.
+- Guided mode (camera locked to the tour) and Free mode (drag to orbit, scroll to zoom); input is disabled mid-flight.
+- Top navigation with every region, mode switch and settings (quality, reduced motion, guide, text-only view); mobile menu.
+- Keyboard: 1–7 jump to regions, ← → step through the tour, Esc goes back.
+- Mini-map: top-down chart with one-click project and system navigation.
+- Project panel with overview, problem, solution, architecture, features, contribution, technologies, repository link, live demo only where one exists, and previous / next planet.
+
+**Checks:** typecheck, lint, build; headless Chrome: clicking a planet label flies to the planet and opens its panel; no console errors.
+
+**Checkpoint:** All regions reachable; navigation always recovers to the solar system. **Passed.**

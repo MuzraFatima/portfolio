@@ -14,6 +14,7 @@ export function GuideBubble() {
   const setPreference = useGalaxyStore((s) => s.setPreference);
   const goTo = useGalaxyStore((s) => s.goTo);
   const setMode = useGalaxyStore((s) => s.setMode);
+  const selectedProject = useGalaxyStore((s) => s.selectedProject);
   const point = useGuideStore((s) => s.point);
   const wave = useGuideStore((s) => s.wave);
 
@@ -22,7 +23,7 @@ export function GuideBubble() {
 
   return (
     <AnimatePresence>
-      {guideEnabled && (
+      {guideEnabled && !selectedProject && (
         <motion.aside
           key={region}
           aria-label="Guide"
