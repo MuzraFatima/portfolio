@@ -42,3 +42,19 @@ The MIT-licensed screenshots are Muzra's own work and will be converted to WebP 
 React 19 + TypeScript + Vite, three.js with React Three Fiber and Drei, Rapier for a few physical
 interactions, GSAP for camera timelines, Framer Motion for interface transitions, Zustand for shared
 state, Tailwind CSS for layout, Vercel for hosting.
+
+## Update — 5 November 2026: realistic imagery replaces procedural visuals
+
+Muzra added a visual requirement: the galaxy must look like real space, using real astronomical
+imagery rather than stylised or cartoon graphics. The "procedural first" decision above is replaced by:
+
+| Element                      | Now uses                                                                                                             |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Sky (360°)                   | ESO Milky Way all-sky photograph                                                                                     |
+| Nebulae and distant galaxies | NASA Hubble and Webb photographs on soft-edged billboards                                                            |
+| Central star                 | Solar surface map with an animated corona glow                                                                       |
+| Six project planets          | Real planetary surface maps (Neptune, Uranus, Earth, Venus, Jupiter, Mars) with atmospheres, clouds, rings and moons |
+| Asteroid belt                | Instanced rock meshes textured with lunar and Mercurian surface maps                                                 |
+
+Procedural code is kept only for things that cannot be photographed: particle star dust, atmosphere
+glows and lens effects. Licences for every image are in `docs/ASSET_LICENSES.md`.

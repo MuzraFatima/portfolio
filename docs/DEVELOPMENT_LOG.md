@@ -80,3 +80,24 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checkpoint:** The app starts and displays a functioning 3D canvas. **Passed.**
 
 **Next:** Phase 03 — galaxy environment.
+
+## Phase 03 — Galaxy environment (realistic imagery)
+
+**Objective:** Build the universe — now using real astronomical imagery, per Muzra's added visual requirement.
+
+**Work completed**
+
+- 360° sky from ESO's Milky Way photograph (4K on high quality, 2K otherwise).
+- Real NASA Hubble and Webb photographs (Carina "Cosmic Cliffs", Helix, Pillars of Creation, Webb Deep Field, Sombrero, Whirlpool) placed at depth as soft-edged billboards behind their regions.
+- Foreground stars coloured by spectral class, with twinkle, for parallax; fine drifting space dust.
+- Central star with a real solar surface map, animated corona and a shadow-casting light.
+- Instanced asteroid belt textured with real lunar surface imagery (up to 2,600 rocks in one draw call).
+- Reusable `Planet` (surface map, clouds, sunlit-side atmosphere, rings, moons as children) and `PlanetaryRings` using a real ring-brightness profile.
+- Bloom and vignette on medium/high quality only.
+- All assets optimised to WebP and recorded in `docs/ASSET_LICENSES.md`.
+
+**Checks:** typecheck, lint, format, build pass; headless Chrome render shows the full environment with no console errors.
+
+**Checkpoint:** A complete galaxy is visible with convincing depth and lighting. **Passed.**
+
+**Next:** Phase 04 — planets and 3D objects.

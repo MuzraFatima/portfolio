@@ -17,6 +17,7 @@ export default function GalaxyCanvas() {
 
   return (
     <Canvas
+      shadows
       className="!fixed inset-0"
       dpr={[profile.dpr[0], dpr]}
       camera={{ position: [0, 34, 96], fov: 50, near: 0.1, far: 2000 }}

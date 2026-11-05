@@ -42,7 +42,7 @@ export function detectQuality(): QualityLevel {
 
 /** Rendering budgets per quality level. */
 export const QUALITY_PROFILES = {
-  high: { dpr: [1, 2] as [number, number], stars: 9000, dust: 2200, asteroids: 900, segments: 96 },
-  medium: { dpr: [1, 1.5] as [number, number], stars: 5000, dust: 1100, asteroids: 450, segments: 64 },
-  low: { dpr: [1, 1] as [number, number], stars: 2200, dust: 400, asteroids: 160, segments: 40 },
+  high: { dpr: [1, 2] as [number, number], stars: 4500, dust: 900, asteroids: 2600, segments: 96 },
+  medium: { dpr: [1, 1.5] as [number, number], stars: 3000, dust: 500, asteroids: 1400, segments: 64 },
+  low: { dpr: [1, 1] as [number, number], stars: 1500, dust: 200, asteroids: 500, segments: 40 },
 } as const;
