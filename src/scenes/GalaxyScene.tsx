@@ -8,6 +8,8 @@ import { SkySphere } from '@/components/galaxy/SkySphere';
 import { SpaceDust } from '@/components/galaxy/SpaceDust';
 import { StarField } from '@/components/galaxy/StarField';
 import { regionById } from '@/data/regions';
+import { ProjectSolarSystem } from './ProjectSolarSystem';
+import { Regions } from './Regions';
 import type { RegionId } from '@/types/content';
 
 /** Puts a backdrop image behind a region, on the far side from where the camera will view it. */
@@ -41,7 +43,7 @@ export function GalaxyScene() {
         <CentralStar />
       </Suspense>
       <Suspense fallback={null}>
-        <AsteroidField />
+        <AsteroidField inner={44} outer={54} />
       </Suspense>
 
       {/* Real Hubble and Webb photographs, placed as backdrops for their regions. */}
@@ -59,8 +61,11 @@ export function GalaxyScene() {
         <DeepSpaceImage image="whirlpool-galaxy" position={[560, -140, -520]} size={120} opacity={0.75} />
       </Suspense>
 
+      <ProjectSolarSystem />
+      <Regions />
+
       {/* Temporary free camera until the camera rig arrives in Phase 07. */}
-      <OrbitControls enableDamping dampingFactor={0.06} minDistance={8} maxDistance={420} makeDefault />
+      <OrbitControls enableDamping dampingFactor={0.06} minDistance={8} maxDistance={520} makeDefault />
 
       <Effects />
     </>
