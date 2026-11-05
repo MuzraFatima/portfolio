@@ -42,6 +42,7 @@ export function PlanetaryRings({ inner, outer, color = '#ffffff', opacity = 0.9,
     <mesh geometry={geometry} rotation={[-Math.PI / 2 + tilt[0], tilt[1], tilt[2]]} receiveShadow castShadow>
       <meshStandardMaterial
         map={texture}
+        alphaMap={texture}
         color={color}
         transparent
         opacity={opacity}

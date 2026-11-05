@@ -1,6 +1,6 @@
-import { OrbitControls } from '@react-three/drei';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { Group } from 'three';
+import { CameraRig } from '@/camera/CameraRig';
 import { Astronaut } from '@/components/characters/Astronaut';
 import { AsteroidField } from '@/components/galaxy/AsteroidField';
 import { CentralStar } from '@/components/galaxy/CentralStar';
@@ -102,8 +102,7 @@ export function GalaxyScene() {
         </Suspense>
       )}
 
-      {/* Temporary free camera until the camera rig arrives in Phase 07. */}
-      <OrbitControls enableDamping dampingFactor={0.06} minDistance={8} maxDistance={520} makeDefault />
+      <CameraRig />
 
       <Effects />
     </>
