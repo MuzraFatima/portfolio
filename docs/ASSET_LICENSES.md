@@ -36,6 +36,15 @@ Required credit: **"Textures: Solar System Scope (solarsystemscope.com), CC BY 4
 | `moon-2k/1k.webp`, `mercury-2k/1k.webp`                                           | 2k_moon.jpg, 2k_mercury.jpg             | Moons and asteroid surfaces                                       | 2048 and 1024 px WebP   |
 | `ring-alpha.webp`                                                                 | 2k_saturn_ring_alpha.png                | Planetary rings                                                   | 1024 px WebP with alpha |
 
+## 3D models (`public/assets/models/`)
+
+| File            | Model     | Source                                                                                                                                     | Credit (as required)       | Licence                                                   | Optimisation                                                                            |
+| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `astronaut.glb` | Astronaut | [Google model-viewer shared assets](https://github.com/google/model-viewer/tree/master/packages/shared-assets) (originally Poly by Google) | "Astronaut" by Poly, CC BY | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | 2.87 MB → 212 KB (texture resized to 1024 px and converted to WebP with glTF-Transform) |
+
+The model is a single unrigged mesh, so its idle, floating, head-turn, wave and pointing motions are
+whole-body procedural animations written for this site.
+
 ## Fonts
 
 | Font                 | Source       | Licence                   |
