@@ -101,3 +101,16 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checkpoint:** A complete galaxy is visible with convincing depth and lighting. **Passed.**
 
 **Next:** Phase 04 — planets and 3D objects.
+
+## Phase 04 — Planets and 3D objects
+
+**Work completed**
+
+- Six project planets in blueprint order, each built from a real planetary surface map graded to its palette: GateOrchestra (Neptune map, violet atmosphere, rings, two moons, four agent satellites), WhoToTrust (Uranus map with white cloud bands and faint rings), NeuroLens (Earth map with clouds and an emerald-cyan atmosphere), CAAR (Venus cloud tops in gold), Compute Bazaar (Jupiter with four moons), JOCKY Forensics (Mars with two small moons).
+- Sunlit-side atmospheres, cloud layers, ring systems and shadow casting from the central star.
+- Generous invisible hit areas, hover highlighting of planet and orbit path, and label buttons for keyboard access.
+- Region landmarks: Skill Nebula constellation (one star per skill category), Achievement Constellation, a Hubble-style observatory and a modular space station with a rotating habitat ring.
+
+**Checks:** typecheck, lint, build pass; headless Chrome render shows all planets, orbits, belt and labels with no console errors.
+
+**Checkpoint:** All major locations are identifiable and selectable; planets are distinct real-world-looking worlds. **Passed.**
