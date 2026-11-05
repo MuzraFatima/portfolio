@@ -2,6 +2,8 @@ import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense, useEffect } from 'react';
 import { GuideBubble } from '@/components/characters/GuideBubble';
 import { MiniMap } from '@/components/navigation/MiniMap';
+import { TourProgress } from '@/components/navigation/TourProgress';
+import { useScrollJourney } from '@/hooks/useScrollJourney';
 import { Navigation } from '@/components/navigation/Navigation';
 import { HeroAbout } from '@/components/panels/HeroAbout';
 import { ProjectPanel } from '@/components/panels/ProjectPanel';
@@ -38,6 +40,7 @@ export default function App() {
   const setWebglAvailable = useGalaxyStore((s) => s.setWebglAvailable);
   const finishIntro = useGalaxyStore((s) => s.finishIntro);
   const region = useGalaxyStore((s) => s.region);
+  useScrollJourney();
 
   useEffect(() => {
     setWebglAvailable(hasWebGL());
@@ -68,6 +71,7 @@ export default function App() {
 
       <Navigation />
       <MiniMap />
+      <TourProgress />
       <ProjectPanel />
       <GuideBubble />
     </>
