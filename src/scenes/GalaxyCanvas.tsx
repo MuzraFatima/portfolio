@@ -20,7 +20,7 @@ export default function GalaxyCanvas() {
       shadows
       className="!fixed inset-0"
       dpr={[profile.dpr[0], dpr]}
-      camera={{ position: [0, 62, 150], fov: 50, near: 0.1, far: 2000 }}
+      camera={{ position: [-160, 240, 620], fov: 50, near: 0.1, far: 2000 }}
       gl={{
         antialias: quality !== 'low',
         powerPreference: 'high-performance',
