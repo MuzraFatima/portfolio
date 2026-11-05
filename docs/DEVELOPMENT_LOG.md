@@ -114,3 +114,20 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build pass; headless Chrome render shows all planets, orbits, belt and labels with no console errors.
 
 **Checkpoint:** All major locations are identifiable and selectable; planets are distinct real-world-looking worlds. **Passed.**
+
+## Phase 05 — Physics and motion
+
+**Work completed**
+
+- Closed-form circular orbits with Kepler-style periods (period ∝ r^1.5) for planets; moons and satellites on their own local orbits — perfectly stable over any session length.
+- `Spring` and `damp` utilities for inertia, acceleration/deceleration and spring-like settling.
+- Pointer parallax with inertia on two depth layers (foreground dust sways more than distant stars).
+- Rapier used only where it adds something: a zero-gravity debris cluster visitors can flick; rocks collide, spin, slow under damping and are pulled home by a weak spring.
+- Rapier's WebAssembly bundle is lazy-loaded 3.5 s after start and never on low quality.
+- All motion stops under reduced-motion preference.
+
+**Checks:** typecheck, lint, build; headless render with no console errors.
+
+**Known limitation:** the Rapier chunk is large (~840 kB gzip); it is deferred and optional.
+
+**Checkpoint:** Motion is stable and smooth without unnecessary simulation cost. **Passed.**
