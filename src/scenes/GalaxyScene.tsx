@@ -1,6 +1,7 @@
 import { OrbitControls } from '@react-three/drei';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { Group } from 'three';
+import { Astronaut } from '@/components/characters/Astronaut';
 import { AsteroidField } from '@/components/galaxy/AsteroidField';
 import { CentralStar } from '@/components/galaxy/CentralStar';
 import { DeepSpaceImage } from '@/components/galaxy/DeepSpaceImage';
@@ -12,7 +13,7 @@ import { regionById } from '@/data/regions';
 import { ProjectSolarSystem } from './ProjectSolarSystem';
 import { Regions } from './Regions';
 import { usePointerParallax } from '@/physics/motion';
-import { useEffectiveQuality } from '@/store/useGalaxyStore';
+import { useEffectiveQuality, useGalaxyStore } from '@/store/useGalaxyStore';
 import type { RegionId } from '@/types/content';
 
 // Rapier's WebAssembly is only downloaded when the debris field is actually shown.
@@ -35,6 +36,7 @@ function behind(id: RegionId, distance: number): [number, number, number] {
  */
 export function GalaxyScene() {
   const quality = useEffectiveQuality();
+  const guideEnabled = useGalaxyStore((s) => s.guideEnabled);
   const nearLayer = useRef<Group>(null);
   const farLayer = useRef<Group>(null);
   // Near layers sway more than far ones, which reads as depth.
@@ -89,10 +91,16 @@ export function GalaxyScene() {
       <ProjectSolarSystem />
       {physicsReady && (
         <Suspense fallback={null}>
-          <DebrisField position={[30, 48, 104]} />
+          <DebrisField position={[10, 52, 128]} />
         </Suspense>
       )}
       <Regions />
+
+      {guideEnabled && (
+        <Suspense fallback={null}>
+          <Astronaut />
+        </Suspense>
+      )}
 
       {/* Temporary free camera until the camera rig arrives in Phase 07. */}
       <OrbitControls enableDamping dampingFactor={0.06} minDistance={8} maxDistance={520} makeDefault />

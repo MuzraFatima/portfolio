@@ -24,7 +24,7 @@ export function SceneLabel({
   onActivate,
 }: Props) {
   return (
-    <Html position={position} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
+    <Html position={position} center zIndexRange={[9, 0]} style={{ pointerEvents: 'none' }}>
       <button
         type="button"
         onClick={onActivate}

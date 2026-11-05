@@ -131,3 +131,17 @@ A running record of each phase: what was done, what was checked and what is stil
 **Known limitation:** the Rapier chunk is large (~840 kB gzip); it is deferred and optional.
 
 **Checkpoint:** Motion is stable and smooth without unnecessary simulation cost. **Passed.**
+
+## Phase 06 — Astronaut guide and About-first landing
+
+**Work completed**
+
+- Licensed astronaut model (CC BY 2.0), compressed 2.87 MB → 212 KB.
+- Procedural animation states (the model has no rig): zero-gravity idle float, pointer-following head/body turn with spring inertia, wave gesture on arrival or click, and pointing toward the region the guide suggests.
+- The astronaut follows the camera with lag (feels like it has mass), sits beside the About panel on the landing view and moves to a small corner position elsewhere so it never covers content.
+- Guide speech bubble with region-specific messages, "Start the tour", "Explore freely" and "Hide guide". Hiding the guide removes the astronaut too; the choice is remembered.
+- At Muzra's request, the first page now opens with an About Me panel (summary, studies, location, interests, links) beside the astronaut.
+
+**Checks:** typecheck, lint, build; headless render shows the About panel, lit astronaut and guide with no console errors.
+
+**Checkpoint:** Character animations work and guidance can be disabled. **Passed.**

@@ -1,7 +1,9 @@
+import { AnimatePresence } from 'framer-motion';
 import { lazy, Suspense, useEffect } from 'react';
+import { GuideBubble } from '@/components/characters/GuideBubble';
+import { HeroAbout } from '@/components/panels/HeroAbout';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
-import { profile } from '@/data/profile';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
 import { hasWebGL } from '@/utils/device';
 
@@ -32,6 +34,7 @@ export default function App() {
   const webglAvailable = useGalaxyStore((s) => s.webglAvailable);
   const setWebglAvailable = useGalaxyStore((s) => s.setWebglAvailable);
   const finishIntro = useGalaxyStore((s) => s.finishIntro);
+  const region = useGalaxyStore((s) => s.region);
 
   useEffect(() => {
     setWebglAvailable(hasWebGL());
@@ -55,15 +58,12 @@ export default function App() {
 
       <main
         id="content"
-        className="pointer-events-none relative z-10 flex min-h-full flex-col justify-end p-6 sm:p-10"
+        className="pointer-events-none relative z-10 flex min-h-full items-center p-4 pb-40 sm:p-10"
       >
-        <div className="pointer-events-auto max-w-xl">
-          <h1 className="font-display text-4xl font-bold tracking-tight sm:text-6xl">{profile.name}</h1>
-          <p className="mt-3 text-lg text-muted">
-            {profile.headline} · {profile.roles.join(' · ')}
-          </p>
-        </div>
+        <AnimatePresence mode="wait">{region === 'gateway' && <HeroAbout key="hero" />}</AnimatePresence>
       </main>
+
+      <GuideBubble />
     </>
   );
 }
