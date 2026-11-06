@@ -8,6 +8,7 @@ import { Navigation } from '@/components/navigation/Navigation';
 import { HeroAbout } from '@/components/panels/HeroAbout';
 import { ProjectPanel } from '@/components/panels/ProjectPanel';
 import { RegionPanel } from '@/components/panels/RegionPanel';
+import { TextView } from '@/components/panels/TextView';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
@@ -27,6 +28,13 @@ function SceneFallback({ retry }: { retry: () => void }) {
       </p>
       <button
         type="button"
+        onClick={() => useGalaxyStore.getState().setTextMode(true)}
+        className="mr-2 rounded-full bg-accent px-4 py-1.5 text-void"
+      >
+        Open text view
+      </button>
+      <button
+        type="button"
         onClick={retry}
         className="rounded-full border border-line px-4 py-1.5 text-ink hover:border-accent-2"
       >
@@ -41,11 +49,29 @@ export default function App() {
   const setWebglAvailable = useGalaxyStore((s) => s.setWebglAvailable);
   const finishIntro = useGalaxyStore((s) => s.finishIntro);
   const region = useGalaxyStore((s) => s.region);
+  const textMode = useGalaxyStore((s) => s.textMode);
+  const setPreference = useGalaxyStore((s) => s.setPreference);
   useScrollJourney();
 
   useEffect(() => {
     setWebglAvailable(hasWebGL());
   }, [setWebglAvailable]);
+
+  // Follow the operating-system reduced-motion setting if it changes while the page is open.
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = () => setPreference('reducedMotion', mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [setPreference]);
+
+  if (textMode || !webglAvailable) {
+    return (
+      <main id="content">
+        <TextView />
+      </main>
+    );
+  }
 
   return (
     <>
@@ -53,19 +79,17 @@ export default function App() {
         Skip to content
       </a>
 
-      {webglAvailable && (
-        <ErrorBoundary fallback={(retry) => <SceneFallback retry={retry} />}>
-          <Suspense fallback={null}>
-            <GalaxyCanvas />
-          </Suspense>
-        </ErrorBoundary>
-      )}
+      <ErrorBoundary fallback={(retry) => <SceneFallback retry={retry} />}>
+        <Suspense fallback={null}>
+          <GalaxyCanvas />
+        </Suspense>
+      </ErrorBoundary>
 
       <LoadingScreen onSkip={finishIntro} />
 
       <main
         id="content"
-        className="pointer-events-none relative z-10 flex min-h-full items-center p-4 pb-40 sm:p-10"
+        className="pointer-events-none relative z-10 flex min-h-full items-start p-3 pt-20 sm:items-center sm:p-10 sm:pb-40"
       >
         <AnimatePresence mode="wait">{region === 'gateway' && <HeroAbout key="hero" />}</AnimatePresence>
       </main>

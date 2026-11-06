@@ -68,7 +68,7 @@ export function Navigation() {
       <button
         type="button"
         onClick={() => goTo('gateway')}
-        className="glass pointer-events-auto rounded-full px-4 py-2 font-display text-sm font-semibold tracking-wide text-white"
+        className="glass pointer-events-auto rounded-full px-4 py-2 font-display text-sm font-semibold tracking-wide whitespace-nowrap text-white"
       >
         Muzra Fatima
       </button>
@@ -98,8 +98,10 @@ export function Navigation() {
             </button>
           ))}
         </div>
-        <SoundToggle />
-        <SettingsMenu />
+        <div className="hidden items-center gap-2 sm:flex">
+          <SoundToggle />
+          <SettingsMenu />
+        </div>
         <button
           type="button"
           className="glass rounded-full px-4 py-2 text-sm text-white lg:hidden"
@@ -122,6 +124,10 @@ export function Navigation() {
             className="glass pointer-events-auto absolute top-16 right-3 left-3 rounded-2xl p-3 lg:hidden"
           >
             <ul className="grid grid-cols-2 gap-1">{NAV.map((id) => link(id, () => setOpen(false)))}</ul>
+            <div className="mt-3 flex items-center gap-2 border-t border-line pt-3 sm:hidden">
+              <SoundToggle />
+              <SettingsMenu />
+            </div>
             <div className="mt-3 flex gap-2 border-t border-line pt-3 text-xs sm:hidden">
               {(['guided', 'free'] as const).map((m) => (
                 <button

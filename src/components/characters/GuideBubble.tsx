@@ -32,7 +32,7 @@ export function GuideBubble() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 8 }}
           transition={{ duration: 0.35 }}
-          className={`glass pointer-events-auto fixed right-4 z-30 w-[min(20rem,calc(100vw-2rem))] rounded-2xl p-4 text-sm sm:right-6 ${
+          className={`glass pointer-events-auto fixed right-4 z-30 hidden md:block w-[min(20rem,calc(100vw-2rem))] rounded-2xl p-4 text-sm sm:right-6 ${
             region === 'gateway' ? 'bottom-6 sm:right-[6%]' : 'bottom-24'
           }`}
         >

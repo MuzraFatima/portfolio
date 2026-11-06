@@ -23,7 +23,7 @@ export function HeroAbout() {
       initial="hidden"
       animate="show"
       exit={{ opacity: 0, x: -24, transition: { duration: 0.3 } }}
-      className="glass pointer-events-auto w-full max-w-xl rounded-3xl p-6 sm:p-8"
+      className="glass pointer-events-auto max-h-[calc(100dvh-6rem)] w-full max-w-xl overflow-y-auto rounded-3xl p-6 sm:max-h-none sm:p-8"
     >
       <motion.p variants={item} className="font-display text-xs tracking-[0.28em] text-accent-2 uppercase">
         The Galaxy of Intelligence
