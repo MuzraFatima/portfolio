@@ -219,3 +219,15 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build.
 
 **Checkpoint:** No fake success path exists; submissions are processed by a real service once the key is configured. **Passed** — key pending from Muzra.
+
+## Phase 12 — Sound and atmosphere
+
+**Work completed**
+
+- Web Audio engine: slow evolving ambient pad (detuned sines, breathing low-pass, echo), filtered-noise whoosh on every camera flight, soft blip on planet selection.
+- No audio files at all, so there is nothing to license (recorded in `docs/ASSET_LICENSES.md`).
+- Sound is off on every visit; the AudioContext is created only inside the "Sound off/on" click; fades in and out smoothly; suspended when muted.
+
+**Checks:** typecheck, lint, build.
+
+**Checkpoint:** Audio controls work and nothing plays without a user action. **Passed.**

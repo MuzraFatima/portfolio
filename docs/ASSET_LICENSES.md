@@ -61,7 +61,7 @@ and JOCKY Forensics has none in its repository.
 
 - Favicon (`public/favicon.svg`)
 - All code, shaders, atmosphere glows, lens flares and procedural particles
-- Interface sounds (synthesised at runtime with the Web Audio API — no audio files)
+- Ambient pad, flight whoosh and interface sounds (all synthesised at runtime with the Web Audio API — no audio files)
 
 ## Rules for adding assets
 

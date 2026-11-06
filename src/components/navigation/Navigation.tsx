@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { guidedTour, regions } from '@/data/regions';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
 import type { RegionId } from '@/types/content';
+import { SoundToggle } from '@/components/ui/SoundToggle';
 import { SettingsMenu } from './SettingsMenu';
 
 const NAV: RegionId[] = ['gateway', 'about', 'skills', 'projects', 'achievements', 'certificates', 'contact'];
@@ -97,6 +98,7 @@ export function Navigation() {
             </button>
           ))}
         </div>
+        <SoundToggle />
         <SettingsMenu />
         <button
           type="button"
