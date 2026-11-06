@@ -81,6 +81,8 @@ interface Layer {
   /** Particles per bright pixel. */
   density: number;
   size: number;
+  /** Brightness of each particle; overlapping additive particles add up quickly. */
+  gain: number;
 }
 
 function buildGeometry(
@@ -89,6 +91,7 @@ function buildGeometry(
   depth: number,
   shape: 'cloud' | 'disk',
   budget: number,
+  threshold: number,
 ) {
   const rand = mulberry32(7);
   const positions: number[] = [];
@@ -105,7 +108,7 @@ function buildGeometry(
         const g = px[k + 1] / 255;
         const b = px[k + 2] / 255;
         const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        if (lum < 0.05) continue;
+        if (lum < threshold) continue;
         const expected = Math.pow(lum, 1.35) * layer.density * budget;
         let n = Math.floor(expected) + (rand() < expected % 1 ? 1 : 0);
         while (n-- > 0) {
@@ -114,8 +117,10 @@ function buildGeometry(
           // A cloud has depth everywhere; a galaxy disk is thin, thickest at its bright core.
           const spread = shape === 'disk' ? depth * (0.15 + lum * 0.6) : depth * (0.55 + (1 - lum) * 0.6);
           positions.push(px3, py3, gaussian(rand) * spread);
-          const boost = 1.15 + (1 - lum) * 0.5;
-          colors.push(Math.min(1, r * boost), Math.min(1, g * boost), Math.min(1, b * boost));
+          // Keep the photo's hue but normalise brightness, so dense regions don't wash out to white.
+          const peak = Math.max(r, g, b, 1e-3);
+          const k2 = (layer.gain * (0.35 + 0.65 * lum)) / peak;
+          colors.push(r * k2, g * k2, b * k2);
           sizes.push(layer.size * scale * (0.55 + rand() * 0.9) * (0.6 + lum * 0.7));
         }
       }
@@ -142,6 +147,8 @@ interface Props {
   faceToward?: Vec3;
   rotation?: Vec3;
   opacity?: number;
+  /** Pixels darker than this are treated as empty sky. */
+  threshold?: number;
 }
 
 /**
@@ -159,6 +166,7 @@ export function ParticleNebula({
   faceToward,
   rotation,
   opacity = 0.75,
+  threshold = shape === 'disk' ? 0.16 : 0.06,
 }: Props) {
   const quality = useEffectiveQuality();
   const budget = quality === 'high' ? 1 : quality === 'medium' ? 0.6 : 0.3;
@@ -169,8 +177,8 @@ export function ParticleNebula({
     let cancelled = false;
     const url = spaceImageUrl(image);
     const layers: Layer[] = [
-      { width: 120, density: 3.2, size: 3.6 },
-      { width: 300, density: 1.4, size: 1.2 },
+      { width: 120, density: 3.2, size: 3.6, gain: 0.45 },
+      { width: 300, density: 1.4, size: 1.2, gain: 0.85 },
     ];
     Promise.all(layers.map((l) => loadPixels(url, l.width)))
       .then((data) => {
@@ -182,6 +190,7 @@ export function ParticleNebula({
             depth,
             shape,
             budget,
+            threshold,
           ),
         );
       })
@@ -191,7 +200,7 @@ export function ParticleNebula({
     return () => {
       cancelled = true;
     };
-  }, [image, size, depth, shape, budget]);
+  }, [image, size, depth, shape, budget, threshold]);
 
   useEffect(() => () => geometry?.dispose(), [geometry]);
 

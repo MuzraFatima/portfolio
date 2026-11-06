@@ -61,8 +61,8 @@ export function GalaxyScene() {
       />
       <ParticleNebula
         image="helix-nebula"
-        position={behind('achievements', 70)}
-        size={70}
+        position={behind('achievements', 80)}
+        size={90}
         depth={16}
         faceToward={cameraOf('achievements')}
         opacity={0.7}
@@ -77,8 +77,8 @@ export function GalaxyScene() {
       />
       <ParticleNebula
         image="whirlpool-galaxy"
-        position={behind('contact', 150)}
-        size={110}
+        position={behind('contact', 420)}
+        size={230}
         depth={10}
         shape="disk"
         faceToward={cameraOf('contact')}
