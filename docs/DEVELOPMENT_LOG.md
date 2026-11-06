@@ -246,3 +246,14 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless Chrome at 390 × 844 shows a clean, scrollable landing view; no console errors.
 
 **Checkpoint:** All professional sections are usable on desktop, tablet and phone. **Passed.**
+
+## Phase 14 — Testing and optimisation
+
+**Work completed**
+
+- 17 Vitest unit tests (content honesty rules, orbit stability, form validation), added to CI.
+- 24-step headless browser test of every navigation path, planet, panel, keyboard shortcut, scroll gesture, text view, no-WebGL fallback, console errors and failed requests.
+- Fixed a critical `removeChild` crash when switching to text view.
+- Measured bundle sizes, per-quality imagery weight and heap usage — see `docs/TEST_REPORT.md`.
+
+**Checkpoint:** Production build succeeds; no critical errors or broken navigation remain. **Passed.**
