@@ -204,3 +204,18 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless render of the observatory; no console errors.
 
 **Checkpoint:** Every displayed certificate comes from Muzra's own records; no fabricated IDs or links. **Passed** — verification links pending from Muzra.
+
+## Phase 11 — Contact station
+
+**Work completed**
+
+- Direct links: verified email (`muzrafatima@gmail.com`), GitHub and LinkedIn.
+- Contact form with field validation, accessible error messages, sending / delivered / failed states and a 15 s timeout.
+- Real submission through Web3Forms. Success is shown only when the service returns `success: true`; any failure is shown as a failure.
+- Spam protection: hidden honeypot field and a minimum fill time.
+- Until `VITE_WEB3FORMS_KEY` is set in Vercel, the form is disabled and says so, pointing to email instead — it never pretends to send.
+- Resume download intentionally withheld until Muzra confirms the PDF (which contains a phone number) may be published.
+
+**Checks:** typecheck, lint, build.
+
+**Checkpoint:** No fake success path exists; submissions are processed by a real service once the key is configured. **Passed** — key pending from Muzra.
