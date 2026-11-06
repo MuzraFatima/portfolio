@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import type { Group } from 'three';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
 
-const hull = { color: '#d9dde4', metalness: 0.75, roughness: 0.35 } as const;
-const foil = { color: '#c9a24a', metalness: 0.95, roughness: 0.28 } as const;
+const hull = { color: '#d9dde4', metalness: 0.3, roughness: 0.42 } as const;
+const foil = { color: '#c9a24a', metalness: 0.5, roughness: 0.3 } as const;
 const panel = { color: '#14254d', metalness: 0.7, roughness: 0.22, emissive: '#06102a' } as const;
 
 function SolarArray({ position }: { position: [number, number, number] }) {

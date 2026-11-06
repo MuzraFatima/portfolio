@@ -1,6 +1,6 @@
 import { Float } from '@react-three/drei';
 
-const silver = { color: '#d6dbe3', metalness: 0.92, roughness: 0.22 } as const;
+const silver = { color: '#d6dbe3', metalness: 0.35, roughness: 0.38 } as const;
 const panel = { color: '#1b2f63', metalness: 0.6, roughness: 0.25, emissive: '#071230' } as const;
 
 /** R06 — a Hubble-style space observatory: foil-wrapped tube, aperture door and twin solar wings. */
@@ -14,7 +14,7 @@ export function Telescope() {
         </mesh>
         <mesh position={[-3.8, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
           <cylinderGeometry args={[1.25, 1.25, 1.6, 32]} />
-          <meshStandardMaterial color="#9aa1ad" metalness={0.85} roughness={0.35} />
+          <meshStandardMaterial color="#9aa1ad" metalness={0.4} roughness={0.45} />
         </mesh>
         {/* Open aperture door */}
         <mesh position={[3.15, 1.0, 0]} rotation={[0, 0, -0.9]} castShadow>

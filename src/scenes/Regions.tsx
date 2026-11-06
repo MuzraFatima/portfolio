@@ -113,11 +113,16 @@ export function Regions() {
       </group>
 
       <group position={certs.position}>
+        {/* Fill light so the spacecraft read clearly far from the star. */}
+        <pointLight position={[10, 7, 14]} intensity={60} distance={40} decay={1} color="#e6ecff" />
+        <pointLight position={[-8, -2, -6]} intensity={20} distance={30} decay={1} color="#ffd2a0" />
         <Telescope />
         <RegionLabel id="certificates" y={5} />
       </group>
 
       <group position={contact.position}>
+        <pointLight position={[-10, 7, 14]} intensity={60} distance={40} decay={1} color="#e6ecff" />
+        <pointLight position={[8, -2, -6]} intensity={20} distance={30} decay={1} color="#ffd2a0" />
         <Suspense fallback={null}>
           <SpaceStation />
         </Suspense>

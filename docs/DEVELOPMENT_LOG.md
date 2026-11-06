@@ -190,3 +190,17 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless Chrome render of the Skills region; no console errors.
 
 **Checkpoint:** All information is accurate, readable and linked correctly. **Passed.**
+
+## Phase 10 — Certificate observatory
+
+**Work completed**
+
+- Gallery of all 15 certificates, filterable by issuer (Anthropic, AWS Academy, Cisco Networking Academy, freeCodeCamp, TASK).
+- Only verified fields render. Issue date, credential ID, "Verify credential" and "View certificate" appear automatically once real values are added to `src/data/certificates.ts`; nothing is invented meanwhile.
+- Accessible image preview dialog for when certificate images are supplied (`public/certificates/README.md` explains how).
+- Fill lighting and less mirror-like materials so the observatory, station and satellites are readable far from the star.
+- `vercel.json` added for deployment (Vite preset, SPA rewrite, asset caching, security headers).
+
+**Checks:** typecheck, lint, build; headless render of the observatory; no console errors.
+
+**Checkpoint:** Every displayed certificate comes from Muzra's own records; no fabricated IDs or links. **Passed** — verification links pending from Muzra.
