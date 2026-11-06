@@ -257,3 +257,17 @@ A running record of each phase: what was done, what was checked and what is stil
 - Measured bundle sizes, per-quality imagery weight and heap usage — see `docs/TEST_REPORT.md`.
 
 **Checkpoint:** Production build succeeds; no critical errors or broken navigation remain. **Passed.**
+
+## Phase 15 — Deployment and final delivery
+
+**Work completed**
+
+- Production configuration: `vercel.json` (Vite preset, SPA rewrite, asset caching, security headers) and `.env.example`.
+- `README.md` rewritten for visitors and developers; `docs/DEPLOYMENT.md` with exact Vercel and Web3Forms steps.
+- Documentation set complete: architecture, audit, asset licences, test report, development log, missing information.
+
+**Status:** the production build passes all checks. The public URL will exist as soon as the repository
+is imported into Vercel (one-minute step for Muzra, `docs/DEPLOYMENT.md` §1). The live site will then be
+verified on desktop and phone.
+
+**Checkpoint:** Ready to deploy. Public deployment **pending Vercel import by Muzra**.
