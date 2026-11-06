@@ -13,7 +13,7 @@ export function MiniMap() {
   const goTo = useGalaxyStore((s) => s.goTo);
   const selectProject = useGalaxyStore((s) => s.selectProject);
 
-  if (region === 'gateway') return null;
+  if (!['projects'].includes(region)) return null;
   const c = SIZE / 2;
   const px = (x: number) => c + x * SCALE;
 

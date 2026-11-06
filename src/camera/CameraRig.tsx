@@ -11,6 +11,8 @@ import type { ProjectId, RegionId } from '@/types/content';
 
 type Vec = [number, number, number];
 
+const PANEL_SIDE_REGIONS: RegionId[] = ['about', 'skills', 'achievements', 'certificates', 'contact'];
+
 const v = {
   fromPos: new Vector3(),
   fromTarget: new Vector3(),
@@ -128,9 +130,15 @@ export function CameraRig() {
   useEffect(() => {
     const c = controls.current;
     if (!c) return;
-    const shift = selected && size.width >= 900 ? planetConfigs[selected].planet.radius * 1.6 : 0;
+    let shift = 0;
+    if (size.width >= 900) {
+      if (selected) shift = planetConfigs[selected].planet.radius * 1.6;
+      // Region panels sit on the left, so move the landmark to the right of the screen.
+      else if (PANEL_SIDE_REGIONS.includes(region))
+        shift = -Math.hypot(...regionById[region].cameraOffset) * 0.24;
+    }
     void c.setFocalOffset(shift, 0, 0, !reducedMotion);
-  }, [selected, size.width, reducedMotion]);
+  }, [selected, region, size.width, reducedMotion]);
 
   // Follow the selected planet along its orbit while keeping any orbiting the visitor has done.
   useFrame(() => {

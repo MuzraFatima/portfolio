@@ -22,7 +22,7 @@ export const regions: Region[] = [
     label: 'About',
     description: 'About, education, interests and goals.',
     position: [0, 0, 0],
-    cameraOffset: [-4, 2.5, 15],
+    cameraOffset: [-8, 5, 30],
     color: '#ffe7a8',
   },
   {
