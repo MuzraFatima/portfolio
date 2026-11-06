@@ -20,12 +20,7 @@ export type PlanetMap =
   | 'mercury';
 
 export type SpaceImage =
-  | 'carina-nebula'
-  | 'helix-nebula'
-  | 'pillars-of-creation'
-  | 'sombrero-galaxy'
-  | 'whirlpool-galaxy'
-  | 'webb-deep-field';
+  'carina-nebula' | 'helix-nebula' | 'pillars-of-creation' | 'sombrero-galaxy' | 'whirlpool-galaxy';
 
 /** URL of a planet surface map at the resolution that suits the current quality level. */
 export function usePlanetMapUrl(name: PlanetMap): string {

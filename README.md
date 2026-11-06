@@ -8,19 +8,21 @@ of my six AI/ML projects is a planet you can fly to.
 
 ## What you can do
 
-- **Start with About Me**, beside a floating astronaut guide who can show you around (or be hidden).
-- **Fly to six project planets**, in this order: **GateOrchestra** (flagship), WhoToTrust, NeuroLens,
-  Cost-Aware Agent Router, Compute Bazaar and JOCKY Forensics. Click a planet to land and read its overview,
-  problem, solution, architecture, verified features, my contribution and technologies.
-- **Visit the regions**: Skill Nebula, Achievement Constellation, Certificate Observatory and Contact Space Station.
-- **Explore your way**: a guided tour (scroll or swipe between stops), free orbit mode, a top menu, a mini-map and
-  keyboard shortcuts (1–7, ← →, Esc).
-- **Read everything without 3D**: the text-only view (Settings) and automatic fallback when WebGL is unavailable.
+- **Scroll to travel.** The whole portfolio is one page. Scrolling flies the camera along a single path
+  through a realistic galaxy, and the text for each stop sits right on the scene, with no boxes or panels.
+- **Start with About Me**, beside the astronaut who travels the whole journey with you.
+- **Pass six project planets** in order: **GateOrchestra** (flagship), WhoToTrust, NeuroLens,
+  Cost-Aware Agent Router, Compute Bazaar and JOCKY Forensics, each with its overview, problem, approach,
+  features, my contribution, architecture and technologies. Click a planet to jump to it.
+- **Visit** the Skill Nebula, the Achievement Constellation, the Observatory (certificates) and the Space
+  Station (contact).
+- **Read the résumé** as text from the "Résumé" link, and print or save it as a PDF.
+- **No 3D needed.** Every word is plain HTML; without WebGL the page shows over a still Milky Way photo.
 
 ## Built with
 
-React 19 · TypeScript · Vite 6 · three.js · React Three Fiber · Drei · Rapier · GSAP + ScrollTrigger ·
-Framer Motion · Zustand · Tailwind CSS 4 · Web Audio API · Vitest
+React 19 · TypeScript · Vite 6 · three.js · React Three Fiber · Drei · Framer Motion · Zustand ·
+Tailwind CSS 4 · Vitest
 
 ## Run locally
 
@@ -59,7 +61,7 @@ Optional: copy `.env.example` to `.env` and add a Web3Forms key to enable the co
 
 Space imagery: NASA, ESA, CSA, STScI and the Hubble Heritage Team (STScI/AURA); NASA/JPL-Caltech;
 ESO/S. Brunier (CC BY 4.0). Planet textures: Solar System Scope (CC BY 4.0). Astronaut model: Poly by
-Google (CC BY 2.0). Use of these images does not imply endorsement by NASA, ESA or ESO. Full details in
+Google (CC BY 2.0). Hubble and ISS models: NASA 3D Resources. Use of these images does not imply endorsement by NASA, ESA or ESO. Full details in
 [docs/ASSET_LICENSES.md](docs/ASSET_LICENSES.md).
 
 ## Licence

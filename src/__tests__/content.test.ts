@@ -3,7 +3,7 @@ import { achievements } from '@/data/achievements';
 import { certificates } from '@/data/certificates';
 import { profile } from '@/data/profile';
 import { projectById, projects } from '@/data/projects';
-import { guidedTour, regions } from '@/data/regions';
+import { resume } from '@/data/resume';
 import { skillCategories } from '@/data/skills';
 
 describe('projects', () => {
@@ -69,19 +69,27 @@ describe('certificates', () => {
   });
 });
 
-describe('profile and regions', () => {
+describe('profile', () => {
   it('uses the verified public contact details', () => {
     expect(profile.email).toBe('muzrafatima@gmail.com');
     expect(profile.github).toBe('https://github.com/MuzraFatima');
     expect(profile.linkedin).toContain('muzra-fatima-7150452bb');
   });
 
-  it('has seven regions, all on the guided tour', () => {
-    expect(regions).toHaveLength(7);
-    expect(new Set(guidedTour)).toEqual(new Set(regions.map((r) => r.id)));
-  });
-
   it('links achievements only to real projects', () => {
     for (const a of achievements) if (a.project) expect(projectById[a.project]).toBeDefined();
+  });
+});
+
+describe('resume', () => {
+  it('never publishes the phone number', () => {
+    expect(JSON.stringify(resume)).not.toMatch(/\+?91[\s-]?\d{5}|\d{10}/);
+  });
+
+  it('agrees with the verified profile', () => {
+    expect(resume.contact.email).toBe(profile.email);
+    expect(resume.name).toBe(profile.name);
+    for (const p of resume.projects)
+      if (p.link) expect(p.link).toMatch(/^https:\/\/github\.com\/MuzraFatima\//);
   });
 });

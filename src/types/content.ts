@@ -1,19 +1,3 @@
-export type RegionId =
-  'gateway' | 'about' | 'skills' | 'projects' | 'achievements' | 'certificates' | 'contact';
-
-export interface Region {
-  id: RegionId;
-  code: string;
-  name: string;
-  label: string;
-  description: string;
-  /** World-space centre of the region. */
-  position: [number, number, number];
-  /** Where the camera sits when it visits the region, relative to the centre. */
-  cameraOffset: [number, number, number];
-  color: string;
-}
-
 export interface Education {
   degree: string;
   institution: string;

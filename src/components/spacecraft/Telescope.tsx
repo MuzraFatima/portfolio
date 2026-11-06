@@ -1,43 +1,11 @@
-import { Float } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
+import { NasaModel } from './NasaModel';
 
-const silver = { color: '#d6dbe3', metalness: 0.35, roughness: 0.38 } as const;
-const panel = { color: '#1b2f63', metalness: 0.6, roughness: 0.25, emissive: '#071230' } as const;
+const URL = `${import.meta.env.BASE_URL}assets/models/hubble.glb`;
 
-/** R06 — a Hubble-style space observatory: foil-wrapped tube, aperture door and twin solar wings. */
+/** The Observatory: NASA's model of the Hubble Space Telescope. */
 export function Telescope() {
-  return (
-    <Float speed={0.6} rotationIntensity={0.15} floatIntensity={0.4}>
-      <group rotation={[0.2, -0.7, 0.15]}>
-        <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-          <cylinderGeometry args={[1.2, 1.2, 6, 32]} />
-          <meshStandardMaterial {...silver} />
-        </mesh>
-        <mesh position={[-3.8, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-          <cylinderGeometry args={[1.25, 1.25, 1.6, 32]} />
-          <meshStandardMaterial color="#9aa1ad" metalness={0.4} roughness={0.45} />
-        </mesh>
-        {/* Open aperture door */}
-        <mesh position={[3.15, 1.0, 0]} rotation={[0, 0, -0.9]} castShadow>
-          <cylinderGeometry args={[1.22, 1.22, 0.08, 32]} />
-          <meshStandardMaterial {...silver} />
-        </mesh>
-        <mesh position={[3.02, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <circleGeometry args={[1.1, 32]} />
-          <meshStandardMaterial color="#05070d" roughness={0.9} />
-        </mesh>
-        {[-1, 1].map((s) => (
-          <group key={s} position={[-1, 0, s * 3.4]}>
-            <mesh castShadow>
-              <boxGeometry args={[1.6, 0.04, 4.4]} />
-              <meshStandardMaterial {...panel} />
-            </mesh>
-            <mesh position={[0, 0, -s * 2.4]} rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.05, 0.05, 1]} />
-              <meshStandardMaterial {...silver} />
-            </mesh>
-          </group>
-        ))}
-      </group>
-    </Float>
-  );
+  return <NasaModel url={URL} size={11} rotation={[0.25, -0.9, 0.35]} spin={0.03} />;
 }
+
+useGLTF.preload(URL);

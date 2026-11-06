@@ -9,7 +9,7 @@ Date: 6 November 2026 · Build: production (`npm run build`) served with `vite p
 | Formatting                                                          | Prettier          | Pass         |
 | Lint (zero warnings, incl. React Hooks and JSX accessibility rules) | ESLint            | Pass         |
 | Type safety                                                         | `tsc -b` (strict) | Pass         |
-| Unit tests                                                          | Vitest — 17 tests | 17 / 17 pass |
+| Unit tests                                                          | Vitest — 26 tests | 26 / 26 pass |
 | Production build                                                    | Vite              | Pass         |
 
 The unit tests guard the portfolio's honesty rules as well as the code:
@@ -24,40 +24,37 @@ The unit tests guard the portfolio's honesty rules as well as the code:
 - orbits stay on their radius and repeat exactly after one period, even after a week; Kepler-style period scaling;
 - contact form validation (missing name, invalid email, short and over-long messages).
 
-## 2. Browser test (headless Chrome, SwiftShader software WebGL)
+## 2. Browser test — scroll journey (headless Chrome, SwiftShader software WebGL)
 
-| #    | Scenario                                                                                 | Result                                                                                                                                                                    |
-| ---- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | About Me panel is visible on the first page                                              | Pass (≈3 s to panel)                                                                                                                                                      |
-| 2    | WebGL canvas is created                                                                  | Pass                                                                                                                                                                      |
-| 3–7  | Navigate to About, Skills, Achievements, Certificates, Contact from the top menu         | Pass (each panel heading correct)                                                                                                                                         |
-| 8    | Six planet labels present; GateOrchestra is "01 · Flagship"                              | Pass on inspection — all six labels present; the automated assertion failed only because labels are returned in screen-depth order (test-script issue, not a site defect) |
-| 9–14 | Clicking each of the six planets flies the camera there and opens the correct panel      | Pass — live demo button shown only for JOCKY Forensics                                                                                                                    |
-| 15   | Esc returns from a planet to the system                                                  | Pass                                                                                                                                                                      |
-| 16   | A scroll gesture advances the guided tour (Home → About)                                 | Pass                                                                                                                                                                      |
-| 17   | Keyboard shortcut 4 opens Projects                                                       | Pass                                                                                                                                                                      |
-| 18   | Contact form cannot report success without a service key (submit disabled, notice shown) | Pass                                                                                                                                                                      |
-| 19   | Text-only view contains every section and all six projects                               | Pass                                                                                                                                                                      |
-| 20   | No console errors during the full tour                                                   | Pass                                                                                                                                                                      |
-| 21   | No failed network requests (all textures, models, fonts load)                            | Pass                                                                                                                                                                      |
-| 22   | Phone viewport with WebGL disabled loads the text view automatically                     | Pass                                                                                                                                                                      |
+Run on 6 November 2026 after the Phase 16 redesign.
 
-### Defect found and fixed during testing
+| Scenario                                                                                                       | Result |
+| -------------------------------------------------------------------------------------------------------------- | ------ |
+| Screenshots of all 13 stops at 1440 × 900: subject framed opposite the text, place title correct               | Pass   |
+| Résumé opens from the header, shows summary, skills and projects, contains no phone number, closes with Escape | Pass   |
+| Header link "Projects" scrolls the journey to the project system                                               | Pass   |
+| No Guided/Free, Sound or Settings controls anywhere                                                            | Pass   |
+| A live-demo link appears only for JOCKY Forensics                                                              | Pass   |
+| Phone 390 × 844: no horizontal overflow, menu opens, hero/about/GateOrchestra/contact readable                 | Pass   |
+| WebGL disabled: every section still present over the still Milky Way photo                                     | Pass   |
+| No console errors or failed requests (desktop, phone, no-WebGL)                                                | Pass   |
 
-- **Critical:** switching to text-only view threw `NotFoundError: removeChild` because unmounting the canvas raced with its HTML labels. Fixed by keeping the canvas mounted but hidden and paused (`frameloop="never"`) in text view — which also makes returning to 3D instant. Re-tested: no console errors.
+The project order (GateOrchestra first) is asserted by the unit tests; one browser assertion for it read
+the Skills headings by mistake (script issue, not a site defect).
 
 ## 3. Performance
 
 ### JavaScript (gzip)
 
-| Chunk                     | Size         | When it loads                                               |
-| ------------------------- | ------------ | ----------------------------------------------------------- |
-| App shell (`index`) + CSS | 40 kB + 6 kB | Immediately                                                 |
-| Framer Motion + GSAP      | 73 kB        | Immediately                                                 |
-| three.js                  | 182 kB       | With the canvas (lazy)                                      |
-| React Three Fiber + Drei  | 164 kB       | With the canvas (lazy)                                      |
-| Galaxy scene              | 33 kB        | With the canvas (lazy)                                      |
-| Rapier physics (WASM)     | 839 kB       | 3.5 s after load, medium/high quality only, never on phones |
+| Chunk                     | Size         | When it loads          |
+| ------------------------- | ------------ | ---------------------- |
+| App shell (`index`) + CSS | 20 kB + 6 kB | Immediately            |
+| Framer Motion             | 48 kB        | Immediately            |
+| three.js                  | 182 kB       | With the canvas (lazy) |
+| React Three Fiber + Drei  | 148 kB       | With the canvas (lazy) |
+| Galaxy scene              | 32 kB        | With the canvas (lazy) |
+
+GSAP and the 839 kB Rapier physics bundle were removed in Phase 16. NASA models: Hubble 398 kB, ISS 477 kB.
 
 ### Imagery downloaded per visit
 
