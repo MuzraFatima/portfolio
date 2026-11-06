@@ -96,7 +96,16 @@ export const projects: Project[] = [
       'Runs end to end on a laptop CPU, with 219 Python tests plus unit and end-to-end web tests',
     ],
     contribution: ['Sole author: method, benchmark, experiments, web app and tests'],
-    images: [],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/whototrust-overview.webp`,
+        alt: 'WhoToTrust web app overview page showing results summary',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/whototrust-explorer.webp`,
+        alt: 'WhoToTrust explorer showing items, votes and error scores',
+      },
+    ],
     palette: ['#22d3ee', '#f1f5f9', '#a855f7'],
     visual: 'Data reliability world: conflicting data streams and reliability visualisations.',
   },
@@ -130,7 +139,16 @@ export const projects: Project[] = [
       'Runs entirely on CPU; the paper source is generated from the results',
     ],
     contribution: ['Sole author: research design, models, benchmark, experiments, explorer and paper'],
-    images: [],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/neurolens-dag.webp`,
+        alt: 'NeuroLens DAG hierarchy explorer showing learned parent edges between latents',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/neurolens-routing.webp`,
+        alt: 'NeuroLens routing simulator showing activation travelling to ancestor latents',
+      },
+    ],
     palette: ['#10b981', '#22d3ee', '#a7f3d0'],
     visual: 'Optical and neural-vision laboratory: a lens world revealing hidden structure.',
   },
@@ -164,7 +182,16 @@ export const projects: Project[] = [
       'Benchmark harness with Wilson confidence intervals (mock mode validates routing and cost, not real accuracy)',
     ],
     contribution: ['Sole author: router, agents, evaluation, API and dashboard'],
-    images: [],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/caar-sandbox.webp`,
+        alt: 'CAAR gateway playground showing an accepted routing cascade with cost and latency',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/caar-analytics.webp`,
+        alt: 'CAAR analytics dashboard with spend, savings and tier distribution',
+      },
+    ],
     palette: ['#f5b301', '#2f80ff', '#fde68a'],
     visual: 'Intelligent routing network: model nodes, routing paths and cost/performance displays.',
   },
@@ -207,7 +234,16 @@ export const projects: Project[] = [
       'Live WebSocket dashboard with a bidding ticker and round history',
     ],
     contribution: ['Sole author: auction engine, agents, API, dashboard and benchmarks'],
-    images: [],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/computebazaar-hero.webp`,
+        alt: 'Compute Bazaar dashboard with live market metrics and utilisation charts',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/computebazaar-ticker.webp`,
+        alt: 'Compute Bazaar live bidding ticker and closed auction rounds',
+      },
+    ],
     palette: ['#fb923c', '#9333ea', '#3b82f6'],
     visual: 'Interplanetary compute marketplace: resource stations and agent bidding displays.',
   },

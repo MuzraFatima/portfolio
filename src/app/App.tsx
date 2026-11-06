@@ -7,6 +7,7 @@ import { useScrollJourney } from '@/hooks/useScrollJourney';
 import { Navigation } from '@/components/navigation/Navigation';
 import { HeroAbout } from '@/components/panels/HeroAbout';
 import { ProjectPanel } from '@/components/panels/ProjectPanel';
+import { RegionPanel } from '@/components/panels/RegionPanel';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
@@ -73,6 +74,7 @@ export default function App() {
       <MiniMap />
       <TourProgress />
       <ProjectPanel />
+      <RegionPanel />
       <GuideBubble />
     </>
   );

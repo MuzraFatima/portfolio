@@ -45,6 +45,12 @@ Required credit: **"Textures: Solar System Scope (solarsystemscope.com), CC BY 4
 The model is a single unrigged mesh, so its idle, floating, head-turn, wave and pointing motions are
 whole-body procedural animations written for this site.
 
+## Project screenshots (`public/assets/images/projects/`)
+
+Screenshots from Muzra Fatima's own MIT-licensed repositories (WhoToTrust, NeuroLens, Cost-aware-agent,
+Compute-bazar), resized to 1200 px WebP. GateOrchestra screenshots are not used until the team agrees,
+and JOCKY Forensics has none in its repository.
+
 ## Fonts
 
 | Font                 | Source       | Licence                   |
