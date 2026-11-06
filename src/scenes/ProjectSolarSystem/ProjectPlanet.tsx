@@ -1,51 +1,39 @@
 import { useCursor } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef, useState } from 'react';
-import { type Group, Vector3 } from 'three';
+import { useMemo, useRef, useState } from 'react';
+import type { Group } from 'three';
 import { Moon } from '@/components/planets/Moon';
 import { Planet } from '@/components/planets/Planet';
-import { SceneLabel } from '@/components/shared/SceneLabel';
 import { Satellite } from '@/components/spacecraft/Satellite';
+import { scrollToStop } from '@/journey/progress';
+import { planetPosition } from '@/journey/world';
 import { Spring } from '@/physics/motion';
-import { orbitPosition, planetPositions } from '@/physics/orbits';
 import { useGalaxyStore } from '@/store/useGalaxyStore';
 import type { Project } from '@/types/content';
 import { planetConfigs } from './planetConfigs';
 
-/** One project world travelling on its orbit, selectable by click, tap or its label button. */
+/** Clicks on the page's text pass through to the 3D scene; ignore those so reading never jumps. */
+const overText = (target: EventTarget | null) =>
+  target instanceof Element && Boolean(target.closest('a, button, p, h1, h2, h3, h4, li, form, dialog'));
+
+/** One project world. Clicking or tapping it scrolls the journey to that project. */
 export function ProjectPlanet({ project }: { project: Project }) {
   const config = planetConfigs[project.id];
-  const group = useRef<Group>(null);
+  const position = useMemo(() => planetPosition(project.id), [project.id]);
   const visual = useRef<Group>(null);
   const swell = useRef(new Spring(1, 120, 14));
   const [hovered, setHovered] = useState(false);
-  const selected = useGalaxyStore((s) => s.selectedProject === project.id);
-  const selectProject = useGalaxyStore((s) => s.selectProject);
   const hoverProject = useGalaxyStore((s) => s.hoverProject);
-  const reducedMotion = useGalaxyStore((s) => s.reducedMotion);
   useCursor(hovered);
 
-  useEffect(() => {
-    planetPositions.set(project.id, new Vector3());
-    return () => {
-      planetPositions.delete(project.id);
-    };
-  }, [project.id]);
-
-  useFrame(({ clock }, delta) => {
-    if (!group.current) return;
-    if (visual.current)
-      visual.current.scale.setScalar(swell.current.step(hovered && !selected ? 1.08 : 1, delta));
-    const t = reducedMotion ? 0 : clock.elapsedTime;
-    orbitPosition(config.orbit, t, group.current.position);
-    planetPositions.get(project.id)?.copy(group.current.position);
+  useFrame((_, delta) => {
+    if (visual.current) visual.current.scale.setScalar(swell.current.step(hovered ? 1.04 : 1, delta));
   });
 
   const radius = config.planet.radius;
-  const select = () => selectProject(project.id);
 
   return (
-    <group ref={group}>
+    <group position={position}>
       <group ref={visual}>
         <Planet {...config.planet}>
           {config.moons.map((m, i) => (
@@ -63,14 +51,15 @@ export function ProjectPlanet({ project }: { project: Project }) {
         </Planet>
       </group>
 
-      {/* Generous invisible hit area so small planets are easy to click or tap. */}
       <mesh
         onClick={(e) => {
           e.stopPropagation();
-          select();
+          if (overText(e.nativeEvent.target)) return;
+          scrollToStop(`project-${project.id}`);
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
+          if (overText(e.nativeEvent.target)) return;
           setHovered(true);
           hoverProject(project.id);
         }}
@@ -79,18 +68,9 @@ export function ProjectPlanet({ project }: { project: Project }) {
           hoverProject(null);
         }}
       >
-        <sphereGeometry args={[radius * 1.7, 16, 12]} />
+        <sphereGeometry args={[radius * 1.3, 16, 12]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-
-      <SceneLabel
-        position={[0, radius * (project.flagship ? 2.6 : 1.9), 0]}
-        kicker={String(project.order).padStart(2, '0')}
-        title={project.flagship ? `${project.name} · Flagship` : (project.shortName ?? project.name)}
-        color={config.glow}
-        active={selected || hovered}
-        onActivate={select}
-      />
     </group>
   );
 }

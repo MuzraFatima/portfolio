@@ -6,10 +6,10 @@ import type { ProjectId } from '@/types/content';
 import { planetConfigs } from './planetConfigs';
 import { ProjectPlanet } from './ProjectPlanet';
 
-/** A faint orbit path; brighter for the selected or hovered planet. */
+/** A faint orbit path; brighter for the hovered planet. */
 function OrbitPath({ id }: { id: ProjectId }) {
   const { orbit, glow } = planetConfigs[id];
-  const highlighted = useGalaxyStore((s) => s.selectedProject === id || s.hoveredProject === id);
+  const highlighted = useGalaxyStore((s) => s.hoveredProject === id);
 
   const geometry = useMemo(() => {
     const points: number[] = [];
@@ -32,7 +32,7 @@ function OrbitPath({ id }: { id: ProjectId }) {
       <lineBasicMaterial
         color={highlighted ? glow : '#8090c0'}
         transparent
-        opacity={highlighted ? 0.55 : 0.12}
+        opacity={highlighted ? 0.5 : 0.1}
         blending={AdditiveBlending}
         depthWrite={false}
       />
@@ -40,7 +40,7 @@ function OrbitPath({ id }: { id: ProjectId }) {
   );
 }
 
-/** R04 — the six project planets orbiting the central star, in the blueprint's fixed order. */
+/** The six project planets around the central star, in the blueprint's fixed order. */
 export function ProjectSolarSystem() {
   return (
     <group>

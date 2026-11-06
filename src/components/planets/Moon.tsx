@@ -23,7 +23,7 @@ export function Moon({ map, radius, distance, period, phase, tilt = 0 }: MoonSpe
     <group ref={ref}>
       <mesh castShadow receiveShadow>
         <sphereGeometry args={[radius, 32, 24]} />
-        <meshStandardMaterial map={texture} roughness={0.95} />
+        <meshStandardMaterial map={texture} bumpMap={texture} bumpScale={0.03} roughness={0.95} />
       </mesh>
     </group>
   );

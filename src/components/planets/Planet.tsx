@@ -35,12 +35,43 @@ const atmosphereFragment = /* glsl */ `
   }
 `;
 
+// City lights that appear only on the night side, fading through the terminator.
+const nightVertex = /* glsl */ `
+  varying vec2 vUv;
+  varying vec3 vNormalW;
+  varying vec3 vPositionW;
+  void main() {
+    vUv = uv;
+    vNormalW = normalize(mat3(modelMatrix) * normal);
+    vec4 wp = modelMatrix * vec4(position, 1.0);
+    vPositionW = wp.xyz;
+    gl_Position = projectionMatrix * viewMatrix * wp;
+  }
+`;
+const nightFragment = /* glsl */ `
+  uniform sampler2D map;
+  uniform vec3 sunPosition;
+  varying vec2 vUv;
+  varying vec3 vNormalW;
+  varying vec3 vPositionW;
+  void main() {
+    float light = dot(normalize(vNormalW), normalize(sunPosition - vPositionW));
+    float night = smoothstep(0.08, -0.22, light);
+    vec3 col = texture2D(map, vUv).rgb * vec3(1.0, 0.82, 0.55) * 1.6 * night;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
 export interface PlanetProps {
   map: PlanetMap;
   radius: number;
   atmosphere?: { color: string; intensity?: number; scale?: number };
   clouds?: { map: PlanetMap; opacity?: number; color?: string; speed?: number };
   rings?: { inner: number; outer: number; color?: string; opacity?: number; tilt?: [number, number, number] };
+  /** Night-side city lights (Earth-like worlds). */
+  nightMap?: PlanetMap;
+  /** Use the surface map as a bump map, for rocky worlds whose relief should catch the light. */
+  bump?: number;
   /** Subtle colour grade over the real surface map. */
   tint?: string;
   axialTilt?: number;
@@ -63,6 +94,8 @@ export const Planet = forwardRef<Group, PlanetProps>(function Planet(
     atmosphere,
     clouds,
     rings,
+    nightMap,
+    bump,
     tint = '#ffffff',
     axialTilt = 0.4,
     spinSpeed = 0.08,
@@ -80,8 +113,13 @@ export const Planet = forwardRef<Group, PlanetProps>(function Planet(
 
   const surfaceUrl = usePlanetMapUrl(map);
   const cloudUrl = usePlanetMapUrl(clouds?.map ?? map);
-  const [surfaceMap, cloudMap] = useTexture([surfaceUrl, cloudUrl]);
-  useColorTextures(surfaceMap, cloudMap);
+  const nightUrl = usePlanetMapUrl(nightMap ?? map);
+  const [surfaceMap, cloudMap, nightTexture] = useTexture([surfaceUrl, cloudUrl, nightUrl]);
+  useColorTextures(surfaceMap, cloudMap, nightTexture);
+  const nightUniforms = useMemo(
+    () => ({ map: { value: nightTexture }, sunPosition: { value: [0, 0, 0] } }),
+    [nightTexture],
+  );
 
   const surface = useRef<Mesh>(null);
   const cloudMesh = useRef<Mesh>(null);
@@ -113,7 +151,27 @@ export const Planet = forwardRef<Group, PlanetProps>(function Planet(
           onPointerOut={onPointerOut}
         >
           <sphereGeometry args={[radius, segments, Math.round(segments * 0.75)]} />
-          <meshStandardMaterial map={surfaceMap} color={tint} roughness={roughness} metalness={0} />
+          <meshStandardMaterial
+            map={surfaceMap}
+            bumpMap={bump ? surfaceMap : null}
+            bumpScale={bump ?? 0}
+            color={tint}
+            roughness={roughness}
+            metalness={0}
+          />
+          {nightMap && (
+            <mesh scale={1.001}>
+              <sphereGeometry args={[radius, segments, Math.round(segments * 0.75)]} />
+              <shaderMaterial
+                uniforms={nightUniforms}
+                vertexShader={nightVertex}
+                fragmentShader={nightFragment}
+                blending={AdditiveBlending}
+                transparent
+                depthWrite={false}
+              />
+            </mesh>
+          )}
         </mesh>
 
         {clouds && (
