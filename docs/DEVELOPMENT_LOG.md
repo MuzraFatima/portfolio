@@ -175,3 +175,18 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build; headless Chrome: a wheel event advances the tour from Home to About; no console errors.
 
 **Checkpoint:** No abrupt transitions or conflicting animation controllers. **Passed.**
+
+## Phase 09 — Portfolio content
+
+**Work completed**
+
+- Region panel system (left side, ScrollTrigger reveals, focus moved to the heading).
+- About: summary, education (B.Tech with CGPA, Intermediate), interests, career goals, research publication, location.
+- Skills: eight areas with resume-stated levels (no percentages) and links to the projects that use each area.
+- Achievements: SIH 2026 Internal Hackathon win (linked to JOCKY Forensics) and the HBRP 2025 publication.
+- Project panels now show real screenshots from the four MIT-licensed repositories.
+- The camera shifts each region's landmark to the right of the screen so it is not hidden by the panel.
+
+**Checks:** typecheck, lint, build; headless Chrome render of the Skills region; no console errors.
+
+**Checkpoint:** All information is accurate, readable and linked correctly. **Passed.**
