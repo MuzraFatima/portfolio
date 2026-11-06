@@ -33,7 +33,7 @@ export function Satellite({ distance, period, phase, inclination = 0, scale = 0.
       <group scale={scale}>
         <mesh castShadow>
           <boxGeometry args={[1, 1, 1.4]} />
-          <meshStandardMaterial color="#d4a94a" metalness={0.9} roughness={0.32} />
+          <meshStandardMaterial color="#d4a94a" metalness={0.5} roughness={0.32} />
         </mesh>
         {[-1, 1].map((side) => (
           <group key={side} position={[side * 2.1, 0, 0]}>
