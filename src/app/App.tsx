@@ -65,7 +65,7 @@ export default function App() {
     return () => mq.removeEventListener('change', onChange);
   }, [setPreference]);
 
-  if (textMode || !webglAvailable) {
+  if (!webglAvailable) {
     return (
       <main id="content">
         <TextView />
@@ -79,27 +79,38 @@ export default function App() {
         Skip to content
       </a>
 
-      <ErrorBoundary fallback={(retry) => <SceneFallback retry={retry} />}>
-        <Suspense fallback={null}>
-          <GalaxyCanvas />
-        </Suspense>
-      </ErrorBoundary>
+      {/* The canvas stays mounted (hidden and paused) in text view, so switching back is instant. */}
+      <div hidden={textMode}>
+        <ErrorBoundary fallback={(retry) => <SceneFallback retry={retry} />}>
+          <Suspense fallback={null}>
+            <GalaxyCanvas />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
 
-      <LoadingScreen onSkip={finishIntro} />
+      {!textMode && <LoadingScreen onSkip={finishIntro} />}
 
-      <main
-        id="content"
-        className="pointer-events-none relative z-10 flex min-h-full items-start p-3 pt-20 sm:items-center sm:p-10 sm:pb-40"
-      >
-        <AnimatePresence mode="wait">{region === 'gateway' && <HeroAbout key="hero" />}</AnimatePresence>
-      </main>
+      {textMode ? (
+        <main id="content">
+          <TextView />
+        </main>
+      ) : (
+        <>
+          <main
+            id="content"
+            className="pointer-events-none relative z-10 flex min-h-full items-start p-3 pt-20 sm:items-center sm:p-10 sm:pb-40"
+          >
+            <AnimatePresence mode="wait">{region === 'gateway' && <HeroAbout key="hero" />}</AnimatePresence>
+          </main>
 
-      <Navigation />
-      <MiniMap />
-      <TourProgress />
-      <ProjectPanel />
-      <RegionPanel />
-      <GuideBubble />
+          <Navigation />
+          <MiniMap />
+          <TourProgress />
+          <ProjectPanel />
+          <RegionPanel />
+          <GuideBubble />
+        </>
+      )}
     </>
   );
 }
