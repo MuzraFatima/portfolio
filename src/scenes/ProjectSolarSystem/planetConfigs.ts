@@ -41,7 +41,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 0.32,
       spinSpeed: 0.12,
     },
-    orbit: orbit(16, 0.4),
+    orbit: orbit(16, 0.2),
     moons: [
       { map: 'moon', radius: 0.42, distance: 8.2, period: 38, phase: 0 },
       { map: 'mercury', radius: 0.28, distance: 9.6, period: 55, phase: 2.4, tilt: 0.2 },
@@ -60,13 +60,14 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 1.4,
       spinSpeed: 0.09,
     },
-    orbit: orbit(23, 2.6),
+    orbit: orbit(23, 1.2),
     moons: [{ map: 'moon', radius: 0.3, distance: 5.2, period: 44, phase: 1 }],
     glow: '#5ee1ff',
   },
   neurolens: {
     planet: {
       map: 'earth-daymap',
+      nightMap: 'earth-nightmap',
       radius: 2.2,
       tint: '#d9fff0',
       clouds: { map: 'earth-clouds', opacity: 0.8, speed: 0.11 },
@@ -74,7 +75,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 0.41,
       spinSpeed: 0.1,
     },
-    orbit: orbit(30, 4.4),
+    orbit: orbit(30, 2.2),
     moons: [{ map: 'moon', radius: 0.55, distance: 5.4, period: 60, phase: 3 }],
     glow: '#34d399',
   },
@@ -87,7 +88,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 0.05,
       spinSpeed: 0.04,
     },
-    orbit: orbit(37, 1.3),
+    orbit: orbit(37, 3.2),
     moons: [],
     glow: '#f5b301',
   },
@@ -100,7 +101,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 0.05,
       spinSpeed: 0.18,
     },
-    orbit: orbit(62, 3.5),
+    orbit: orbit(62, 4.2),
     moons: [
       { map: 'moon', radius: 0.36, distance: 6.4, period: 26, phase: 0 },
       { map: 'mercury', radius: 0.32, distance: 7.8, period: 34, phase: 1.6 },
@@ -112,13 +113,14 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
   jocky: {
     planet: {
       map: 'mars',
+      bump: 0.06,
       radius: 1.8,
       tint: '#ffd2c8',
       atmosphere: { color: '#ff6a55', intensity: 0.8, scale: 1.06 },
       axialTilt: 0.44,
       spinSpeed: 0.1,
     },
-    orbit: orbit(72, 5.6),
+    orbit: orbit(72, 5.2),
     moons: [
       { map: 'mercury', radius: 0.2, distance: 3.6, period: 18, phase: 0 },
       { map: 'moon', radius: 0.16, distance: 4.8, period: 30, phase: 2.2, tilt: 0.3 },

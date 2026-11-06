@@ -1,5 +1,4 @@
 import { Vector3 } from 'three';
-import type { ProjectId } from '@/types/content';
 
 export interface OrbitSpec {
   radius: number;
@@ -29,6 +28,3 @@ export function orbitPosition(spec: OrbitSpec, time: number, target = new Vector
 export function keplerPeriod(radius: number, base = 210, baseRadius = 16): number {
   return base * Math.pow(radius / baseRadius, 1.5);
 }
-
-/** Live world positions of each project planet, read by the camera rig to follow a planet. */
-export const planetPositions = new Map<ProjectId, Vector3>();
