@@ -7,7 +7,7 @@ invented in the meantime — the site simply leaves the field out.
 | --- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | 1   | Certificate dates, credential IDs, verification URLs and images | Certificate Observatory can only show name + issuer                                             | Any of these per certificate; images go in `public/certificates/`                                             |
 | 2   | Contact form service                                            | Blueprint requires real submissions, never fake success                                         | A free Web3Forms access key (or Formspree form ID) — added as `VITE_WEB3FORMS_KEY` in Vercel, never committed |
-| 3   | Permission to publish the resume PDF                            | It contains a phone number; git history is permanent                                            | "Yes, publish as is", or a copy without the phone number                                                      |
+| 3   | Phone number on the résumé                                      | The résumé is now shown as text on the site, without the phone number                           | Say so if the phone number should be shown as well                                                            |
 | 4   | Vercel account                                                  | Deployment in Phase 15                                                                          | Sign in at vercel.com with GitHub and import the repo (exact clicks will be given)                            |
 | 5   | GateOrchestra screenshot permission                             | The team repo has no licence                                                                    | Confirmation that the team is fine with screenshots appearing on the portfolio                                |
 | 6   | JOCKY Forensics screenshots                                     | The repo has none; the planet panel would be text-only                                          | 2–3 screenshots of the live demo, or permission to capture them                                               |
@@ -19,4 +19,5 @@ invented in the meantime — the site simply leaves the field out.
 
 - **Hackathon:** confirmed by the resume — Winner, SIH 2026 Internal Hackathon, for JOCKY Forensics.
 - **Email:** `muzrafatima@gmail.com` is public on the GitHub profile and on the resume.
+- **Résumé:** shown as selectable, printable text from the "Résumé" link (phone number left out).
 - **NeuroLens scope:** it is an interpretability project (TopoCircuit-SAE), not computer vision.

@@ -271,3 +271,30 @@ is imported into Vercel (one-minute step for Muzra, `docs/DEPLOYMENT.md` §1). T
 verified on desktop and phone.
 
 **Checkpoint:** Ready to deploy. Public deployment **pending Vercel import by Muzra**.
+
+## Phase 16 — Scroll journey redesign
+
+Requested by Muzra after reviewing the first version, using another portfolio only as a reference for
+scroll behaviour, typography and text placement.
+
+**Work completed**
+
+- Rebuilt the experience as one scrolling page over one 3D world: scrolling flies the camera along a single
+  spline through 13 stops (home, about, skills, project overview, six planets, achievements, certificates,
+  contact). The camera rests while a stop's text is read and frames the subject opposite the text.
+- Text now sits directly on the galaxy with no cards or panels: large serif headings with italic accents,
+  small spaced monospace labels and comfortable body text, each block drifting with the scroll.
+- Removed the Guided/Free toggle, sound button, settings menu, mini-map, tour dots, guide bubble, loading
+  screen, floating labels and text-only view. The page itself is the accessible version; without WebGL it is
+  shown over a still Milky Way photograph.
+- Replaced the flat Hubble pictures with particle nebulae sampled from the same photographs, giving real
+  depth and parallax; the Whirlpool and Sombrero galaxies are particle disks far in the background.
+- Swapped the hand-built telescope and station for NASA's Hubble and ISS models (NASA 3D Resources).
+- Added night-side city lights to NeuroLens and surface relief to Mars and the moons.
+- Rewrote the astronaut's motion: it travels with the camera on a spring, faces its direction of flight,
+  leans and banks with speed, and turns back to the viewer and floats at each stop.
+- Added the résumé as selectable, printable text in a dialog ("Résumé" link in the header, hero and contact),
+  transcribed from the PDF without the phone number.
+- Removed GSAP and Rapier, which the new design no longer uses.
+- Tests: journey stop order, camera clearance, scroll-to-journey mapping, and a guard that the phone number
+  never reaches the page.

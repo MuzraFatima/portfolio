@@ -2,60 +2,63 @@
 
 ## The big picture
 
-The site is two layers stacked on top of each other:
+The portfolio is **one scrolling page laid over one 3D world**.
 
-```text
-┌──────────────────────────────────────────────┐
-│  HTML interface (React + Tailwind)           │  ← navigation, panels, all text content
-│  always readable, keyboard and screen-reader │
-├──────────────────────────────────────────────┤
-│  One WebGL canvas (React Three Fiber)        │  ← the galaxy: star, planets, nebula…
-│  lazy-loaded, decorative, can fail safely    │
-└──────────────────────────────────────────────┘
-            ▲                     ▲
-            └──── Zustand store ──┘   ← single source of truth for both layers
+```
+┌──────────────────────────── browser window ────────────────────────────┐
+│  Fixed WebGL canvas (React Three Fiber) — the galaxy, behind everything │
+│  Side wash + edge fades (CSS gradients) — keep text readable            │
+│  Scrolling HTML page — every section's text, straight on the galaxy     │
+│  Fixed top bar, place title, progress line, résumé dialog               │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-- **All professional information lives in the HTML layer.** A recruiter never has to fly a camera to read a project; the 3D layer is the experience, not the container.
-- **The canvas is created once.** Regions are places in one world, so moving between them only moves the camera — nothing reloads.
-- **Content is data.** Everything shown comes from typed files in `src/data/`, checked against the audit in `docs/PROJECT_AUDIT.md`.
+- **The page is the content.** Every word is ordinary, semantic HTML in normal document flow, so it is
+  readable, selectable, searchable and accessible without the 3D scene. With no WebGL, the same page is
+  shown over a still photograph of the Milky Way.
+- **Scrolling is the only control.** `src/journey/progress.ts` measures where each section sits and turns
+  the scroll position into a journey value from 0 (first stop) to 12 (last stop). The camera reads that
+  value every frame. There are no modes, toggles or settings.
+- **One camera path.** `src/journey/stops.ts` lists the 13 stops in page order, each with a camera
+  position, a look-at target and the side its text sits on. `JourneyCamera` threads a centripetal
+  Catmull-Rom spline through the camera positions and another through the targets.
 
 ## Folders
 
-| Folder            | Purpose                                                                                                           |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `src/app/`        | Application shell (`App.tsx`)                                                                                     |
-| `src/scenes/`     | The canvas and the root scene that composes the regions                                                           |
-| `src/components/` | Reusable pieces, grouped: `galaxy`, `planets`, `characters`, `spacecraft`, `navigation`, `panels`, `ui`, `shared` |
-| `src/camera/`     | Camera rig and flight paths                                                                                       |
-| `src/animations/` | GSAP timelines                                                                                                    |
-| `src/physics/`    | Orbital maths and the few Rapier interactions                                                                     |
-| `src/hooks/`      | Shared React hooks                                                                                                |
-| `src/store/`      | Zustand store                                                                                                     |
-| `src/data/`       | Profile, projects, skills, achievements, certificates, regions                                                    |
-| `src/types/`      | Content types                                                                                                     |
-| `src/utils/`      | Device detection and quality profiles                                                                             |
-| `src/services/`   | External services (contact form submission)                                                                       |
-| `src/styles/`     | Tailwind theme tokens and global CSS                                                                              |
+| Folder                       | Contents                                                                                            |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `src/journey/`               | The journey: world layout, stops, scroll mapping, page sections and fixed interface                 |
+| `src/journey/sections/`      | Hero, About, Skills, Projects (intro + one section per planet), Achievements, Certificates, Contact |
+| `src/journey/ui/`            | Section/kicker/label typography, scroll-linked `Reveal`, top bar, place title, progress, washes     |
+| `src/camera/`                | `JourneyCamera` — scroll-driven flight along the path                                               |
+| `src/scenes/`                | Canvas, scene root, project solar system, non-planet places                                         |
+| `src/components/galaxy/`     | Sky, stars, dust, star, asteroid belt, rings, constellation, particle nebulae, bloom                |
+| `src/components/planets/`    | Realistic planet (surface, clouds, night lights, atmosphere, rings) and moons                       |
+| `src/components/spacecraft/` | NASA Hubble and ISS models, small satellites                                                        |
+| `src/components/characters/` | The astronaut                                                                                       |
+| `src/components/resume/`     | Résumé dialog and button                                                                            |
+| `src/data/`                  | All content: profile, projects, skills, achievements, certificates, résumé                          |
+| `src/physics/`               | Orbit maths, damping and springs                                                                    |
 
 ## Key decisions
 
-| Decision                                          | Why                                                                                                                                                |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **React 19 + TypeScript + Vite 6**                | Typed components, fast builds, first-class support in React Three Fiber 9.                                                                         |
-| **One persistent canvas**                         | Rebuilding a WebGL scene on every navigation is slow and leaks GPU memory.                                                                         |
-| **Canvas is lazy-loaded**                         | The name, headline and navigation paint before the ~300 kB (gzip) 3D bundle arrives.                                                               |
-| **Error boundary around the canvas**              | If WebGL crashes, visitors see a short notice and every section still works.                                                                       |
-| **WebGL detection**                               | No WebGL means no canvas at all — the HTML interface carries the whole site.                                                                       |
-| **Zustand store**                                 | Camera, scene and panels read the same `region` / `selectedProject` values, so they cannot disagree.                                               |
-| **Preferences persisted, audio never**            | Quality, reduced motion and guide choice are remembered; sound always waits for a new click.                                                       |
-| **Quality profiles (high / medium / low / auto)** | Star counts, particle counts, geometry detail and pixel ratio scale with the device; `PerformanceMonitor` lowers resolution when frame rate drops. |
-| **Procedural 3D assets**                          | No licence risk and a tiny download (see `docs/ASSET_DISCOVERY.md`).                                                                               |
-| **Animation ownership**                           | GSAP owns the camera and scene timelines; Framer Motion owns HTML panels and buttons. They never animate the same property.                        |
-
-## Data flow for a planet click
-
-1. The planet's `onClick` calls `selectProject(id)` in the store.
-2. The camera rig sees `selectedProject` change and flies to that planet (GSAP).
-3. The project panel sees the same value and slides in (Framer Motion).
-4. "Back to system" calls `selectProject(null)`; both layers return together.
+- **Camera rests while text is read.** Between two stops the journey value is eased with a hold at each
+  end (`progressAt`), so the camera settles on a subject for the middle of its section and travels in
+  between. The camera then damps toward that value, so fast scrolling still looks like flight.
+- **Framing instead of overlap.** Each stop names a text side. The camera shifts its frame sideways with
+  `filmOffset` so the subject sits on the other side, and a soft gradient darkens only the text side.
+- **Text moves with the scene.** `Reveal` ties each block's position and opacity to its own scroll
+  progress (Framer Motion `useScroll`), at slightly different depths, so text drifts like layers in space.
+- **Real images in 3D.** `ParticleNebula` samples a Hubble photograph's pixels and places particles in the
+  photo's colours through depth, so nebulae and galaxies show true parallax instead of being flat cards.
+- **Physical astronaut motion.** The astronaut follows the camera through an under-damped spring in camera
+  space, faces its direction of flight, leans and banks with speed, and turns back to the viewer at rest.
+- **Fixed planets.** Planets stay at fixed points on their orbits (spin, moons and satellites still move)
+  so the path past them is stable and they are always where the text says they are.
+- **Events from the page root.** The canvas ignores pointer events; R3F listens on `#root`, so text stays
+  selectable and scrolling works everywhere, while planets can still be clicked to jump to their section.
+- **Quality by device.** Screen size, CPU cores and memory pick high, medium or low budgets (pixel ratio,
+  particle counts, sphere detail, texture resolution, bloom); `PerformanceMonitor` lowers resolution if
+  frames drop.
+- **Reduced motion.** With the operating-system setting on, the camera follows scroll without easing and
+  all idle motion stops.

@@ -2,9 +2,9 @@
 
 Every third-party asset shipped with the portfolio is listed here with its source, licence, required
 credit and optimisation. Nothing is committed before it is logged here. The same credits are shown to
-visitors in the site's "Image credits" dialog.
+visitors in the footer at the end of the page.
 
-Last updated: 5 November 2026.
+Last updated: 6 November 2026.
 
 ## Space imagery (`public/assets/textures/space/`)
 
@@ -16,7 +16,6 @@ Last updated: 5 November 2026.
 | `pillars-of-creation.webp`             | Pillars of Creation, Eagle Nebula (Hubble, high definition)           | [NASA Image Library: GSFC_20171208_Archive_e000842](https://images.nasa.gov/details/GSFC_20171208_Archive_e000842) | NASA, ESA and the Hubble Heritage Team (STScI/AURA) | NASA media guidelines: not copyrighted; credit requested                                                                          | 3249 px JPEG (13 MB) → 1400 px WebP    |
 | `sombrero-galaxy.webp`                 | Messier 104, the Sombrero Galaxy (Hubble)                             | [NASA Image Library: PIA15226](https://images.nasa.gov/details/PIA15226)                                           | NASA/STScI/AURA                                     | NASA media guidelines: not copyrighted; credit requested                                                                          | 3000 px JPEG → 1400 px WebP            |
 | `whirlpool-galaxy.webp`                | Messier 51, the Whirlpool Galaxy (Hubble)                             | [NASA Image Library: PIA04230](https://images.nasa.gov/details/PIA04230)                                           | NASA and The Hubble Heritage Team (STScI/AURA)      | NASA media guidelines: not copyrighted; credit requested                                                                          | Original size, WebP                    |
-| `webb-deep-field.webp`                 | Webb's First Deep Field, SMACS 0723                                   | [NASA Image Library: webb_first_deep_field](https://images.nasa.gov/details/webb_first_deep_field)                 | NASA, ESA, CSA, STScI                               | NASA media guidelines: not copyrighted; credit requested                                                                          | 1920 px JPEG → 1200 px WebP            |
 
 ## Planet and star surface maps (`public/assets/textures/planets/`)
 
@@ -42,8 +41,14 @@ Required credit: **"Textures: Solar System Scope (solarsystemscope.com), CC BY 4
 | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `astronaut.glb` | Astronaut | [Google model-viewer shared assets](https://github.com/google/model-viewer/tree/master/packages/shared-assets) (originally Poly by Google) | "Astronaut" by Poly, CC BY | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | 2.87 MB → 212 KB (texture resized to 1024 px and converted to WebP with glTF-Transform) |
 
-The model is a single unrigged mesh, so its idle, floating, head-turn, wave and pointing motions are
+| `hubble.glb` | Hubble Space Telescope (A) | [NASA 3D Resources](<https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20Space%20Telescope%20(A)>) | NASA | Free and without copyright ([usage guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/)) | 1.69 MB → 398 KB (textures resized to 1024 px WebP with glTF-Transform) |
+| `iss.glb` | International Space Station (B) | [NASA 3D Resources](<https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/International%20Space%20Station%20(ISS)%20(B)>) | NASA | Free and without copyright ([usage guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/)) | Original (477 KB, untextured) |
+
+The astronaut is a single unrigged mesh, so its flight, banking, floating and greeting motions are
 whole-body procedural animations written for this site.
+
+The space photographs are also used as point samples: `ParticleNebula` reads each image's pixels and
+turns bright pixels into coloured particles in 3D. No altered copy of an image is distributed.
 
 ## Project screenshots (`public/assets/images/projects/`)
 
@@ -53,15 +58,14 @@ and JOCKY Forensics has none in its repository.
 
 ## Fonts
 
-| Font                 | Source       | Licence                   |
-| -------------------- | ------------ | ------------------------- |
-| Space Grotesk, Inter | Google Fonts | SIL Open Font License 1.1 |
+| Font                                | Source       | Licence                   |
+| ----------------------------------- | ------------ | ------------------------- |
+| DM Serif Display, Space Mono, Inter | Google Fonts | SIL Open Font License 1.1 |
 
 ## Original work (no licence needed)
 
 - Favicon (`public/favicon.svg`)
-- All code, shaders, atmosphere glows, lens flares and procedural particles
-- Ambient pad, flight whoosh and interface sounds (all synthesised at runtime with the Web Audio API — no audio files)
+- All code, shaders, atmosphere glows, night-side city light blending and procedural particles
 
 ## Rules for adding assets
 
