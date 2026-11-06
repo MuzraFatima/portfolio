@@ -231,3 +231,18 @@ A running record of each phase: what was done, what was checked and what is stil
 **Checks:** typecheck, lint, build.
 
 **Checkpoint:** Audio controls work and nothing plays without a user action. **Passed.**
+
+## Phase 13 — Responsive design and accessibility
+
+**Work completed**
+
+- Quality profiles (from Phase 02/03): high / medium / low with auto-detection and a manual override; low quality drops bloom, shadows, physics and halves particles and texture resolution.
+- Phone layout: compact header (sound, settings and mode inside the menu), landing panel that scrolls within the viewport, guide bubble hidden below tablet width so it never covers content; panels go full-width on phones.
+- Text-only view: the entire portfolio as one semantic page (headings, lists, articles). Opened from Settings, from the WebGL error notice, or automatically when WebGL is unavailable.
+- Keyboard: skip link, every planet and region reachable by labelled buttons, 1–7 / ← → / Esc shortcuts, visible focus rings, focus moved into opened panels.
+- Reduced motion: honours the OS setting at load and when it changes; a manual toggle in Settings.
+- Contrast: light text on dark glass panels throughout.
+
+**Checks:** typecheck, lint, build; headless Chrome at 390 × 844 shows a clean, scrollable landing view; no console errors.
+
+**Checkpoint:** All professional sections are usable on desktop, tablet and phone. **Passed.**
