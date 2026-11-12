@@ -1,6 +1,7 @@
 # Project Audit
 
-Audit date: 5 November 2026. Every statement below was checked against the repository's README,
+Audit date: 5 November 2026; Compute Bazaar re-audited and HorizonGuard added on 12 November 2026.
+Every statement below was checked against the repository's README,
 file tree, contributor list and (for GateOrchestra) pull-request history through the GitHub API.
 Where the blueprint and the repository disagree, the repository wins.
 
@@ -12,6 +13,7 @@ Where the blueprint and the repository disagree, the repository wins.
 | 04  | Cost-Aware Agent Router | [MuzraFatima/Cost-aware-agent](https://github.com/MuzraFatima/Cost-aware-agent) | Muzra Fatima (sole contributor) | None                                                                                      |
 | 05  | Compute Bazaar          | [MuzraFatima/Compute-bazar](https://github.com/MuzraFatima/Compute-bazar)       | Muzra Fatima (sole contributor) | None                                                                                      |
 | 06  | JOCKY Forensics         | [MuzraFatima/jocky-forensics](https://github.com/MuzraFatima/jocky-forensics)   | Muzra Fatima (sole contributor) | [jocky-forensic.netlify.app](https://jocky-forensic.netlify.app) (HTTP 200 on audit date) |
+| 07  | HorizonGuard            | [MuzraFatima/HorizonGuard](https://github.com/MuzraFatima/HorizonGuard)         | Muzra Fatima (sole contributor) | None (local dashboard only)                                                               |
 
 ---
 
@@ -126,23 +128,34 @@ accuracy — the portfolio must repeat that caveat if it quotes the number.
 
 ## 05 — Compute Bazaar
 
-**What it is:** A multi-agent compute marketplace that solves allocation as a combinatorial winner-determination
-problem (binary ILP via PuLP / CBC) with VCG Clarke-pivot pricing.
+Re-audited on 12 November 2026 against the latest `main` (commit `eb461f5`, 68 commits, all by Muzra).
+The earlier description and its 25-round benchmark are out of date and have been replaced.
 
-**Confirmed in code (blueprint items verified)**
+**What it is now:** a combinatorial compute market for LLM agents that only estimate what their tasks are
+worth: an exact multi-unit winner-determination ILP (PuLP with CBC or HiGHS), agent-level VCG pricing,
+and mechanisms designed for estimated values (calibrated, risk-adjusted XOR menus).
 
-- Agent bidding: four agent classes (Coding, Research, Data, Analysis) with optional Groq LLM reasoning ✔
-- Combinatorial auctions over atomic resource bundles ✔
-- Compute allocation maximising social welfare under capacity limits ✔
-- Optimisation: ILP solver, VCG pricing, adaptive bidding, scarcity pricing ✔
-- Jain fairness tracking and anti-starvation, agent memory, resource predictor (historical averaging)
-- FastAPI with JWT / API-key auth, WebSocket live feed, Chart.js dashboard, Docker
+**Confirmed in code**
 
-**Results (25 rounds, seed 42, simulated agents):** highest social welfare ($7,647 vs $7,363 greedy) and
-utilisation (87.2%) of five schedulers, with lower fairness than round-robin and ~272 ms solve time.
-Agents and valuations are synthetic.
+- Autonomous agents: Coding, Research, Data and Analysis agents (`compute_bazaar/agents/`), Groq client with
+  a configurable model (`compute_bazaar/llm/client.py`) and an offline rule-based mode ✔
+- Agent-based bidding on resource bundles with quantities and XOR groups (`backend/app/auction/engine.py`) ✔
+- Exact ILP winner determination; agent-level VCG with parallel counterfactual solves (`ThreadPoolExecutor`) ✔
+- Adaptive bidding strategies: truthful, budget-aware shading, urgency, Q-learning, contextual bandit
+  (`compute_bazaar/autobid/strategies.py`) ✔
+- Scarcity-based dynamic reserve pricing (`compute_bazaar/marketplace/manager.py`), tier discounts and
+  reserves (`backend/app/auction/pricing.py`) ✔
+- FastAPI with JWT / API-key auth, WebSocket feed, dashboard (`backend/app/`) ✔
+- Evaluation: learned predictor, trace-driven cluster simulator, core payments and strategic games,
+  incentive verification, Hypothesis property tests; 206 test functions in `tests/` ✔
 
-**Visual assets:** 4 dashboard screenshots in `docs/screenshots/` (MIT).
+**Results used on the portfolio (from the README, reproducible with `scripts/reproduce.py`):** 78.0% of
+oracle welfare for calibrated XOR menus vs 72.1% for VCG on point estimates; 0 of 40,000 profitable
+misreports under agent-level VCG vs 7.3% for the per-bid shortcut; highest welfare of seven scheduling
+policies on PAI-shaped traces (margin over greedy within seed variance); predictor MAPE 232% → 21.7%.
+Limitations are shown with them.
+
+**Live demo:** none. **Visual assets:** 4 dashboard screenshots in `docs/screenshots/` (MIT); 3 used.
 
 ---
 
@@ -168,6 +181,49 @@ network forensic triage, built for Smart India Hackathon problem statement **SIH
 
 ---
 
+## 07 — HorizonGuard
+
+Audited on 12 November 2026 against `main` (commit `356676a`, 62 commits, all by Muzra). MIT licence.
+
+**What it is:** recoverability-aware early warning of goal drift in long-horizon agents. It forecasts per
+step whether a goal re-anchoring intervention would rescue or disrupt a run, acts only when the rescue wins,
+and certifies how often its interventions cause harm.
+
+**Implemented (confirmed in `src/horizonguard/`)**
+
+- Fork engine and DriftBench-CF counterfactual labels (`fork/`, `bench/`) ✔
+- Step encoder: signed feature-hashing bag of words plus goal-relative geometry (`embeddings/encoders.py`) ✔
+- Multi-state hazard model and comparators: single-event classifier, logistic hazard, PCA anomaly
+  detector (`hazard/`), plus Markov and trajectory-feature baselines (`baselines/`) ✔
+- Effect learners and the effect-aware policy (`effects/`) ✔
+- Conformal risk control, Learn-then-Test and an e-process (`guarantees/`) ✔
+- Transfer, cold-start and stress studies (`transfer/`, `adversary/`, gated and simulation-only) ✔
+- Live monitor, closed loop and an HTTP API on the standard library (`monitor/`) ✔
+- React + Vite + TypeScript dashboard with a Puppeteer end-to-end suite (`dashboard/`) ✔
+- Models are implemented from scratch in NumPy and SciPy (`models/`: logistic, softmax, ridge). Runtime
+  dependencies are only NumPy, SciPy and PyYAML.
+
+**Research objectives, not yet implemented — shown as such on the portfolio**
+
+- Learned (sentence-embedding) action encoders: the `encode` interface allows them, but the shipped encoder
+  is feature hashing.
+- Validation on real LLM agents: `agents/llm.py` wraps a seeded, cached backend, but every reported result
+  uses synthetic agents.
+- Benchmark and method papers are drafts.
+
+**Results used on the portfolio (README, preregistered):** violation rate 65% (no monitor), 40%
+(probability-only alarm), 10% (HorizonGuard) on an unseen environment and agent family over 40 seeds;
+25 vs 11 rescues; 0 of 200 resamples above the disruption target with 96% of rescues kept; median AUROC
+drop 0.03 on unseen agents. Unsupported hypotheses (hazard lead time, scaling law) are also stated.
+
+**Test count:** the README reports 218 tests run in CI; `tests/` defines 194 test functions (the difference is
+likely parameterised cases). The repository's code was not executed during this audit.
+
+**Live demo:** none (the dashboard runs locally). **Visual assets:** 8 screenshots in `docs/screenshots/`
+(MIT); 3 used.
+
+---
+
 ## Summary of blueprint corrections
 
 1. **NeuroLens** is a sparse-autoencoder interpretability project, not computer vision.
@@ -175,3 +231,4 @@ network forensic triage, built for Smart India Hackathon problem statement **SIH
 3. **GateOrchestra** is a team repository; Muzra's part is the agent layer, evaluation pipeline and analysis.
 4. **GateOrchestra** has no verified real-LLM headline number; simulated figures must not be shown.
 5. Only **JOCKY Forensics** has a live demo.
+6. **Compute Bazaar**'s 25-round benchmark (38% above round-robin) is superseded by the current results.
