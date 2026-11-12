@@ -28,11 +28,44 @@ export interface Profile {
   publication: Publication;
 }
 
-export type ProjectId = 'gateorchestra' | 'whototrust' | 'neurolens' | 'caar' | 'compute-bazaar' | 'jocky';
+export type ProjectId =
+  'gateorchestra' | 'whototrust' | 'neurolens' | 'caar' | 'compute-bazaar' | 'jocky' | 'horizonguard';
 
 export interface ProjectImage {
   src: string;
   alt: string;
+}
+
+/** A stage of a project's pipeline, drawn as the architecture diagram in the project detail view. */
+export interface PipelineStage {
+  label: string;
+  detail: string;
+}
+
+export interface ProjectResult {
+  value: string;
+  label: string;
+  /** Caveat or comparison that must travel with the number. */
+  note?: string;
+}
+
+/**
+ * The deeper explanation shown in a project's detail view. Optional: projects without it still
+ * get a detail view built from their core fields.
+ */
+export interface ProjectDeepDive {
+  whyItMatters: string;
+  pipeline: PipelineStage[];
+  methodology: string[];
+  innovations: string[];
+  results?: ProjectResult[];
+  status: {
+    /** Working, tested functionality in the repository. */
+    implemented: string[];
+    /** Research directions or work in progress, kept separate from what is implemented. */
+    research?: string[];
+    limits?: string[];
+  };
 }
 
 export interface Project {
@@ -60,6 +93,7 @@ export interface Project {
   palette: string[];
   /** Short description of the planet's visual identity. */
   visual: string;
+  deepDive?: ProjectDeepDive;
 }
 
 export type SkillLevel = 'Proficient' | 'Intermediate' | 'Beginner';

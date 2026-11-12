@@ -9,7 +9,7 @@ Date: 6 November 2026 · Build: production (`npm run build`) served with `vite p
 | Formatting                                                          | Prettier          | Pass         |
 | Lint (zero warnings, incl. React Hooks and JSX accessibility rules) | ESLint            | Pass         |
 | Type safety                                                         | `tsc -b` (strict) | Pass         |
-| Unit tests                                                          | Vitest — 26 tests | 26 / 26 pass |
+| Unit tests                                                          | Vitest — 28 tests | 28 / 28 pass |
 | Production build                                                    | Vite              | Pass         |
 
 The unit tests guard the portfolio's honesty rules as well as the code:
@@ -41,6 +41,19 @@ Run on 6 November 2026 after the Phase 16 redesign.
 
 The project order (GateOrchestra first) is asserted by the unit tests; one browser assertion for it read
 the Skills headings by mistake (script issue, not a site defect).
+
+## 2b. Browser test — Compute Bazaar update and HorizonGuard (12 November 2026)
+
+| Scenario                                                                                                                                                                                                               | Result |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Seven project sections in order: GateOrchestra first, HorizonGuard last; intro reads "Seven worlds"                                                                                                                    | Pass   |
+| HorizonGuard detail opens with problem, why it matters, solution, architecture diagram, methodology, innovations, implementation status (implemented / research direction / limits) and GitHub link; no live-demo link | Pass   |
+| Compute Bazaar detail shows the current results (78.0%, 0 of 40,000)                                                                                                                                                   | Pass   |
+| An existing project (JOCKY) gets a detail view built from its own fields, with its live demo link                                                                                                                      | Pass   |
+| Detail closes with Escape                                                                                                                                                                                              | Pass   |
+| Phone 390 × 844: detail and page have no horizontal overflow                                                                                                                                                           | Pass   |
+| No console errors or failed requests (desktop and phone)                                                                                                                                                               | Pass   |
+| All GitHub repository links and the JOCKY demo return HTTP 200                                                                                                                                                         | Pass   |
 
 ## 3. Performance
 

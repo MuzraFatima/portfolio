@@ -298,3 +298,22 @@ scroll behaviour, typography and text placement.
 - Removed GSAP and Rapier, which the new design no longer uses.
 - Tests: journey stop order, camera clearance, scroll-to-journey mapping, and a guard that the phone number
   never reaches the page.
+
+## Phase 17 — Compute Bazaar update and HorizonGuard
+
+**Work completed**
+
+- Re-audited Compute Bazaar against its latest `main` and replaced the outdated description and 25-round
+  benchmark with the current system: estimated-value mechanisms, agent-level VCG, XOR menus, adaptive bidding,
+  scarcity pricing, learned predictor, trace-driven evaluation, with results and limitations from the README.
+- Added HorizonGuard as world 07 after JOCKY Forensics, keeping the six blueprint projects in their order with
+  GateOrchestra first. Implemented features and research directions are kept apart (`docs/PROJECT_AUDIT.md`).
+- New planet for HorizonGuard: Saturn's surface map (Solar System Scope, CC BY 4.0) with rings, a moon and
+  watch satellites, on the next orbit of the spiral, so the camera path continues past it.
+- Optional `deepDive` data for projects and an "Explore project" detail view for every project: results,
+  problem, why it matters, solution, an architecture pipeline diagram, AI/ML methodology, key innovations,
+  implementation status, technologies and screenshots. Projects with a deep dive also show two headline
+  results on the journey.
+- Project counts on the page now follow the data instead of the fixed word "six".
+- Fresh screenshots from both repositories; README, audit, asset licences, test report and missing
+  information updated.

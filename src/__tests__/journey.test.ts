@@ -11,7 +11,7 @@ describe('journey stops', () => {
     for (const id of navStops) expect(stopIndex[id]).toBeDefined();
   });
 
-  it('flies past the six planets in blueprint order, GateOrchestra first', () => {
+  it('flies past every project planet in order, GateOrchestra first', () => {
     const planetStops = stops.filter((s) => s.id.startsWith('project-')).map((s) => s.id);
     expect(planetStops).toEqual(projects.map((p) => `project-${p.id}`));
     expect(stopIndex['project-gateorchestra']).toBe(stopIndex.projects + 1);

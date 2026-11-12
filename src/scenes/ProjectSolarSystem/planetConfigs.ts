@@ -27,7 +27,7 @@ function orbit(radius: number, phase: number, inclination = 0.03): OrbitSpec {
 
 /**
  * Each project planet uses a real planetary surface map chosen to match its blueprint palette,
- * graded lightly so the six worlds stay distinct. GateOrchestra is the flagship: ringed,
+ * graded lightly so the worlds stay distinct. GateOrchestra is the flagship: ringed,
  * attended by agent satellites and moons, and the first planet from the star.
  */
 export const planetConfigs: Record<ProjectId, PlanetConfig> = {
@@ -126,5 +126,20 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       { map: 'moon', radius: 0.16, distance: 4.8, period: 30, phase: 2.2, tilt: 0.3 },
     ],
     glow: '#ef4444',
+  },
+  horizonguard: {
+    planet: {
+      map: 'saturn',
+      radius: 2.6,
+      atmosphere: { color: '#f2d39a', intensity: 0.9, scale: 1.06 },
+      rings: { inner: 3.4, outer: 6.2, color: '#e8d2a6', opacity: 0.9, tilt: [0.42, 0, 0.12] },
+      axialTilt: 0.47,
+      spinSpeed: 0.14,
+    },
+    orbit: orbit(84, 6.2),
+    moons: [{ map: 'moon', radius: 0.34, distance: 8.4, period: 46, phase: 1.2, tilt: 0.15 }],
+    // Watch satellites: the monitor keeping an eye on drifting agents.
+    satellites: 3,
+    glow: '#d9b26a',
   },
 };

@@ -40,7 +40,7 @@ function OrbitPath({ id }: { id: ProjectId }) {
   );
 }
 
-/** The six project planets around the central star, in the blueprint's fixed order. */
+/** The project planets around the central star, GateOrchestra first. */
 export function ProjectSolarSystem() {
   return (
     <group>

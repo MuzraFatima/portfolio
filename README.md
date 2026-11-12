@@ -1,9 +1,10 @@
 # Muzra Fatima — The Galaxy of Intelligence
 
 An explorable 3D portfolio: a realistic galaxy built from real NASA, ESA and ESO imagery, where each
-of my six AI/ML projects is a planet you can fly to.
+of my AI/ML projects is a planet you can fly to.
 
 **Aspiring AI/ML Engineer · Generative AI · Multi-Agent Systems · Intelligent Systems**
+**Live:** [muzraporfolio.vercel.app](https://muzraporfolio.vercel.app/) ·
 [GitHub](https://github.com/MuzraFatima) · [LinkedIn](https://www.linkedin.com/in/muzra-fatima-7150452bb/) · muzrafatima@gmail.com
 
 ## What you can do
@@ -11,9 +12,11 @@ of my six AI/ML projects is a planet you can fly to.
 - **Scroll to travel.** The whole portfolio is one page. Scrolling flies the camera along a single path
   through a realistic galaxy, and the text for each stop sits right on the scene, with no boxes or panels.
 - **Start with About Me**, beside the astronaut who travels the whole journey with you.
-- **Pass six project planets** in order: **GateOrchestra** (flagship), WhoToTrust, NeuroLens,
-  Cost-Aware Agent Router, Compute Bazaar and JOCKY Forensics, each with its overview, problem, approach,
-  features, my contribution, architecture and technologies. Click a planet to jump to it.
+- **Pass seven project planets** in order: **GateOrchestra** (flagship), WhoToTrust, NeuroLens,
+  Cost-Aware Agent Router, Compute Bazaar, JOCKY Forensics and HorizonGuard, each with its overview,
+  problem, approach, features, my contribution and technologies. Click a planet to jump to it.
+- **Explore a project** to open its deep dive: why it matters, an architecture diagram, AI/ML methodology,
+  key innovations, results with their caveats, and implementation status (implemented vs research direction).
 - **Visit** the Skill Nebula, the Achievement Constellation, the Observatory (certificates) and the Space
   Station (contact).
 - **Read the résumé** as text from the "Résumé" link, and print or save it as a PDF.

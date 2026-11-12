@@ -7,7 +7,7 @@ import { resume } from '@/data/resume';
 import { skillCategories } from '@/data/skills';
 
 describe('projects', () => {
-  it('has exactly six projects in the blueprint order, GateOrchestra first', () => {
+  it('keeps the six blueprint projects in order, GateOrchestra first, then later projects', () => {
     expect(projects.map((p) => p.id)).toEqual([
       'gateorchestra',
       'whototrust',
@@ -15,6 +15,7 @@ describe('projects', () => {
       'caar',
       'compute-bazaar',
       'jocky',
+      'horizonguard',
     ]);
     expect(projects[0].flagship).toBe(true);
     expect(projects.filter((p) => p.flagship)).toHaveLength(1);
@@ -41,6 +42,31 @@ describe('projects', () => {
   it('marks GateOrchestra as a team project hosted on the team repository', () => {
     expect(projectById.gateorchestra.team).toBe(true);
     expect(projectById.gateorchestra.repo).toContain('FarhanAaqil/GateOrchestra');
+  });
+});
+
+describe('project deep dives', () => {
+  it('fills every section of a deep dive and keeps research apart from what is implemented', () => {
+    for (const p of projects) {
+      const d = p.deepDive;
+      if (!d) continue;
+      expect(d.whyItMatters.length, p.id).toBeGreaterThan(40);
+      expect(d.pipeline.length, p.id).toBeGreaterThanOrEqual(4);
+      expect(d.methodology.length, p.id).toBeGreaterThan(0);
+      expect(d.innovations.length, p.id).toBeGreaterThan(0);
+      expect(d.status.implemented.length, p.id).toBeGreaterThan(0);
+      for (const r of d.status.research ?? []) expect(d.status.implemented, p.id).not.toContain(r);
+    }
+  });
+
+  it('describes Compute Bazaar and HorizonGuard from their latest repositories', () => {
+    expect(projectById['compute-bazaar'].deepDive).toBeDefined();
+    expect(projectById.horizonguard.deepDive).toBeDefined();
+    expect(projectById.horizonguard.repo).toBe('https://github.com/MuzraFatima/HorizonGuard');
+    // The old 25-round figure was replaced by the current results.
+    expect(JSON.stringify(projectById['compute-bazaar'])).not.toContain('38%');
+    // HorizonGuard results come from synthetic agents, and the page must say so.
+    expect(JSON.stringify(projectById.horizonguard.deepDive)).toMatch(/synthetic agents/);
   });
 });
 

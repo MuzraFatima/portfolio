@@ -4,7 +4,7 @@ Every third-party asset shipped with the portfolio is listed here with its sourc
 credit and optimisation. Nothing is committed before it is logged here. The same credits are shown to
 visitors in the footer at the end of the page.
 
-Last updated: 6 November 2026.
+Last updated: 12 November 2026.
 
 ## Space imagery (`public/assets/textures/space/`)
 
@@ -32,6 +32,7 @@ Required credit: **"Textures: Solar System Scope (solarsystemscope.com), CC BY 4
 | `venus-atmosphere-2k/1k.webp`                                                     | 2k_venus_atmosphere.jpg                 | Cost-Aware Agent Router planet                                    | 2048 and 1024 px WebP   |
 | `jupiter-2k/1k.webp`                                                              | 2k_jupiter.jpg                          | Compute Bazaar planet                                             | 2048 and 1024 px WebP   |
 | `mars-2k/1k.webp`                                                                 | 2k_mars.jpg                             | JOCKY Forensics planet                                            | 2048 and 1024 px WebP   |
+| `saturn-2k/1k.webp`                                                               | 2k_saturn.jpg                           | HorizonGuard planet                                               | 2048 and 1024 px WebP   |
 | `moon-2k/1k.webp`, `mercury-2k/1k.webp`                                           | 2k_moon.jpg, 2k_mercury.jpg             | Moons and asteroid surfaces                                       | 2048 and 1024 px WebP   |
 | `ring-alpha.webp`                                                                 | 2k_saturn_ring_alpha.png                | Planetary rings                                                   | 1024 px WebP with alpha |
 
@@ -53,7 +54,8 @@ turns bright pixels into coloured particles in 3D. No altered copy of an image i
 ## Project screenshots (`public/assets/images/projects/`)
 
 Screenshots from Muzra Fatima's own MIT-licensed repositories (WhoToTrust, NeuroLens, Cost-aware-agent,
-Compute-bazar), resized to 1200 px WebP. GateOrchestra screenshots are not used until the team agrees,
+Compute-bazar, HorizonGuard), resized to 1200 px WebP. The Compute Bazaar and HorizonGuard images were
+refreshed from each repository's `docs/screenshots/` on 12 November 2026. GateOrchestra screenshots are not used until the team agrees,
 and JOCKY Forensics has none in its repository.
 
 ## Fonts
