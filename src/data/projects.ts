@@ -1,7 +1,8 @@
 import type { Project } from '@/types/content';
 
 /**
- * The six project planets, in the fixed order from the blueprint.
+ * The project planets: the six from the blueprint in their fixed order (GateOrchestra first),
+ * followed by later projects.
  * Every claim here was checked against the repository — see docs/PROJECT_AUDIT.md.
  */
 export const projects: Project[] = [
@@ -199,45 +200,58 @@ export const projects: Project[] = [
     id: 'compute-bazaar',
     order: 5,
     name: 'Compute Bazaar',
-    tagline: 'A combinatorial auction market where AI agents bid for compute',
+    tagline: 'A combinatorial compute market for LLM agents that only estimate what their tasks are worth',
     repo: 'https://github.com/MuzraFatima/Compute-bazar',
     team: false,
     overview:
-      'An AI-agent compute marketplace where agents place budget-aware bundle bids for GPU, CPU, RAM and API budget, and allocation is solved as a combinatorial auction with VCG pricing.',
+      'A multi-agent marketplace where autonomous AI agents bid for bundles of GPU, CPU, memory and LLM API budget. Allocation is solved exactly as a multi-unit combinatorial auction with agent-level VCG pricing, and the mechanism is redesigned for the case LLM bidders create: values that are estimated, not known.',
     problem:
-      'Queue-based schedulers block high-value jobs behind early arrivals, and per-unit spot markets can leave agents holding half a bundle they cannot use.',
+      'AI agents increasingly compete for the same scarce compute. Queues and per-unit spot markets block high-value jobs or leave agents holding half a bundle, and classic truthful auctions assume bidders know their own value, which LLM agents do not.',
     solution:
-      'Treat allocation as a winner-determination problem solved by binary integer linear programming, with VCG Clarke-pivot pricing so truthful bidding pays off, plus fairness tracking against starvation.',
+      "Solve winner determination exactly with integer programming, charge agent-level VCG (a Clarke pivot over all of an agent's bids), and let each task bid a calibrated, risk-adjusted XOR menu of reservation sizes priced at calibrated value × empirical success probability.",
     architecture: [
-      'Agent layer: Coding, Research, Data and Analysis agents with optional Groq reasoning',
-      'Auction engine: PuLP / CBC ILP solver and VCG pricing',
-      'Marketplace with scarcity pricing and a fairness tracker',
-      'FastAPI gateway with JWT / API-key auth and a WebSocket feed',
-      'SQLAlchemy persistence and a Chart.js dashboard',
+      'LLM agents (Groq): value estimate and resource-need forecast with 90% intervals',
+      'Bids: resource bundles with quantities and optional XOR menus of reservation sizes',
+      'Winner determination: exact multi-unit integer program (PuLP with CBC or HiGHS)',
+      'Pricing: agent-level VCG, execution-contingent VCG, core-selecting payments, tiers and reserves',
+      'Feedback: realised value and usage drive per-agent calibration, memory and fairness tracking',
+      'Serving: FastAPI, SQLAlchemy and WebSocket feeding a live dashboard',
     ],
     technologies: [
       'Python',
       'FastAPI',
       'Groq',
       'PuLP (ILP)',
-      'WebSocket',
+      'NumPy',
       'SQLAlchemy',
+      'WebSocket',
+      'JWT',
       'Chart.js',
       'Docker',
       'pytest',
+      'Hypothesis',
     ],
     features: [
-      'Atomic bundle bids, so no agent is left with a partial allocation',
-      'VCG pricing with adaptive bidding strategies',
-      'Jain fairness index and anti-starvation guards',
-      'In a seeded 25-round simulation, the highest social welfare and utilisation of five schedulers (38% above round-robin)',
-      'Live WebSocket dashboard with a bidding ticker and round history',
+      'Autonomous Groq-powered Coding, Research, Data and Analysis agents that estimate value and bid; a rule-based mode runs offline',
+      'Exact combinatorial auction with XOR menus; winner determination stays around a second at 400 bids',
+      'Agent-level VCG with 0 profitable deviations in 40,000 misreport searches, against 7.3% exploitable for the common per-bid shortcut',
+      'Adaptive bidding strategies: truthful, budget-aware shading, urgency, Q-learning and contextual bandits',
+      'Scarcity-based dynamic reserve pricing, tier discounts and budget checks',
+      'Learned resource predictor: runtime error down from 232% to 21.7% MAPE, with 90% intervals covering 89% of outcomes',
+      'Live FastAPI dashboard over WebSocket, with JWT and API-key authentication',
+      'Evaluation framework: trace-driven cluster simulator, property-based mechanism tests and one-command reproduction',
     ],
-    contribution: ['Sole author: auction engine, agents, API, dashboard and benchmarks'],
+    contribution: [
+      'Sole author: auction engine and mechanism design, LLM agents, resource predictor, cluster simulator, API, dashboard and experiments',
+    ],
     images: [
       {
         src: `${import.meta.env.BASE_URL}assets/images/projects/computebazaar-hero.webp`,
-        alt: 'Compute Bazaar dashboard with live market metrics and utilisation charts',
+        alt: 'Compute Bazaar live dashboard with market KPIs and analytics',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/computebazaar-charts.webp`,
+        alt: 'Compute Bazaar market charts',
       },
       {
         src: `${import.meta.env.BASE_URL}assets/images/projects/computebazaar-ticker.webp`,
@@ -246,6 +260,62 @@ export const projects: Project[] = [
     ],
     palette: ['#fb923c', '#9333ea', '#3b82f6'],
     visual: 'Interplanetary compute marketplace: resource stations and agent bidding displays.',
+    deepDive: {
+      whyItMatters:
+        'As more work is done by LLM agents, compute becomes something agents negotiate for. A mechanism that is truthful on paper can lose welfare or break individual rationality once its bidders misjudge their own value, so the allocation rules have to be designed for estimated values.',
+      pipeline: [
+        { label: 'Task', detail: 'A natural-language task arrives' },
+        { label: 'LLM agent', detail: 'A Groq agent estimates value and resource needs with a 90% interval' },
+        { label: 'Bids', detail: 'Bundles × quantities, optionally an XOR menu of reservation sizes' },
+        { label: 'Winner determination', detail: 'Exact multi-unit integer program (PuLP, CBC / HiGHS)' },
+        {
+          label: 'Pricing',
+          detail: 'Agent-level VCG with parallel counterfactual solves, reserves and tiers',
+        },
+        { label: 'Execution', detail: 'Realised value and usage update calibration, memory and fairness' },
+        { label: 'Dashboard', detail: 'FastAPI, SQLAlchemy and a WebSocket feed to the live dashboard' },
+      ],
+      methodology: [
+        'Winner determination as a binary integer program with capacity and XOR constraints',
+        'Clarke-pivot VCG computed per agent, with counterfactual solves run in parallel',
+        'Calibrated value estimates and empirical success probabilities feeding risk-adjusted XOR menus',
+        'Learning bidders (Hedge, Q-learning, contextual bandits) and live Groq LLM bidders in repeated auctions',
+        'Trace-shaped GPU cluster simulation (Alibaba-PAI-like workloads) against FIFO, DRF and a Themis-style scheduler',
+      ],
+      innovations: [
+        "Shows that only the heterogeneous part of agents' value bias costs welfare",
+        'Risk-adjusted XOR menus, which provably maximise expected realised welfare',
+        'A correct agent-level VCG, with evidence that the common per-bid shortcut is manipulable',
+        'A fairness knob (an affine maximiser) that trades welfare for finish-time fairness while staying truthful',
+      ],
+      results: [
+        {
+          value: '78.0%',
+          label: 'of oracle welfare with calibrated XOR menus',
+          note: 'vs 72.1% for VCG on point estimates; 3 seeds × 200 rounds',
+        },
+        { value: '0 of 40,000', label: 'profitable misreports under agent-level VCG' },
+        {
+          value: '7 policies',
+          label: 'compared on GPU traces; the auction has the highest welfare',
+          note: 'its margin over greedy is within seed variance',
+        },
+        { value: '21.7%', label: 'MAPE of the learned resource predictor', note: 'down from 232%' },
+      ],
+      status: {
+        implemented: [
+          'Working system: FastAPI backend, live dashboard, rule-based and Groq agent modes',
+          'Auction engine with VCG, execution-contingent and core-selecting payments; resource predictor; cluster simulator',
+          'One-command reproduction of every result; lint and tests in CI on Python 3.11 and 3.12',
+        ],
+        research: ['Paper draft with propositions and proofs'],
+        limits: [
+          'The estimated-value agents are a parametric model of LLM miscalibration, and the cluster workload is calibrated to the PAI trace rather than replayed',
+          'The live LLM study is small because of Groq free-tier limits',
+          'Single-node deployment (SQLite by default)',
+        ],
+      },
+    },
   },
   {
     id: 'jocky',
@@ -284,6 +354,123 @@ export const projects: Project[] = [
     images: [],
     palette: ['#ef4444', '#1e3a8a', '#cbd5e1'],
     visual: 'Digital investigation station: evidence vaults, integrity scanner and telemetry displays.',
+  },
+  {
+    id: 'horizonguard',
+    order: 7,
+    name: 'HorizonGuard',
+    tagline: 'Recoverability-aware early warning of goal drift in long-horizon AI agents',
+    repo: 'https://github.com/MuzraFatima/HorizonGuard',
+    team: false,
+    overview:
+      'An AI-safety research system that watches a long-running agent step by step, forecasts whether it is drifting from its goal, and predicts whether a corrective intervention would rescue the run or disrupt it. It acts only when the rescue wins, and certifies how often its own interventions cause harm.',
+    problem:
+      'Agents on long tasks can drift away from their intended goal. Most monitors only predict failure, and an accurate predictor can still make agents worse: a reminder fired at the wrong moment can break a run that was going to succeed.',
+    solution:
+      'Model each run as moving between aligned, drifting and violated states, predict for every intervention strength whether it would rescue or disrupt the run, take the action with the best rescue − 2 × disruption (or wait), and bound the disruption rate with conformal risk control.',
+    architecture: [
+      'Trajectory logging: observable step records from the agent',
+      'Step encoder: feature-hashing action embeddings with goal-relative geometry',
+      'Multi-state hazard model: drift onset, violation and recovery as competing transitions',
+      'Effect model: rescue vs disruption for four intervention strengths',
+      'Certificates: conformal risk control, Learn-then-Test and a betting e-process',
+      'Serving: a live monitor and HTTP API, with a React and Vite dashboard',
+    ],
+    technologies: [
+      'Python',
+      'NumPy',
+      'SciPy',
+      'PyYAML',
+      'React',
+      'TypeScript',
+      'Vite',
+      'pytest',
+      'Puppeteer',
+      'Docker',
+    ],
+    features: [
+      'DriftBench-CF: counterfactual fork labels in which every arm shares the same seeds, so rescue and disruption are measurable for each prefix',
+      'Live monitor that turns each step into risk, drift belief, net benefit per intervention and a certified decision',
+      'Effect-aware policy choosing between a reminder, restatement, constraint gate or escalation, or waiting',
+      'Disruption-controlled guarantees: 0 of 200 resamples above the target rate, keeping 96% of rescues',
+      'Transfer tests on unseen agent families and environments, plus a gated stealth-drift stress test in simulation',
+      'Dashboard with live monitor, run replay, closed-loop A/B and guarantees pages; 218 Python tests and a Chrome end-to-end suite',
+    ],
+    contribution: [
+      'Sole author: benchmark and fork engine, models, guarantees, live monitor, dashboard and the preregistered study',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-overview.webp`,
+        alt: 'HorizonGuard dashboard overview with closed-loop A/B results',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-live-monitor.webp`,
+        alt: 'HorizonGuard live monitor scoring an agent step by step',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-ab-test.webp`,
+        alt: 'HorizonGuard closed-loop A/B test across seed-paired runs',
+      },
+    ],
+    palette: ['#d9b26a', '#4f6f41', '#f3e2b3'],
+    visual: 'A ringed sentinel world with watch satellites: an observatory for drifting agents.',
+    deepDive: {
+      whyItMatters:
+        'Long-horizon agents are being given more autonomy, and a monitor that interrupts at the wrong time can cause the very failures it is meant to prevent. Knowing when an intervention helps, and bounding how often it harms, is what makes monitoring safe to deploy.',
+      pipeline: [
+        { label: 'Agent', detail: 'A long-horizon agent acts in an environment' },
+        { label: 'Trajectory log', detail: 'Observable step records only: a black-box view of the agent' },
+        { label: 'Embeddings', detail: 'Feature-hashing step encoder and goal-relative geometry' },
+        { label: 'Hazard model', detail: 'Aligned, drifting and violated states, with recovery' },
+        { label: 'Effect model', detail: 'Rescue vs disruption for each intervention strength' },
+        {
+          label: 'Certificate',
+          detail: 'Disruption risk ≤ α via conformal risk control and Learn-then-Test',
+        },
+        { label: 'Policy', detail: 'Intervene only when rescue − 2 × disruption is best; otherwise wait' },
+      ],
+      methodology: [
+        'Fork engine: snapshot a run prefix and branch seed-paired continuations with and without each intervention',
+        'Sequential, per-step scoring of agent trajectories from black-box action embeddings',
+        'Temporal modelling of drift onset, violation and recovery as a multi-state hazard',
+        'Effect learners that predict rescue and disruption per intervention strength',
+        'Conformal risk control and Learn-then-Test on run-level disruption, plus an e-process for time-uniform false alarms',
+        'Models written from scratch in NumPy and SciPy (logistic, softmax and ridge regression), compared with Markov, trajectory-feature and anomaly-detection baselines',
+      ],
+      innovations: [
+        'Asks not only "will this agent drift?" but "is it still fixable, and will fixing it help more than it hurts?"',
+        'Counterfactual rescue and disruption labels from seed-paired forks',
+        "A certified bound on how often the monitor's own interventions cause harm",
+        'Preregistered research questions, with negative results reported alongside the positive ones',
+      ],
+      results: [
+        {
+          value: '65% → 10%',
+          label: 'goal-violation rate, no monitor vs HorizonGuard',
+          note: 'unseen environment and agent family, 40 seeds; a probability-only alarm reaches 40%',
+        },
+        { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
+        { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
+        { value: '0.03', label: 'median AUROC drop on unseen agent families' },
+      ],
+      status: {
+        implemented: [
+          'DriftBench-CF generation, fork engine, hazard and effect models, certificates, transfer and stress studies',
+          'Live monitor, HTTP API and dashboard; one-command reproduction with a Makefile and Docker',
+          '218 Python tests in CI on Python 3.10 and 3.12, and a Chrome end-to-end suite for the dashboard',
+        ],
+        research: [
+          'Learned (sentence-embedding) action encoders: the encoder interface is in place, while the shipped encoder uses feature hashing',
+          'Validation on real LLM agents: a seeded, cached LLM-agent wrapper exists, but every reported result uses synthetic agents',
+          'Benchmark and method papers, in draft',
+        ],
+        limits: [
+          'All drift is studied in simulation, so the numbers describe the method, not any real model',
+          'Not supported by the data: a lead-time gain from the hazard model (−1.5 steps) and a simple lead-time scaling law',
+        ],
+      },
+    },
   },
 ];
 
