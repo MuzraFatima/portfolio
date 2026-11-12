@@ -159,8 +159,7 @@ and mechanisms designed for estimated values (calibrated, risk-adjusted XOR menu
 - Evaluation: learned predictor, trace-driven cluster simulator, core payments and strategic games,
   incentive verification, Hypothesis property tests; 206 test functions in `tests/` ✔
 
-**Results used on the portfolio (from the README, reproducible with `scripts/reproduce.py`):** 78.0% of
-oracle welfare for calibrated XOR menus vs 72.1% for VCG on point estimates; 0 of 40,000 profitable
+**Results used on the portfolio (from the README, reproducible with `scripts/reproduce.py`):** 0 of 40,000 profitable
 misreports under agent-level VCG vs 7.3% for the per-bid shortcut; highest welfare of seven scheduling
 policies on PAI-shaped traces (margin over greedy within seed variance); predictor MAPE 232% → 21.7%.
 Limitations are shown with them.
@@ -221,9 +220,8 @@ and certifies how often its interventions cause harm.
   uses synthetic agents.
 - Benchmark and method papers are drafts.
 
-**Results used on the portfolio (README, preregistered):** violation rate 65% (no monitor), 40%
-(probability-only alarm), 10% (HorizonGuard) on an unseen environment and agent family over 40 seeds;
-25 vs 11 rescues; 0 of 200 resamples above the disruption target with 96% of rescues kept; median AUROC
+**Results used on the portfolio (README, preregistered):** 25 vs 11 rescues against a probability-only alarm
+on an unseen environment and agent family over 40 seeds; 0 of 200 resamples above the disruption target with 96% of rescues kept; median AUROC
 drop 0.03 on unseen agents. Unsupported hypotheses (hazard lead time, scaling law) are also stated.
 
 **Test count:** the README reports 218 tests run in CI; `tests/` defines 194 test functions (the difference is
@@ -242,3 +240,6 @@ likely parameterised cases). The repository's code was not executed during this 
 4. **GateOrchestra** has no verified real-LLM headline number; simulated figures must not be shown.
 5. Only **JOCKY Forensics** has a live demo.
 6. **Compute Bazaar**'s 25-round benchmark (38% above round-robin) is superseded by the current results.
+
+**Note (12 November 2026):** at Muzra's request the site no longer shows Compute Bazaar's 78.0% welfare
+figure or HorizonGuard's 65% → 10% violation-rate figure.
