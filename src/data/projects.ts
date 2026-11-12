@@ -207,11 +207,6 @@ export const projects: Project[] = [
         'Preregistered research questions, with negative results reported alongside the positive ones',
       ],
       results: [
-        {
-          value: '65% → 10%',
-          label: 'goal-violation rate, no monitor vs HorizonGuard',
-          note: 'unseen environment and agent family, 40 seeds; a probability-only alarm reaches 40%',
-        },
         { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
         { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
         { value: '0.03', label: 'median AUROC drop on unseen agent families' },
@@ -465,11 +460,6 @@ export const projects: Project[] = [
         'A fairness knob (an affine maximiser) that trades welfare for finish-time fairness while staying truthful',
       ],
       results: [
-        {
-          value: '78.0%',
-          label: 'of oracle welfare with calibrated XOR menus',
-          note: 'vs 72.1% for VCG on point estimates; 3 seeds × 200 rounds',
-        },
         { value: '0 of 40,000', label: 'profitable misreports under agent-level VCG' },
         {
           value: '7 policies',
