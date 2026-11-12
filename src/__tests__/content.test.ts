@@ -65,6 +65,9 @@ describe('project deep dives', () => {
     expect(projectById.horizonguard.repo).toBe('https://github.com/MuzraFatima/HorizonGuard');
     // The old 25-round figure was replaced by the current results.
     expect(JSON.stringify(projectById['compute-bazaar'])).not.toContain('38%');
+    // Figures Muzra asked to keep off the site.
+    expect(JSON.stringify(projectById['compute-bazaar'])).not.toContain('78.0%');
+    expect(JSON.stringify(projectById.horizonguard)).not.toContain('65%');
     // HorizonGuard results come from synthetic agents, and the page must say so.
     expect(JSON.stringify(projectById.horizonguard.deepDive)).toMatch(/synthetic agents/);
   });
