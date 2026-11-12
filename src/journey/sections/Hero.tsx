@@ -2,8 +2,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 import type { MouseEvent } from 'react';
 import { ResumeButton } from '@/components/resume/ResumeDialog';
 import { profile } from '@/data/profile';
+import { projects } from '@/data/projects';
 import { scrollToStop } from '@/journey/progress';
 import { Kicker } from '@/journey/ui/Section';
+import { inWords } from '@/utils/words';
 
 const go = (id: string) => (e: MouseEvent) => {
   e.preventDefault();
@@ -70,7 +72,7 @@ export function Hero() {
           {...rise(1.1)}
           className="mt-16 font-mono text-[10px] tracking-[0.24em] text-muted uppercase"
         >
-          Scroll to travel — six worlds, one journey
+          Scroll to travel — {inWords(projects.length)} worlds, one journey
         </motion.p>
       </div>
     </section>

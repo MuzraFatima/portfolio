@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
+import { ProjectDetailDialog } from '@/components/projects/ProjectDetailDialog';
 import { ResumeDialog } from '@/components/resume/ResumeDialog';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { Journey } from '@/journey/Journey';
@@ -63,6 +64,7 @@ export default function App() {
       <EdgeFade />
       <BottomBar />
       <ResumeDialog />
+      <ProjectDetailDialog />
     </>
   );
 }

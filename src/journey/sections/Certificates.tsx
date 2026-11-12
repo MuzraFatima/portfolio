@@ -2,9 +2,7 @@ import { certificateIssuers, certificates } from '@/data/certificates';
 import { Kicker, Section } from '@/journey/ui/Section';
 import { Reveal } from '@/journey/ui/Reveal';
 import { linkClass } from '@/journey/ui/styles';
-
-const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-const inWords = (n: number) => NUMBER_WORDS[n] ?? String(n);
+import { inWords } from '@/utils/words';
 
 export function Certificates() {
   return (
