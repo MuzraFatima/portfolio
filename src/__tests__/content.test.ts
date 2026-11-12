@@ -7,15 +7,15 @@ import { resume } from '@/data/resume';
 import { skillCategories } from '@/data/skills';
 
 describe('projects', () => {
-  it('keeps the six blueprint projects in order, GateOrchestra first, then later projects', () => {
+  it('puts GateOrchestra first and HorizonGuard second, then the blueprint projects in order', () => {
     expect(projects.map((p) => p.id)).toEqual([
       'gateorchestra',
+      'horizonguard',
       'whototrust',
       'neurolens',
       'caar',
       'compute-bazaar',
       'jocky',
-      'horizonguard',
     ]);
     expect(projects[0].flagship).toBe(true);
     expect(projects.filter((p) => p.flagship)).toHaveLength(1);
@@ -67,6 +67,13 @@ describe('project deep dives', () => {
     expect(JSON.stringify(projectById['compute-bazaar'])).not.toContain('38%');
     // HorizonGuard results come from synthetic agents, and the page must say so.
     expect(JSON.stringify(projectById.horizonguard.deepDive)).toMatch(/synthetic agents/);
+  });
+
+  it('reports the verified GateOrchestra benchmark with its caveats', () => {
+    const go = JSON.stringify(projectById.gateorchestra);
+    expect(go).toContain('97.9%');
+    expect(go).toContain('was not met');
+    expect(projectById.gateorchestra.team).toBe(true);
   });
 });
 

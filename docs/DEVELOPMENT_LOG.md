@@ -317,3 +317,12 @@ scroll behaviour, typography and text placement.
 - Project counts on the page now follow the data instead of the fixed word "six".
 - Fresh screenshots from both repositories; README, audit, asset licences, test report and missing
   information updated.
+
+## Phase 18 — HorizonGuard second, GateOrchestra update
+
+- HorizonGuard now follows GateOrchestra as world 02; the other projects keep their order. Its planet moved
+  to the second orbit from the star and the others shifted outward, all clear of the asteroid belt.
+- GateOrchestra re-audited: the final real-LLM benchmark is now complete and verified, so the site shows
+  its results (97.9% vs 92.2% for Always-MAS at 33% fewer tokens), the unmet 40% goal, the larger-model
+  reduced runs and the test-set caveats, plus a deep dive and the new chat assistant and Docker deployment.
+  Muzra's credited contribution is unchanged (agent layer, August–September).

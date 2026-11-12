@@ -12,8 +12,8 @@ of my AI/ML projects is a planet you can fly to.
 - **Scroll to travel.** The whole portfolio is one page. Scrolling flies the camera along a single path
   through a realistic galaxy, and the text for each stop sits right on the scene, with no boxes or panels.
 - **Start with About Me**, beside the astronaut who travels the whole journey with you.
-- **Pass seven project planets** in order: **GateOrchestra** (flagship), WhoToTrust, NeuroLens,
-  Cost-Aware Agent Router, Compute Bazaar, JOCKY Forensics and HorizonGuard, each with its overview,
+- **Pass seven project planets** in order: **GateOrchestra** (flagship), HorizonGuard, WhoToTrust,
+  NeuroLens, Cost-Aware Agent Router, Compute Bazaar and JOCKY Forensics, each with its overview,
   problem, approach, features, my contribution and technologies. Click a planet to jump to it.
 - **Explore a project** to open its deep dive: why it matters, an architecture diagram, AI/ML methodology,
   key innovations, results with their caveats, and implementation status (implemented vs research direction).

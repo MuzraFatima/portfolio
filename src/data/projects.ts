@@ -1,8 +1,8 @@
 import type { Project } from '@/types/content';
 
 /**
- * The project planets: the six from the blueprint in their fixed order (GateOrchestra first),
- * followed by later projects.
+ * The project planets, in journey order: GateOrchestra (the flagship) first, then HorizonGuard,
+ * then the rest of the blueprint projects in their original order.
  * Every claim here was checked against the repository — see docs/PROJECT_AUDIT.md.
  */
 export const projects: Project[] = [
@@ -15,41 +15,47 @@ export const projects: Project[] = [
     repo: 'https://github.com/FarhanAaqil/GateOrchestra',
     team: true,
     overview:
-      'A lightweight, trainable gate that sits in front of a multi-agent orchestrator and decides, before any expensive compute is spent, whether a cheap single-agent answer is good enough.',
+      'A lightweight, trainable gate that sits in front of a multi-agent orchestrator and decides, before any expensive compute is spent, whether a cheap single-agent answer is good enough. The final real-LLM benchmark is complete and verified, and the system now ships as a chat assistant and console deployed with Docker.',
     problem:
       'Multi-agent strategies such as ReAct, Debate and Reflexion can improve answers, but running them on every task burns far more tokens than a single agent, often for no gain.',
     solution:
-      "A CoT self-consistency probe answers first. A gate trained on pre-execution signals then chooses STOP (keep the probe answer) or ESCALATE to the full multi-agent orchestrator, with the escalation budget capped at k × the probe's tokens.",
+      "A CoT self-consistency probe answers first. A gate trained on pre-execution signals then chooses STOP (keep the probe answer) or ESCALATE to the full multi-agent orchestrator, with every escalation capped at k × the probe's tokens.",
     architecture: [
       'Probe agent: CoT self-consistency with 3 samples',
-      'Feature extractor: 8 pre-execution features',
-      'Gate: learned (LogReg / GBT / MLP), rule-based or random',
+      'Feature extractor: 8 pre-execution features from the question and the probe',
+      'Gate: learned (logistic regression, GBT or MLP), rule-based or random, calibrated on validation',
       'MAS orchestrator: ReAct, Debate and Reflexion sub-agents',
-      'Token accountant: budgets enforced before every call',
-      'FastAPI backend and React + three.js console',
+      'Token accountant: true provider totals, budgets enforced before every call',
+      'Serving: FastAPI, a React + TypeScript console with three.js scenes, and a gated chat assistant',
     ],
     technologies: [
       'Python',
       'Groq',
       'Ollama',
+      'Gemini',
       'FastAPI',
       'scikit-learn',
+      'spaCy',
       'React',
       'TypeScript',
       'three.js',
+      'Docker',
+      'Prometheus',
       'pytest',
     ],
     features: [
-      'STOP / ESCALATE gating calibrated over accuracy tolerance and budget multiplier',
-      'ReAct, Debate and Reflexion sub-agents behind one orchestrator',
-      'Optional LinUCB contextual-bandit strategy router',
-      'True provider token totals with pre-call budget enforcement',
-      'Wilson confidence intervals and exact McNemar tests',
-      'Honest reporting: simulated figures are labelled, and no real-LLM headline is claimed before the final benchmark',
+      'Final benchmark on Qwen2.5-3B, 96 held-out tasks × 2 seeds: 97.9% accuracy at 33% fewer tokens than always running the multi-agent system (92.2%)',
+      'Verified results: a script checks seeds, the dataset hash, per-task records and the absence of mock data before any number is reported',
+      'An honest finding: at this scale multi-agent was less accurate than the single-agent probe, so the gate learned to stop (3% escalation, close to the 2–5% an oracle would choose)',
+      'Reduced runs on Qwen3.8-27B and gpt-oss-120b: the gate escalates nothing and matches CoT-SC, using 54% fewer tokens than Always-MAS on gpt-oss-120b',
+      'ReAct, Debate and Reflexion sub-agents behind one orchestrator, plus an optional LinUCB contextual-bandit router',
+      'Wilson confidence intervals and exact McNemar tests against every baseline',
+      'Chat assistant that routes each message through the probe and gate, with tool-using research agents, streaming answers and Groq → Gemini → Ollama fallback',
+      'Docker deployment with token auth, rate limits and Prometheus metrics',
     ],
     contribution: [
       'Owned the agent layer: the CoT-SC probe agent, the MAS orchestrator and the ReAct, Debate and Reflexion sub-agents',
-      'Added the LinUCB contextual bandit router, sequential early exit and semantic soft voting',
+      'Added the LinUCB contextual bandit router (available in the orchestrator, not used in the final benchmark), sequential early exit and semantic soft voting',
       'Integrated the Groq cloud provider with an Ollama local fallback',
       'Retrained the GBT gate on real Groq traces',
       'Built the batch evaluation pipeline and the agent performance and error analysis modules',
@@ -57,10 +63,180 @@ export const projects: Project[] = [
     images: [],
     palette: ['#3b6bff', '#8b5cf6', '#c4b5fd'],
     visual: 'Multi-agent command centre: neural pathways, agent satellites and a central orchestration hub.',
+    deepDive: {
+      whyItMatters:
+        'Multi-agent systems are often switched on by default. Without a gate, every task pays for debate and reflection whether it needs them or not, and the final benchmark shows that on small models the extra compute can even lower accuracy. Deciding before spending is what keeps agentic systems affordable.',
+      pipeline: [
+        { label: 'Task', detail: 'A question, with optional context' },
+        { label: 'Probe agent', detail: 'CoT self-consistency: 3 samples and a consistency score' },
+        { label: 'Features', detail: '8 pre-execution features from the question and the probe' },
+        { label: 'Gate', detail: 'Calibrated learned gate decides STOP or ESCALATE' },
+        { label: 'STOP', detail: 'Return the probe answer at single-agent cost' },
+        { label: 'MAS orchestrator', detail: 'ReAct, Debate or Reflexion, capped at k × probe tokens' },
+        { label: 'Token accountant', detail: 'True provider totals, Wilson CIs and McNemar tests' },
+      ],
+      methodology: [
+        'Labels from repeated runs: a task is ESCALATE when multi-agent beats the probe by more than τ_acc over 3 repeats',
+        'Gate selection on validation over τ_acc ∈ {0.03, 0.05, 0.08} and k ∈ {2, 3, 5} (logistic regression, GBT, MLP)',
+        'Equal-budget comparison against CoT-SC-only, Always-MAS, a random gate and a rule-based gate',
+        'MASBench-mini: 225 tasks (97 train, 32 validation, 96 test), with a leakage audit and a reviewed answer key',
+        'A verifier that recomputes every aggregate from per-task records before results are published',
+      ],
+      innovations: [
+        'Token-budget-calibrated gating: every escalation is capped relative to the probe that triggered it',
+        'Decisions use only pre-execution signals, so the saving happens before any multi-agent call',
+        'Reports a negative result plainly: the research premise did not hold on a 3B model, and the gate learned that',
+        'The same probe-and-gate routing runs live in a production-style chat assistant',
+      ],
+      results: [
+        {
+          value: '97.9%',
+          label: 'accuracy for GateOrchestra vs 92.2% for Always-MAS',
+          note: 'Qwen2.5-3B, 96 test tasks × 2 seeds',
+        },
+        { value: '−33%', label: 'tokens per task vs Always-MAS', note: 'research target was −40%' },
+        { value: '3%', label: 'of tasks escalated', note: 'an oracle would escalate 2–5%' },
+        {
+          value: '−54%',
+          label: 'tokens vs Always-MAS on gpt-oss-120b',
+          note: 'reduced run: 1 seed, 1 calibration repeat',
+        },
+      ],
+      status: {
+        implemented: [
+          'Final benchmark run and verified; analysis, research report and slide deck',
+          'Probe, gates, MAS orchestrator, token accountant, statistics and dataset tooling',
+          'FastAPI back end, React console, chat assistant and Docker deployment, tested in CI',
+        ],
+        research: ['Fuller runs on larger models: the Qwen3.8-27B and gpt-oss-120b results are reduced runs'],
+        limits: [
+          'The research goal of ≥40% token saving at ≤2 points accuracy cost was not met: the saving is 33%',
+          'The test set is near the ceiling: the 64 tasks added late are easier and were fact-checked by an assistant, not a second person',
+          'The McNemar p-value is optimistic because the two seeds share tasks',
+        ],
+      },
+    },
+  },
+  {
+    id: 'horizonguard',
+    order: 2,
+    name: 'HorizonGuard',
+    tagline: 'Recoverability-aware early warning of goal drift in long-horizon AI agents',
+    repo: 'https://github.com/MuzraFatima/HorizonGuard',
+    team: false,
+    overview:
+      'An AI-safety research system that watches a long-running agent step by step, forecasts whether it is drifting from its goal, and predicts whether a corrective intervention would rescue the run or disrupt it. It acts only when the rescue wins, and certifies how often its own interventions cause harm.',
+    problem:
+      'Agents on long tasks can drift away from their intended goal. Most monitors only predict failure, and an accurate predictor can still make agents worse: a reminder fired at the wrong moment can break a run that was going to succeed.',
+    solution:
+      'Model each run as moving between aligned, drifting and violated states, predict for every intervention strength whether it would rescue or disrupt the run, take the action with the best rescue − 2 × disruption (or wait), and bound the disruption rate with conformal risk control.',
+    architecture: [
+      'Trajectory logging: observable step records from the agent',
+      'Step encoder: feature-hashing action embeddings with goal-relative geometry',
+      'Multi-state hazard model: drift onset, violation and recovery as competing transitions',
+      'Effect model: rescue vs disruption for four intervention strengths',
+      'Certificates: conformal risk control, Learn-then-Test and a betting e-process',
+      'Serving: a live monitor and HTTP API, with a React and Vite dashboard',
+    ],
+    technologies: [
+      'Python',
+      'NumPy',
+      'SciPy',
+      'PyYAML',
+      'React',
+      'TypeScript',
+      'Vite',
+      'pytest',
+      'Puppeteer',
+      'Docker',
+    ],
+    features: [
+      'DriftBench-CF: counterfactual fork labels in which every arm shares the same seeds, so rescue and disruption are measurable for each prefix',
+      'Live monitor that turns each step into risk, drift belief, net benefit per intervention and a certified decision',
+      'Effect-aware policy choosing between a reminder, restatement, constraint gate or escalation, or waiting',
+      'Disruption-controlled guarantees: 0 of 200 resamples above the target rate, keeping 96% of rescues',
+      'Transfer tests on unseen agent families and environments, plus a gated stealth-drift stress test in simulation',
+      'Dashboard with live monitor, run replay, closed-loop A/B and guarantees pages; 218 Python tests and a Chrome end-to-end suite',
+    ],
+    contribution: [
+      'Sole author: benchmark and fork engine, models, guarantees, live monitor, dashboard and the preregistered study',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-overview.webp`,
+        alt: 'HorizonGuard dashboard overview with closed-loop A/B results',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-live-monitor.webp`,
+        alt: 'HorizonGuard live monitor scoring an agent step by step',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-ab-test.webp`,
+        alt: 'HorizonGuard closed-loop A/B test across seed-paired runs',
+      },
+    ],
+    palette: ['#d9b26a', '#4f6f41', '#f3e2b3'],
+    visual: 'A ringed sentinel world with watch satellites: an observatory for drifting agents.',
+    deepDive: {
+      whyItMatters:
+        'Long-horizon agents are being given more autonomy, and a monitor that interrupts at the wrong time can cause the very failures it is meant to prevent. Knowing when an intervention helps, and bounding how often it harms, is what makes monitoring safe to deploy.',
+      pipeline: [
+        { label: 'Agent', detail: 'A long-horizon agent acts in an environment' },
+        { label: 'Trajectory log', detail: 'Observable step records only: a black-box view of the agent' },
+        { label: 'Embeddings', detail: 'Feature-hashing step encoder and goal-relative geometry' },
+        { label: 'Hazard model', detail: 'Aligned, drifting and violated states, with recovery' },
+        { label: 'Effect model', detail: 'Rescue vs disruption for each intervention strength' },
+        {
+          label: 'Certificate',
+          detail: 'Disruption risk ≤ α via conformal risk control and Learn-then-Test',
+        },
+        { label: 'Policy', detail: 'Intervene only when rescue − 2 × disruption is best; otherwise wait' },
+      ],
+      methodology: [
+        'Fork engine: snapshot a run prefix and branch seed-paired continuations with and without each intervention',
+        'Sequential, per-step scoring of agent trajectories from black-box action embeddings',
+        'Temporal modelling of drift onset, violation and recovery as a multi-state hazard',
+        'Effect learners that predict rescue and disruption per intervention strength',
+        'Conformal risk control and Learn-then-Test on run-level disruption, plus an e-process for time-uniform false alarms',
+        'Models written from scratch in NumPy and SciPy (logistic, softmax and ridge regression), compared with Markov, trajectory-feature and anomaly-detection baselines',
+      ],
+      innovations: [
+        'Asks not only "will this agent drift?" but "is it still fixable, and will fixing it help more than it hurts?"',
+        'Counterfactual rescue and disruption labels from seed-paired forks',
+        "A certified bound on how often the monitor's own interventions cause harm",
+        'Preregistered research questions, with negative results reported alongside the positive ones',
+      ],
+      results: [
+        {
+          value: '65% → 10%',
+          label: 'goal-violation rate, no monitor vs HorizonGuard',
+          note: 'unseen environment and agent family, 40 seeds; a probability-only alarm reaches 40%',
+        },
+        { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
+        { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
+        { value: '0.03', label: 'median AUROC drop on unseen agent families' },
+      ],
+      status: {
+        implemented: [
+          'DriftBench-CF generation, fork engine, hazard and effect models, certificates, transfer and stress studies',
+          'Live monitor, HTTP API and dashboard; one-command reproduction with a Makefile and Docker',
+          '218 Python tests in CI on Python 3.10 and 3.12, and a Chrome end-to-end suite for the dashboard',
+        ],
+        research: [
+          'Learned (sentence-embedding) action encoders: the encoder interface is in place, while the shipped encoder uses feature hashing',
+          'Validation on real LLM agents: a seeded, cached LLM-agent wrapper exists, but every reported result uses synthetic agents',
+          'Benchmark and method papers, in draft',
+        ],
+        limits: [
+          'All drift is studied in simulation, so the numbers describe the method, not any real model',
+          'Not supported by the data: a lead-time gain from the hazard model (−1.5 steps) and a simple lead-time scaling law',
+        ],
+      },
+    },
   },
   {
     id: 'whototrust',
-    order: 2,
+    order: 3,
     name: 'WhoToTrust',
     tagline: 'When labels disagree, who should you trust?',
     repo: 'https://github.com/MuzraFatima/WhoToTrust',
@@ -112,7 +288,7 @@ export const projects: Project[] = [
   },
   {
     id: 'neurolens',
-    order: 3,
+    order: 4,
     name: 'NeuroLens',
     subtitle: 'TopoCircuit-SAE',
     tagline: 'Looking inside language models: multi-parent feature absorption in sparse autoencoders',
@@ -155,7 +331,7 @@ export const projects: Project[] = [
   },
   {
     id: 'caar',
-    order: 4,
+    order: 5,
     name: 'Cost-Aware Agent Router',
     shortName: 'CAAR',
     tagline: 'Route every query to the cheapest agent that can handle it',
@@ -198,7 +374,7 @@ export const projects: Project[] = [
   },
   {
     id: 'compute-bazaar',
-    order: 5,
+    order: 6,
     name: 'Compute Bazaar',
     tagline: 'A combinatorial compute market for LLM agents that only estimate what their tasks are worth',
     repo: 'https://github.com/MuzraFatima/Compute-bazar',
@@ -319,7 +495,7 @@ export const projects: Project[] = [
   },
   {
     id: 'jocky',
-    order: 6,
+    order: 7,
     name: 'JOCKY Forensics',
     tagline: 'A domain-specific language for safe, verifiable forensic triage',
     repo: 'https://github.com/MuzraFatima/jocky-forensics',
@@ -354,123 +530,6 @@ export const projects: Project[] = [
     images: [],
     palette: ['#ef4444', '#1e3a8a', '#cbd5e1'],
     visual: 'Digital investigation station: evidence vaults, integrity scanner and telemetry displays.',
-  },
-  {
-    id: 'horizonguard',
-    order: 7,
-    name: 'HorizonGuard',
-    tagline: 'Recoverability-aware early warning of goal drift in long-horizon AI agents',
-    repo: 'https://github.com/MuzraFatima/HorizonGuard',
-    team: false,
-    overview:
-      'An AI-safety research system that watches a long-running agent step by step, forecasts whether it is drifting from its goal, and predicts whether a corrective intervention would rescue the run or disrupt it. It acts only when the rescue wins, and certifies how often its own interventions cause harm.',
-    problem:
-      'Agents on long tasks can drift away from their intended goal. Most monitors only predict failure, and an accurate predictor can still make agents worse: a reminder fired at the wrong moment can break a run that was going to succeed.',
-    solution:
-      'Model each run as moving between aligned, drifting and violated states, predict for every intervention strength whether it would rescue or disrupt the run, take the action with the best rescue − 2 × disruption (or wait), and bound the disruption rate with conformal risk control.',
-    architecture: [
-      'Trajectory logging: observable step records from the agent',
-      'Step encoder: feature-hashing action embeddings with goal-relative geometry',
-      'Multi-state hazard model: drift onset, violation and recovery as competing transitions',
-      'Effect model: rescue vs disruption for four intervention strengths',
-      'Certificates: conformal risk control, Learn-then-Test and a betting e-process',
-      'Serving: a live monitor and HTTP API, with a React and Vite dashboard',
-    ],
-    technologies: [
-      'Python',
-      'NumPy',
-      'SciPy',
-      'PyYAML',
-      'React',
-      'TypeScript',
-      'Vite',
-      'pytest',
-      'Puppeteer',
-      'Docker',
-    ],
-    features: [
-      'DriftBench-CF: counterfactual fork labels in which every arm shares the same seeds, so rescue and disruption are measurable for each prefix',
-      'Live monitor that turns each step into risk, drift belief, net benefit per intervention and a certified decision',
-      'Effect-aware policy choosing between a reminder, restatement, constraint gate or escalation, or waiting',
-      'Disruption-controlled guarantees: 0 of 200 resamples above the target rate, keeping 96% of rescues',
-      'Transfer tests on unseen agent families and environments, plus a gated stealth-drift stress test in simulation',
-      'Dashboard with live monitor, run replay, closed-loop A/B and guarantees pages; 218 Python tests and a Chrome end-to-end suite',
-    ],
-    contribution: [
-      'Sole author: benchmark and fork engine, models, guarantees, live monitor, dashboard and the preregistered study',
-    ],
-    images: [
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-overview.webp`,
-        alt: 'HorizonGuard dashboard overview with closed-loop A/B results',
-      },
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-live-monitor.webp`,
-        alt: 'HorizonGuard live monitor scoring an agent step by step',
-      },
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-ab-test.webp`,
-        alt: 'HorizonGuard closed-loop A/B test across seed-paired runs',
-      },
-    ],
-    palette: ['#d9b26a', '#4f6f41', '#f3e2b3'],
-    visual: 'A ringed sentinel world with watch satellites: an observatory for drifting agents.',
-    deepDive: {
-      whyItMatters:
-        'Long-horizon agents are being given more autonomy, and a monitor that interrupts at the wrong time can cause the very failures it is meant to prevent. Knowing when an intervention helps, and bounding how often it harms, is what makes monitoring safe to deploy.',
-      pipeline: [
-        { label: 'Agent', detail: 'A long-horizon agent acts in an environment' },
-        { label: 'Trajectory log', detail: 'Observable step records only: a black-box view of the agent' },
-        { label: 'Embeddings', detail: 'Feature-hashing step encoder and goal-relative geometry' },
-        { label: 'Hazard model', detail: 'Aligned, drifting and violated states, with recovery' },
-        { label: 'Effect model', detail: 'Rescue vs disruption for each intervention strength' },
-        {
-          label: 'Certificate',
-          detail: 'Disruption risk ≤ α via conformal risk control and Learn-then-Test',
-        },
-        { label: 'Policy', detail: 'Intervene only when rescue − 2 × disruption is best; otherwise wait' },
-      ],
-      methodology: [
-        'Fork engine: snapshot a run prefix and branch seed-paired continuations with and without each intervention',
-        'Sequential, per-step scoring of agent trajectories from black-box action embeddings',
-        'Temporal modelling of drift onset, violation and recovery as a multi-state hazard',
-        'Effect learners that predict rescue and disruption per intervention strength',
-        'Conformal risk control and Learn-then-Test on run-level disruption, plus an e-process for time-uniform false alarms',
-        'Models written from scratch in NumPy and SciPy (logistic, softmax and ridge regression), compared with Markov, trajectory-feature and anomaly-detection baselines',
-      ],
-      innovations: [
-        'Asks not only "will this agent drift?" but "is it still fixable, and will fixing it help more than it hurts?"',
-        'Counterfactual rescue and disruption labels from seed-paired forks',
-        "A certified bound on how often the monitor's own interventions cause harm",
-        'Preregistered research questions, with negative results reported alongside the positive ones',
-      ],
-      results: [
-        {
-          value: '65% → 10%',
-          label: 'goal-violation rate, no monitor vs HorizonGuard',
-          note: 'unseen environment and agent family, 40 seeds; a probability-only alarm reaches 40%',
-        },
-        { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
-        { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
-        { value: '0.03', label: 'median AUROC drop on unseen agent families' },
-      ],
-      status: {
-        implemented: [
-          'DriftBench-CF generation, fork engine, hazard and effect models, certificates, transfer and stress studies',
-          'Live monitor, HTTP API and dashboard; one-command reproduction with a Makefile and Docker',
-          '218 Python tests in CI on Python 3.10 and 3.12, and a Chrome end-to-end suite for the dashboard',
-        ],
-        research: [
-          'Learned (sentence-embedding) action encoders: the encoder interface is in place, while the shipped encoder uses feature hashing',
-          'Validation on real LLM agents: a seeded, cached LLM-agent wrapper exists, but every reported result uses synthetic agents',
-          'Benchmark and method papers, in draft',
-        ],
-        limits: [
-          'All drift is studied in simulation, so the numbers describe the method, not any real model',
-          'Not supported by the data: a lead-time gain from the hazard model (−1.5 steps) and a simple lead-time scaling law',
-        ],
-      },
-    },
   },
 ];
 

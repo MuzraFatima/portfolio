@@ -1,6 +1,8 @@
 # Project Audit
 
-Audit date: 5 November 2026; Compute Bazaar re-audited and HorizonGuard added on 12 November 2026.
+Audit date: 5 November 2026; Compute Bazaar and GateOrchestra re-audited and HorizonGuard added on
+12 November 2026. The table and headings keep their audit numbers; on the site the order is GateOrchestra,
+HorizonGuard, then the rest.
 Every statement below was checked against the repository's README,
 file tree, contributor list and (for GateOrchestra) pull-request history through the GitHub API.
 Where the blueprint and the repository disagree, the repository wins.
@@ -8,12 +10,12 @@ Where the blueprint and the repository disagree, the repository wins.
 | #   | Project                 | Repository                                                                      | Author(s)                       | Live demo                                                                                 |
 | --- | ----------------------- | ------------------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------- |
 | 01  | GateOrchestra           | [FarhanAaqil/GateOrchestra](https://github.com/FarhanAaqil/GateOrchestra)       | Team of 4 (Muzra: agent layer)  | None                                                                                      |
+| 07  | HorizonGuard            | [MuzraFatima/HorizonGuard](https://github.com/MuzraFatima/HorizonGuard)         | Muzra Fatima (sole contributor) | None (local dashboard only)                                                               |
 | 02  | WhoToTrust              | [MuzraFatima/WhoToTrust](https://github.com/MuzraFatima/WhoToTrust)             | Muzra Fatima (sole contributor) | None                                                                                      |
 | 03  | NeuroLens               | [MuzraFatima/NeuroLens](https://github.com/MuzraFatima/NeuroLens)               | Muzra Fatima (sole contributor) | None (local explorer only)                                                                |
 | 04  | Cost-Aware Agent Router | [MuzraFatima/Cost-aware-agent](https://github.com/MuzraFatima/Cost-aware-agent) | Muzra Fatima (sole contributor) | None                                                                                      |
 | 05  | Compute Bazaar          | [MuzraFatima/Compute-bazar](https://github.com/MuzraFatima/Compute-bazar)       | Muzra Fatima (sole contributor) | None                                                                                      |
 | 06  | JOCKY Forensics         | [MuzraFatima/jocky-forensics](https://github.com/MuzraFatima/jocky-forensics)   | Muzra Fatima (sole contributor) | [jocky-forensic.netlify.app](https://jocky-forensic.netlify.app) (HTTP 200 on audit date) |
-| 07  | HorizonGuard            | [MuzraFatima/HorizonGuard](https://github.com/MuzraFatima/HorizonGuard)         | Muzra Fatima (sole contributor) | None (local dashboard only)                                                               |
 
 ---
 
@@ -33,23 +35,31 @@ whether to **STOP** (return the probe answer) or **ESCALATE** to the full multi-
 - Token accounting with budgets enforced before each call — `shared/token_logger.py`
 - Wilson confidence intervals and exact McNemar tests — `evaluation/metrics.py`
 - FastAPI backend and React + TypeScript console with three.js scenes — `api/`, `frontend-react/`
-- MASBench-mini dataset: 161 tasks (97 / 32 / 32)
-- 542-test pytest suite, ~87% coverage (README)
+- MASBench-mini dataset: now 225 tasks (97 train / 32 validation / 96 test), with a leakage audit
+- Chat assistant routed by the probe and gate, with tool-using research agents and Groq → Gemini → Ollama
+  fallback; Docker deployment with token auth, rate limits and Prometheus metrics (added by the team in November)
 
-**Results status (stated honestly by the repo):** there is no verified real-LLM result yet. The only
-real run is a 5-task smoke test whose confidence intervals overlap completely. The portfolio must not
-quote the simulated "78% savings" figure.
+**Results status (re-audited 12 November 2026, commit `0dc7f5b`):** the final real-LLM benchmark has run and
+passes `scripts/verify_final_results.py`. Qwen2.5-3B, 96 test tasks × 2 seeds: GateOrchestra 97.9% accuracy
+at 784 tokens/task (−33% vs Always-MAS at 92.2%), 3% escalation; CoT-SC-only 96.9%. The research goal
+(≥40% saving at ≤2 points cost) was not met, and multi-agent was less accurate than the probe at this scale.
+Reduced runs (1 seed) on Qwen3.8-27B and gpt-oss-120b: the gate escalates nothing and matches CoT-SC, 54%
+fewer tokens than Always-MAS on gpt-oss-120b. The portfolio quotes these figures with their caveats; the
+simulated "78% savings" figure is still never used.
 
 **Muzra's contribution (verified from her merged PRs #4, #8, #14, #22, #27, #29 — branch `person2-agent`)**
 
 - Implemented the CoT-SC probe agent and its tests (PR #4)
 - Implemented the MAS orchestrator, ReAct / Debate / Reflexion sub-agents and the Always-MAS and CoT-SC baselines (PR #4)
-- Added the LinUCB contextual bandit router, sequential early exit and semantic soft voting (PR #8)
+- Added the LinUCB contextual bandit router, sequential early exit and semantic soft voting (PR #8); the router is available but the final benchmark uses the text heuristic
 - Added the Groq cloud provider with Ollama local fallback (PR #8)
 - Retrained the GBT gate on real Groq traces, added 429 back-off and better answer extraction (PR #14)
 - Added LinUCB online reward updates, bandit state persistence and end-to-end Probe → Gate → MAS tests (PR #22)
 - Built the batch evaluation pipeline, LinUCB warm-start and strategy-allocation metrics (PR #27)
 - Wrote the agent performance and error analysis modules and experiment reports (PR #29)
+
+Muzra's commits end on 23 September 2026; the November benchmark, chat assistant and Docker work are the
+team's, and the portfolio does not credit them to her.
 
 **Team:** FarhanAaqil (repository owner), umaruddinmsheikh (dataset), Kounainsanalliyakhan (evaluation / dashboard), MuzraFatima (agents).
 
