@@ -17,7 +17,8 @@ export type PlanetMap =
   | 'jupiter'
   | 'mars'
   | 'moon'
-  | 'mercury';
+  | 'mercury'
+  | 'saturn';
 
 export type SpaceImage =
   'carina-nebula' | 'helix-nebula' | 'pillars-of-creation' | 'sombrero-galaxy' | 'whirlpool-galaxy';

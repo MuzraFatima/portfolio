@@ -5,7 +5,7 @@ import type { ProjectId } from '@/types/content';
 
 /**
  * Where everything sits in the galaxy. The journey spirals outward from the central star:
- * the Skill Nebula hangs above the system, the six project planets follow one another around
+ * the Skill Nebula hangs above the system, the project planets follow one another around
  * the star in blueprint order, and the last three stops continue the spiral beyond them.
  */
 export type Vec3 = [number, number, number];
