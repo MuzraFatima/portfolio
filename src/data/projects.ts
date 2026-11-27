@@ -1,8 +1,8 @@
 import type { Project } from '@/types/content';
 
 /**
- * The project planets, in journey order: GateOrchestra (the flagship) first, then HorizonGuard,
- * then the rest of the blueprint projects in their original order.
+ * The project planets, in journey order: GateOrchestra (the flagship) first, then the blueprint
+ * projects in their original order with AstroLM in the fourth slot, and HorizonGuard last.
  * Every claim here was checked against the repository — see docs/PROJECT_AUDIT.md.
  */
 export const projects: Project[] = [
@@ -118,120 +118,8 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 'horizonguard',
-    order: 2,
-    name: 'HorizonGuard',
-    tagline: 'Recoverability-aware early warning of goal drift in long-horizon AI agents',
-    repo: 'https://github.com/MuzraFatima/HorizonGuard',
-    team: false,
-    overview:
-      'An AI-safety research system that watches a long-running agent step by step, forecasts whether it is drifting from its goal, and predicts whether a corrective intervention would rescue the run or disrupt it. It acts only when the rescue wins, and certifies how often its own interventions cause harm.',
-    problem:
-      'Agents on long tasks can drift away from their intended goal. Most monitors only predict failure, and an accurate predictor can still make agents worse: a reminder fired at the wrong moment can break a run that was going to succeed.',
-    solution:
-      'Model each run as moving between aligned, drifting and violated states, predict for every intervention strength whether it would rescue or disrupt the run, take the action with the best rescue − 2 × disruption (or wait), and bound the disruption rate with conformal risk control.',
-    architecture: [
-      'Trajectory logging: observable step records from the agent',
-      'Step encoder: feature-hashing action embeddings with goal-relative geometry',
-      'Multi-state hazard model: drift onset, violation and recovery as competing transitions',
-      'Effect model: rescue vs disruption for four intervention strengths',
-      'Certificates: conformal risk control, Learn-then-Test and a betting e-process',
-      'Serving: a live monitor and HTTP API, with a React and Vite dashboard',
-    ],
-    technologies: [
-      'Python',
-      'NumPy',
-      'SciPy',
-      'PyYAML',
-      'React',
-      'TypeScript',
-      'Vite',
-      'pytest',
-      'Puppeteer',
-      'Docker',
-    ],
-    features: [
-      'DriftBench-CF: counterfactual fork labels in which every arm shares the same seeds, so rescue and disruption are measurable for each prefix',
-      'Live monitor that turns each step into risk, drift belief, net benefit per intervention and a certified decision',
-      'Effect-aware policy choosing between a reminder, restatement, constraint gate or escalation, or waiting',
-      'Disruption-controlled guarantees: 0 of 200 resamples above the target rate, keeping 96% of rescues',
-      'Transfer tests on unseen agent families and environments, plus a gated stealth-drift stress test in simulation',
-      'Dashboard with live monitor, run replay, closed-loop A/B and guarantees pages; 218 Python tests and a Chrome end-to-end suite',
-    ],
-    contribution: [
-      'Sole author: benchmark and fork engine, models, guarantees, live monitor, dashboard and the preregistered study',
-    ],
-    images: [
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-overview.webp`,
-        alt: 'HorizonGuard dashboard overview with closed-loop A/B results',
-      },
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-live-monitor.webp`,
-        alt: 'HorizonGuard live monitor scoring an agent step by step',
-      },
-      {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-ab-test.webp`,
-        alt: 'HorizonGuard closed-loop A/B test across seed-paired runs',
-      },
-    ],
-    palette: ['#d9b26a', '#4f6f41', '#f3e2b3'],
-    visual: 'A ringed sentinel world with watch satellites: an observatory for drifting agents.',
-    deepDive: {
-      whyItMatters:
-        'Long-horizon agents are being given more autonomy, and a monitor that interrupts at the wrong time can cause the very failures it is meant to prevent. Knowing when an intervention helps, and bounding how often it harms, is what makes monitoring safe to deploy.',
-      pipeline: [
-        { label: 'Agent', detail: 'A long-horizon agent acts in an environment' },
-        { label: 'Trajectory log', detail: 'Observable step records only: a black-box view of the agent' },
-        { label: 'Embeddings', detail: 'Feature-hashing step encoder and goal-relative geometry' },
-        { label: 'Hazard model', detail: 'Aligned, drifting and violated states, with recovery' },
-        { label: 'Effect model', detail: 'Rescue vs disruption for each intervention strength' },
-        {
-          label: 'Certificate',
-          detail: 'Disruption risk ≤ α via conformal risk control and Learn-then-Test',
-        },
-        { label: 'Policy', detail: 'Intervene only when rescue − 2 × disruption is best; otherwise wait' },
-      ],
-      methodology: [
-        'Fork engine: snapshot a run prefix and branch seed-paired continuations with and without each intervention',
-        'Sequential, per-step scoring of agent trajectories from black-box action embeddings',
-        'Temporal modelling of drift onset, violation and recovery as a multi-state hazard',
-        'Effect learners that predict rescue and disruption per intervention strength',
-        'Conformal risk control and Learn-then-Test on run-level disruption, plus an e-process for time-uniform false alarms',
-        'Models written from scratch in NumPy and SciPy (logistic, softmax and ridge regression), compared with Markov, trajectory-feature and anomaly-detection baselines',
-      ],
-      innovations: [
-        'Asks not only "will this agent drift?" but "is it still fixable, and will fixing it help more than it hurts?"',
-        'Counterfactual rescue and disruption labels from seed-paired forks',
-        "A certified bound on how often the monitor's own interventions cause harm",
-        'Preregistered research questions, with negative results reported alongside the positive ones',
-      ],
-      results: [
-        { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
-        { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
-        { value: '0.03', label: 'median AUROC drop on unseen agent families' },
-      ],
-      status: {
-        implemented: [
-          'DriftBench-CF generation, fork engine, hazard and effect models, certificates, transfer and stress studies',
-          'Live monitor, HTTP API and dashboard; one-command reproduction with a Makefile and Docker',
-          '218 Python tests in CI on Python 3.10 and 3.12, and a Chrome end-to-end suite for the dashboard',
-        ],
-        research: [
-          'Learned (sentence-embedding) action encoders: the encoder interface is in place, while the shipped encoder uses feature hashing',
-          'Validation on real LLM agents: a seeded, cached LLM-agent wrapper exists, but every reported result uses synthetic agents',
-          'Benchmark and method papers, in draft',
-        ],
-        limits: [
-          'All drift is studied in simulation, so the numbers describe the method, not any real model',
-          'Not supported by the data: a lead-time gain from the hazard model (−1.5 steps) and a simple lead-time scaling law',
-        ],
-      },
-    },
-  },
-  {
     id: 'whototrust',
-    order: 3,
+    order: 2,
     name: 'WhoToTrust',
     tagline: 'When labels disagree, who should you trust?',
     repo: 'https://github.com/MuzraFatima/WhoToTrust',
@@ -283,7 +171,7 @@ export const projects: Project[] = [
   },
   {
     id: 'neurolens',
-    order: 4,
+    order: 3,
     name: 'NeuroLens',
     subtitle: 'TopoCircuit-SAE',
     tagline: 'Looking inside language models: multi-parent feature absorption in sparse autoencoders',
@@ -325,51 +213,136 @@ export const projects: Project[] = [
     visual: 'Optical and neural-vision laboratory: a lens world revealing hidden structure.',
   },
   {
-    id: 'caar',
-    order: 5,
-    name: 'Cost-Aware Agent Router',
-    shortName: 'CAAR',
-    tagline: 'Route every query to the cheapest agent that can handle it',
-    repo: 'https://github.com/MuzraFatima/Cost-aware-agent',
+    id: 'astrolm',
+    order: 4,
+    name: 'AstroLM',
+    tagline: 'A from-scratch astronomy language model, and a study of what it learns, stores and leaks',
+    repo: 'https://github.com/MuzraFatima/AstroLM',
     team: false,
     overview:
-      'A confidence-based, four-tier LLM routing cascade that starts each query at the lowest-cost capable tier and escalates only when confidence is too low and budget allows.',
+      'A decoder-only language model for space and astronomy, written from scratch and trained on one laptop GPU, paired with a preregistered study of what a 4.5M–29M model learns, stores and leaks as it trains on repeated text. It is a research repository, not a chat product and not a factual authority.',
     problem:
-      'Sending every query to a frontier model wastes money; sending everything to a small model fails on reasoning, code and strict structured output.',
+      'Small language models are usually reported by their held-out score alone. That score says nothing about how much the model has memorised, and it can be quietly inflated when near-copies of held-out text sit in the training set.',
     solution:
-      "Classify complexity to pick a starting tier, score the answer's confidence from syntax checks and hedging detection, and escalate through Cheap → RAG → Frontier → Consensus only when needed.",
+      'Train three sizes at four pass counts over one frozen corpus, then audit every checkpoint three ways: held-out bits per byte against a 5-gram baseline (learn), membership and canary exposure (store), and paired runs where edited copies of held-out documents join the training set (leak). Hypotheses and thresholds were fixed before training, and a rejected one is reported as rejected.',
     architecture: [
-      'Complexity pre-classifier',
-      'Four agent tiers: Cheap, RAG, Frontier and Consensus',
-      'Confidence evaluator: syntactic checks plus semantic hedging',
-      'Cost tracker and per-step latency profiling',
-      'FastAPI service with SQLite audit logs and a live dashboard',
+      'Corpus pipeline: pinned Wikipedia dump, cleaning, quality filters and cluster-based splits',
+      'Tokenizer: byte-level BPE trained at several vocabulary sizes, one selected on a registered comparison',
+      'Model: pre-LayerNorm decoder, exact GELU, learned positions and a tied head, at 4.5M, 10.3M and 29.4M parameters',
+      'Training: FP16 AdamW with warmup-stable-decay trunks and cooldown branches at 1, 2, 4 and 8 passes',
+      'Baseline: a 5-gram Kneser-Ney language model',
+      'Audit kit: bits per byte, membership AUC, canary exposure, greedy extraction and paired leak measurement',
+      'Serving: a localhost-only web interface and a generation script, both on the standard library',
     ],
-    technologies: ['Python', 'FastAPI', 'LiteLLM', 'Groq', 'SQLite', 'SQLAlchemy', 'pytest'],
+    technologies: [
+      'Python',
+      'PyTorch',
+      'NumPy',
+      'Hugging Face tokenizers',
+      'PyArrow',
+      'JSON Schema',
+      'PyYAML',
+      'pytest',
+      'CUDA',
+    ],
     features: [
-      'Dynamic escalation with a step-by-step audit trail',
-      'Token-level cost and latency tracking',
-      'Daily and monthly budget controls with policy sliders',
-      'Offline deterministic mock mode plus live providers',
-      'Benchmark harness with Wilson confidence intervals (mock mode validates routing and cost, not real accuracy)',
+      'Twelve registered models: three sizes at 1, 2, 4 and 8 passes over the same corpus',
+      'Preregistered hypotheses with fixed decision rules and Holm multiplicity control; rejected ones are published as rejected',
+      'A Learn / Store / Leak audit kit that reproduces any reported row from its checkpoint hash',
+      'Frozen manifests carrying document identifiers and checksums, never article text',
+      'Dated decision records for the temporal cutoff, corpus, tokenizer and run plan',
+      "A localhost-only web interface for trying the models, showing each one's measured test bits per byte",
     ],
-    contribution: ['Sole author: router, agents, evaluation, API and dashboard'],
+    contribution: [
+      'Sole author: corpus pipeline, tokenizer, model, training, baselines, audits and the write-up',
+    ],
     images: [
       {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/caar-sandbox.webp`,
-        alt: 'CAAR gateway playground showing an accepted routing cascade with cost and latency',
+        src: `${import.meta.env.BASE_URL}assets/images/projects/astrolm-interface.webp`,
+        alt: 'The AstroLM web interface: a model picker showing measured bits per byte, a prompt box and sampling controls. Captured against a small checkpoint trained on the sample slice, not the 29.4M model.',
       },
       {
-        src: `${import.meta.env.BASE_URL}assets/images/projects/caar-analytics.webp`,
-        alt: 'CAAR analytics dashboard with spend, savings and tier distribution',
+        src: `${import.meta.env.BASE_URL}assets/images/projects/astrolm-generation.webp`,
+        alt: 'AstroLM continuing a prompt, with two sampled continuations. Captured against a small checkpoint trained on the sample slice, so it shows the interface and the request path, not the 29.4M model’s output quality.',
       },
     ],
     palette: ['#f5b301', '#2f80ff', '#fde68a'],
-    visual: 'Intelligent routing network: model nodes, routing paths and cost/performance displays.',
+    visual: 'A golden world of written language: a small model reading the sky.',
+    deepDive: {
+      whyItMatters:
+        'A held-out score is the usual proof that a language model learned something, but the same text can be memorised rather than learned, and an edited copy of a test document hiding in the training set inflates the score without anyone noticing. This study measures all three at a size one person can actually train and audit.',
+      pipeline: [
+        { label: 'Corpus', detail: 'Pinned Wikipedia astronomy dump, cleaned and quality-filtered' },
+        {
+          label: 'Clusters',
+          detail: 'Near-duplicates grouped, then split into train, validation, test, probe and cloze pools',
+        },
+        {
+          label: 'Tokenizer',
+          detail: 'Byte-level BPE, 8k vocabulary with split digits, chosen on a registered comparison',
+        },
+        { label: 'Training', detail: 'Three sizes, with cooldown branches at 1, 2, 4 and 8 passes' },
+        { label: 'Learn', detail: 'Held-out bits per byte against a 5-gram Kneser-Ney baseline' },
+        { label: 'Store', detail: 'Membership AUC, canary exposure and greedy extraction' },
+        { label: 'Leak', detail: 'Paired runs that add exact and edited copies of held-out documents' },
+      ],
+      methodology: [
+        'Preregistration: hypotheses, thresholds and multiplicity rules fixed before training, with dated decision records',
+        'Cluster-based splitting, so near-duplicates and shared lead entities cannot straddle the train and test pools',
+        'A registered tokenizer comparison across vocabulary sizes, run before any model was trained',
+        'Warmup-stable-decay training in which every pass count branches off one shared trunk',
+        'Cluster bootstrap for confidence intervals, Holm for the confirmatory family and Benjamini–Hochberg for the exploratory one',
+        'Random-word canaries at several insertion counts, scored against never-inserted controls',
+        'A paired design adding one sibling per probe document at word 5-gram overlap 0.90, 0.80, 0.65 and 0.50',
+        'The test split read once per registered checkpoint, after all training had finished, with every read logged',
+      ],
+      innovations: [
+        'Measures learning, memorisation and leakage on the same checkpoints, rather than reporting a score alone',
+        'Quantifies how much an edited near-copy, not just an exact one, inflates a held-out result',
+        'A claims ledger naming the run and checkpoint hash behind every published number',
+        'A whole study sized to one laptop GPU, reproducible from a single command',
+      ],
+      results: [
+        {
+          value: '1.060',
+          label: 'test bits per byte, 29.4M model',
+          note: '5.53% below the 10.3M model and 18.67% below the 5-gram baseline; one main seed',
+        },
+        {
+          value: '71–83%',
+          label: "of an exact copy's benefit still transferred by an edited copy",
+          note: 'at only half the word 5-grams shared, so filtering at Jaccard 0.80 would miss it',
+        },
+        {
+          value: 'under 1%',
+          label: 'verbatim extraction of natural text',
+          note: 'but membership AUC reaches 0.66, and canaries inserted a few times are fully exposed',
+        },
+      ],
+      status: {
+        implemented: [
+          'Corpus pipeline, tokenizer training and selection, the three model sizes, the training queue and the 5-gram baseline',
+          'The Learn / Store / Leak audit kit, the analysis, the final report, and a claims ledger tied to checkpoint hashes',
+          '21 test files under tests/, plus a localhost-only web interface and a generation script on the standard library',
+        ],
+        research: [
+          'Human coherence ratings for the 29.4M samples, which the study leaves open',
+          'Paraphrase transfer, which could not be run: only four usable Simple English siblings',
+          'Span-type and minimal-pair studies, cut under the registered cut-line',
+        ],
+        limits: [
+          'Results describe 4–30M models on 14M tokens of one domain, and say nothing about large models',
+          'Reported as not supported: the equal-compute prediction, the monotonicity half of the overlap prediction, the canary correlation and the leakage-adjusted score calibration',
+          'Every size chose the top learning rate in the registered grid, and 8 passes was the largest registered budget, so neither curve had flattened',
+          'The canary readout saturates at the cap set by 100 controls',
+          'No continuous integration, and trained weights are not distributed: a fresh clone has no models to run',
+        ],
+      },
+    },
   },
   {
     id: 'compute-bazaar',
-    order: 6,
+    order: 5,
     name: 'Compute Bazaar',
     tagline: 'A combinatorial compute market for LLM agents that only estimate what their tasks are worth',
     repo: 'https://github.com/MuzraFatima/Compute-bazar',
@@ -485,7 +458,7 @@ export const projects: Project[] = [
   },
   {
     id: 'jocky',
-    order: 7,
+    order: 6,
     name: 'JOCKY Forensics',
     tagline: 'A domain-specific language for safe, verifiable forensic triage',
     repo: 'https://github.com/MuzraFatima/jocky-forensics',
@@ -520,6 +493,118 @@ export const projects: Project[] = [
     images: [],
     palette: ['#ef4444', '#1e3a8a', '#cbd5e1'],
     visual: 'Digital investigation station: evidence vaults, integrity scanner and telemetry displays.',
+  },
+  {
+    id: 'horizonguard',
+    order: 7,
+    name: 'HorizonGuard',
+    tagline: 'Recoverability-aware early warning of goal drift in long-horizon AI agents',
+    repo: 'https://github.com/MuzraFatima/HorizonGuard',
+    team: false,
+    overview:
+      'An AI-safety research system that watches a long-running agent step by step, forecasts whether it is drifting from its goal, and predicts whether a corrective intervention would rescue the run or disrupt it. It acts only when the rescue wins, and certifies how often its own interventions cause harm.',
+    problem:
+      'Agents on long tasks can drift away from their intended goal. Most monitors only predict failure, and an accurate predictor can still make agents worse: a reminder fired at the wrong moment can break a run that was going to succeed.',
+    solution:
+      'Model each run as moving between aligned, drifting and violated states, predict for every intervention strength whether it would rescue or disrupt the run, take the action with the best rescue − 2 × disruption (or wait), and bound the disruption rate with conformal risk control.',
+    architecture: [
+      'Trajectory logging: observable step records from the agent',
+      'Step encoder: feature-hashing action embeddings with goal-relative geometry',
+      'Multi-state hazard model: drift onset, violation and recovery as competing transitions',
+      'Effect model: rescue vs disruption for four intervention strengths',
+      'Certificates: conformal risk control, Learn-then-Test and a betting e-process',
+      'Serving: a live monitor and HTTP API, with a React and Vite dashboard',
+    ],
+    technologies: [
+      'Python',
+      'NumPy',
+      'SciPy',
+      'PyYAML',
+      'React',
+      'TypeScript',
+      'Vite',
+      'pytest',
+      'Puppeteer',
+      'Docker',
+    ],
+    features: [
+      'DriftBench-CF: counterfactual fork labels in which every arm shares the same seeds, so rescue and disruption are measurable for each prefix',
+      'Live monitor that turns each step into risk, drift belief, net benefit per intervention and a certified decision',
+      'Effect-aware policy choosing between a reminder, restatement, constraint gate or escalation, or waiting',
+      'Disruption-controlled guarantees: 0 of 200 resamples above the target rate, keeping 96% of rescues',
+      'Transfer tests on unseen agent families and environments, plus a gated stealth-drift stress test in simulation',
+      'Dashboard with live monitor, run replay, closed-loop A/B and guarantees pages; 218 Python tests and a Chrome end-to-end suite',
+    ],
+    contribution: [
+      'Sole author: benchmark and fork engine, models, guarantees, live monitor, dashboard and the preregistered study',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-overview.webp`,
+        alt: 'HorizonGuard dashboard overview with closed-loop A/B results',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-live-monitor.webp`,
+        alt: 'HorizonGuard live monitor scoring an agent step by step',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}assets/images/projects/horizonguard-ab-test.webp`,
+        alt: 'HorizonGuard closed-loop A/B test across seed-paired runs',
+      },
+    ],
+    palette: ['#d9b26a', '#4f6f41', '#f3e2b3'],
+    visual: 'A ringed sentinel world with watch satellites: an observatory for drifting agents.',
+    deepDive: {
+      whyItMatters:
+        'Long-horizon agents are being given more autonomy, and a monitor that interrupts at the wrong time can cause the very failures it is meant to prevent. Knowing when an intervention helps, and bounding how often it harms, is what makes monitoring safe to deploy.',
+      pipeline: [
+        { label: 'Agent', detail: 'A long-horizon agent acts in an environment' },
+        { label: 'Trajectory log', detail: 'Observable step records only: a black-box view of the agent' },
+        { label: 'Embeddings', detail: 'Feature-hashing step encoder and goal-relative geometry' },
+        { label: 'Hazard model', detail: 'Aligned, drifting and violated states, with recovery' },
+        { label: 'Effect model', detail: 'Rescue vs disruption for each intervention strength' },
+        {
+          label: 'Certificate',
+          detail: 'Disruption risk ≤ α via conformal risk control and Learn-then-Test',
+        },
+        { label: 'Policy', detail: 'Intervene only when rescue − 2 × disruption is best; otherwise wait' },
+      ],
+      methodology: [
+        'Fork engine: snapshot a run prefix and branch seed-paired continuations with and without each intervention',
+        'Sequential, per-step scoring of agent trajectories from black-box action embeddings',
+        'Temporal modelling of drift onset, violation and recovery as a multi-state hazard',
+        'Effect learners that predict rescue and disruption per intervention strength',
+        'Conformal risk control and Learn-then-Test on run-level disruption, plus an e-process for time-uniform false alarms',
+        'Models written from scratch in NumPy and SciPy (logistic, softmax and ridge regression), compared with Markov, trajectory-feature and anomaly-detection baselines',
+      ],
+      innovations: [
+        'Asks not only "will this agent drift?" but "is it still fixable, and will fixing it help more than it hurts?"',
+        'Counterfactual rescue and disruption labels from seed-paired forks',
+        "A certified bound on how often the monitor's own interventions cause harm",
+        'Preregistered research questions, with negative results reported alongside the positive ones',
+      ],
+      results: [
+        { value: '25 vs 11', label: 'runs rescued vs a probability-only alarm', note: '3 vs 1 disrupted' },
+        { value: '0 of 200', label: 'resamples above the disruption target', note: '96% of rescues kept' },
+        { value: '0.03', label: 'median AUROC drop on unseen agent families' },
+      ],
+      status: {
+        implemented: [
+          'DriftBench-CF generation, fork engine, hazard and effect models, certificates, transfer and stress studies',
+          'Live monitor, HTTP API and dashboard; one-command reproduction with a Makefile and Docker',
+          '218 Python tests in CI on Python 3.10 and 3.12, and a Chrome end-to-end suite for the dashboard',
+        ],
+        research: [
+          'Learned (sentence-embedding) action encoders: the encoder interface is in place, while the shipped encoder uses feature hashing',
+          'Validation on real LLM agents: a seeded, cached LLM-agent wrapper exists, but every reported result uses synthetic agents',
+          'Benchmark and method papers, in draft',
+        ],
+        limits: [
+          'All drift is studied in simulation, so the numbers describe the method, not any real model',
+          'Not supported by the data: a lead-time gain from the hazard model (−1.5 steps) and a simple lead-time scaling law',
+        ],
+      },
+    },
   },
 ];
 

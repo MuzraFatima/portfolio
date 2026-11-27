@@ -7,15 +7,15 @@ import { resume } from '@/data/resume';
 import { skillCategories } from '@/data/skills';
 
 describe('projects', () => {
-  it('puts GateOrchestra first and HorizonGuard second, then the blueprint projects in order', () => {
+  it('puts GateOrchestra first and HorizonGuard last, with AstroLM in the fourth slot', () => {
     expect(projects.map((p) => p.id)).toEqual([
       'gateorchestra',
-      'horizonguard',
       'whototrust',
       'neurolens',
-      'caar',
+      'astrolm',
       'compute-bazaar',
       'jocky',
+      'horizonguard',
     ]);
     expect(projects[0].flagship).toBe(true);
     expect(projects.filter((p) => p.flagship)).toHaveLength(1);
@@ -70,6 +70,22 @@ describe('project deep dives', () => {
     expect(JSON.stringify(projectById.horizonguard)).not.toContain('65%');
     // HorizonGuard results come from synthetic agents, and the page must say so.
     expect(JSON.stringify(projectById.horizonguard.deepDive)).toMatch(/synthetic agents/);
+  });
+
+  it('describes AstroLM from its repository, and keeps the old CAAR project off the site', () => {
+    const astro = projectById.astrolm;
+    expect(astro.deepDive).toBeDefined();
+    expect(astro.repo).toBe('https://github.com/MuzraFatima/AstroLM');
+    expect(astro.team).toBe(false);
+    // Trained weights are not distributed and the interface is localhost-only: no live demo.
+    expect(astro.demo).toBeUndefined();
+    // Negative results travel with the positive ones.
+    expect(JSON.stringify(astro.deepDive)).toMatch(/not supported/);
+    // Cost-Aware Agent Router was replaced by AstroLM and must not come back.
+    const site = JSON.stringify({ projects, skillCategories });
+    for (const gone of ['caar', 'CAAR', 'Cost-Aware', 'Cost-aware-agent']) {
+      expect(site, gone).not.toContain(gone);
+    }
   });
 
   it('reports the verified GateOrchestra benchmark with its caveats', () => {

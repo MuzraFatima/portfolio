@@ -1,5 +1,5 @@
 {
-  "$comment": "Verified portfolio content. Sources: repository audit (docs/PROJECT_AUDIT.md), GitHub profile, and the resume supplied by Muzra Fatima on 2026-11-05. Order of projects is fixed by the blueprint.",
+  "$comment": "Verified portfolio content, captured 2026-11-05 and partly refreshed since. Sources: repository audit (docs/PROJECT_AUDIT.md), GitHub profile, and the resume supplied by Muzra Fatima on 2026-11-05. NOT the live site data — src/data/projects.ts is the source of truth, and it carries the later Compute Bazaar re-audit, HorizonGuard (added 2026-11-12) and the deep dives, none of which are repeated here. AstroLM replaced the Cost-Aware Agent Router in slot 4 on 2026-11-27; the site order is GateOrchestra, WhoToTrust, NeuroLens, AstroLM, Compute Bazaar, JOCKY Forensics, HorizonGuard.",
   "profile": {
     "name": "Muzra Fatima",
     "headline": "Aspiring AI/ML Engineer | Generative AI | Multi-Agent Systems | Intelligent Systems",
@@ -163,34 +163,46 @@
       "palette": ["#10b981", "#22d3ee"]
     },
     {
-      "id": "caar",
+      "id": "astrolm",
       "order": 4,
-      "name": "Cost-Aware Agent Router",
-      "shortName": "CAAR",
-      "tagline": "Route every query to the cheapest agent that can handle it",
-      "repo": "https://github.com/MuzraFatima/Cost-aware-agent",
+      "name": "AstroLM",
+      "tagline": "A from-scratch astronomy language model, and a study of what it learns, stores and leaks",
+      "repo": "https://github.com/MuzraFatima/AstroLM",
       "demo": null,
       "team": false,
-      "overview": "A confidence-based, four-tier LLM routing cascade that starts each query at the lowest-cost capable tier and escalates only when confidence is too low and budget allows.",
-      "problem": "Sending every query to a frontier model wastes money; sending everything to a small model fails on reasoning, code and strict structured output.",
-      "solution": "Classify complexity to pick a starting tier, score the answer's confidence from syntax checks and hedging detection, and escalate through Cheap → RAG → Frontier → Consensus only when needed.",
+      "overview": "A decoder-only language model for space and astronomy, written from scratch and trained on one laptop GPU, paired with a preregistered study of what a 4.5M–29M model learns, stores and leaks as it trains on repeated text.",
+      "problem": "Small language models are usually reported by their held-out score alone. That score says nothing about how much the model has memorised, and it can be quietly inflated when near-copies of held-out text sit in the training set.",
+      "solution": "Train three sizes at four pass counts over one frozen corpus, then audit every checkpoint for learning, memorisation and leakage, against hypotheses and thresholds fixed before training.",
       "architecture": [
-        "Complexity pre-classifier",
-        "Four agent tiers — Cheap, RAG, Frontier, Consensus",
-        "Confidence evaluator — syntactic + semantic hedging",
-        "Cost tracker and per-step latency profiling",
-        "FastAPI service with SQLite audit logs and a live dashboard"
+        "Corpus pipeline — pinned Wikipedia dump, cleaning, quality filters, cluster-based splits",
+        "Tokenizer — byte-level BPE, selected on a registered comparison",
+        "Model — pre-LayerNorm decoder at 4.5M, 10.3M and 29.4M parameters",
+        "Training — FP16 AdamW, warmup-stable-decay trunks with cooldown branches",
+        "Baseline — 5-gram Kneser-Ney",
+        "Audit kit — bits per byte, membership AUC, canary exposure, paired leak measurement"
       ],
-      "technologies": ["Python", "FastAPI", "LiteLLM", "Groq", "SQLite", "SQLAlchemy", "pytest"],
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "NumPy",
+        "Hugging Face tokenizers",
+        "PyArrow",
+        "JSON Schema",
+        "PyYAML",
+        "pytest",
+        "CUDA"
+      ],
       "features": [
-        "Dynamic escalation with step-by-step audit trail",
-        "Token-level cost and latency tracking",
-        "Daily and monthly budget controls with policy sliders",
-        "Offline deterministic mock mode plus live providers",
-        "Benchmark harness with Wilson confidence intervals (mock mode validates routing and cost, not real accuracy)"
+        "Twelve registered models — three sizes at 1, 2, 4 and 8 passes",
+        "Preregistered hypotheses with fixed decision rules; rejected ones published as rejected",
+        "Learn / Store / Leak audit kit reproducible from a checkpoint hash",
+        "Frozen manifests carrying identifiers and checksums, never article text",
+        "Localhost-only web interface showing each model's measured test bits per byte"
       ],
-      "contribution": ["Sole author — router, agents, evaluation, API and dashboard"],
-      "screenshots": ["docs/dashboard_sandbox.png", "docs/dashboard_analytics.png"],
+      "contribution": [
+        "Sole author — corpus pipeline, tokenizer, model, training, baselines, audits and write-up"
+      ],
+      "screenshots": ["docs/demo/interface-dark.png", "docs/demo/generation-dark.png"],
       "palette": ["#f5b301", "#2f80ff"]
     },
     {

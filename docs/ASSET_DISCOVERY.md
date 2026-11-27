@@ -20,7 +20,7 @@ in `docs/ASSET_LICENSES.md` with source, licence, attribution and optimisation s
 | GateOrchestra   | `docs/screenshots/` ×5, `reports/figures/` ×2 | None (team repo) — needs team permission |
 | WhoToTrust      | `docs/screenshots/` ×6                        | MIT                                      |
 | NeuroLens       | `demo/screenshots/` ×4, `results/figures/` ×5 | MIT                                      |
-| CAAR            | `docs/dashboard_*.png` ×3, `docs/pareto.png`  | MIT                                      |
+| AstroLM         | `docs/demo/` ×4 (light and dark)              | MIT                                      |
 | Compute Bazaar  | `docs/screenshots/` ×4                        | MIT                                      |
 | JOCKY Forensics | none                                          | None                                     |
 

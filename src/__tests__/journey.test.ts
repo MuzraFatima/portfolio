@@ -1,7 +1,10 @@
+import { Vector3 } from 'three';
 import { describe, expect, it } from 'vitest';
 import { projects } from '@/data/projects';
 import { progressAt } from '@/journey/progress';
 import { navStops, stopIndex, stops } from '@/journey/stops';
+import { planetPosition, WORLD } from '@/journey/world';
+import { planetConfigs } from '@/scenes/ProjectSolarSystem/planetConfigs';
 
 describe('journey stops', () => {
   it('visits every section once, starting at home and ending at contact', () => {
@@ -15,6 +18,31 @@ describe('journey stops', () => {
     const planetStops = stops.filter((s) => s.id.startsWith('project-')).map((s) => s.id);
     expect(planetStops).toEqual(projects.map((p) => `project-${p.id}`));
     expect(stopIndex['project-gateorchestra']).toBe(stopIndex.projects + 1);
+  });
+
+  it('gives every planet its own orbit, widening with the journey order', () => {
+    const radii = projects.map((p) => planetConfigs[p.id].orbit.radius);
+    expect(new Set(radii).size).toBe(radii.length);
+    for (let i = 1; i < radii.length; i++) {
+      // Each orbit sits outside the last, with room for the planets and their rings between them.
+      expect(radii[i] - radii[i - 1], projects[i].id).toBeGreaterThan(6);
+    }
+  });
+
+  it('keeps every planet clear of its neighbours and of the other landmarks', () => {
+    // The star is the centre every planet orbits, so it is not one of the things to stay clear of.
+    const places = [
+      ...projects.map((p) => ({ id: p.id, at: planetPosition(p.id) })),
+      ...Object.entries(WORLD)
+        .filter(([id]) => id !== 'star')
+        .map(([id, at]) => ({ id, at: new Vector3(...at) })),
+    ];
+    for (let i = 0; i < places.length; i++) {
+      for (let j = i + 1; j < places.length; j++) {
+        const gap = places[i].at.distanceTo(places[j].at);
+        expect(gap, `${places[i].id} vs ${places[j].id}`).toBeGreaterThan(20);
+      }
+    }
   });
 
   it('keeps the camera clear of the subject at every stop', () => {

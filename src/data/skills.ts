@@ -13,7 +13,15 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Java', level: 'Beginner' },
       { name: 'C', level: 'Beginner' },
     ],
-    projects: ['gateorchestra', 'whototrust', 'neurolens', 'caar', 'compute-bazaar', 'jocky'],
+    projects: [
+      'gateorchestra',
+      'whototrust',
+      'neurolens',
+      'astrolm',
+      'compute-bazaar',
+      'jocky',
+      'horizonguard',
+    ],
   },
   {
     id: 'ai-ml',
@@ -29,7 +37,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Deep Learning', level: 'Beginner' },
       { name: 'Computer Vision', level: 'Beginner' },
     ],
-    projects: ['whototrust', 'neurolens', 'gateorchestra'],
+    projects: ['whototrust', 'neurolens', 'gateorchestra', 'astrolm', 'horizonguard'],
   },
   {
     id: 'llm',
@@ -42,7 +50,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Prompt Engineering', level: 'Intermediate' },
       { name: 'LLM Evaluation' },
     ],
-    projects: ['caar', 'gateorchestra'],
+    projects: ['astrolm', 'gateorchestra'],
   },
   {
     id: 'agentic',
@@ -57,7 +65,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Reflexion', level: 'Intermediate' },
       { name: 'Debate Agents', level: 'Intermediate' },
     ],
-    projects: ['gateorchestra', 'compute-bazaar', 'caar'],
+    projects: ['gateorchestra', 'compute-bazaar', 'horizonguard'],
   },
   {
     id: 'optimisation',
@@ -69,7 +77,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Reinforcement Learning' },
       { name: 'Resource Allocation' },
     ],
-    projects: ['caar', 'compute-bazaar', 'gateorchestra'],
+    projects: ['compute-bazaar', 'gateorchestra'],
   },
   {
     id: 'backend',
@@ -82,7 +90,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'SQLite' },
       { name: 'SQLAlchemy' },
     ],
-    projects: ['caar', 'compute-bazaar', 'jocky', 'gateorchestra'],
+    projects: ['compute-bazaar', 'jocky', 'gateorchestra'],
   },
   {
     id: 'data',
@@ -96,7 +104,7 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Matplotlib', level: 'Beginner' },
       { name: 'Seaborn', level: 'Beginner' },
     ],
-    projects: ['whototrust', 'neurolens'],
+    projects: ['whototrust', 'neurolens', 'astrolm'],
   },
   {
     id: 'tools',
@@ -112,6 +120,14 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Claude AI' },
       { name: 'OpenAI' },
     ],
-    projects: ['gateorchestra', 'whototrust', 'neurolens', 'caar', 'compute-bazaar', 'jocky'],
+    projects: [
+      'gateorchestra',
+      'whototrust',
+      'neurolens',
+      'astrolm',
+      'compute-bazaar',
+      'jocky',
+      'horizonguard',
+    ],
   },
 ];

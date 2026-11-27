@@ -1,21 +1,22 @@
 # Project Audit
 
 Audit date: 5 November 2026; Compute Bazaar and GateOrchestra re-audited and HorizonGuard added on
-12 November 2026. The table and headings keep their audit numbers; on the site the order is GateOrchestra,
-HorizonGuard, then the rest.
+12 November 2026; AstroLM audited and the Cost-Aware Agent Router removed on 27 November 2026.
+The table and headings keep their audit numbers; on the site the order is GateOrchestra, WhoToTrust,
+NeuroLens, AstroLM, Compute Bazaar, JOCKY Forensics, HorizonGuard.
 Every statement below was checked against the repository's README,
 file tree, contributor list and (for GateOrchestra) pull-request history through the GitHub API.
 Where the blueprint and the repository disagree, the repository wins.
 
-| #   | Project                 | Repository                                                                      | Author(s)                       | Live demo                                                                                 |
-| --- | ----------------------- | ------------------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------- |
-| 01  | GateOrchestra           | [FarhanAaqil/GateOrchestra](https://github.com/FarhanAaqil/GateOrchestra)       | Team of 4 (Muzra: agent layer)  | None                                                                                      |
-| 07  | HorizonGuard            | [MuzraFatima/HorizonGuard](https://github.com/MuzraFatima/HorizonGuard)         | Muzra Fatima (sole contributor) | None (local dashboard only)                                                               |
-| 02  | WhoToTrust              | [MuzraFatima/WhoToTrust](https://github.com/MuzraFatima/WhoToTrust)             | Muzra Fatima (sole contributor) | None                                                                                      |
-| 03  | NeuroLens               | [MuzraFatima/NeuroLens](https://github.com/MuzraFatima/NeuroLens)               | Muzra Fatima (sole contributor) | None (local explorer only)                                                                |
-| 04  | Cost-Aware Agent Router | [MuzraFatima/Cost-aware-agent](https://github.com/MuzraFatima/Cost-aware-agent) | Muzra Fatima (sole contributor) | None                                                                                      |
-| 05  | Compute Bazaar          | [MuzraFatima/Compute-bazar](https://github.com/MuzraFatima/Compute-bazar)       | Muzra Fatima (sole contributor) | None                                                                                      |
-| 06  | JOCKY Forensics         | [MuzraFatima/jocky-forensics](https://github.com/MuzraFatima/jocky-forensics)   | Muzra Fatima (sole contributor) | [jocky-forensic.netlify.app](https://jocky-forensic.netlify.app) (HTTP 200 on audit date) |
+| #   | Project         | Repository                                                                    | Author(s)                       | Live demo                                                                                 |
+| --- | --------------- | ----------------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------- |
+| 01  | GateOrchestra   | [FarhanAaqil/GateOrchestra](https://github.com/FarhanAaqil/GateOrchestra)     | Team of 4 (Muzra: agent layer)  | None                                                                                      |
+| 07  | HorizonGuard    | [MuzraFatima/HorizonGuard](https://github.com/MuzraFatima/HorizonGuard)       | Muzra Fatima (sole contributor) | None (local dashboard only)                                                               |
+| 02  | WhoToTrust      | [MuzraFatima/WhoToTrust](https://github.com/MuzraFatima/WhoToTrust)           | Muzra Fatima (sole contributor) | None                                                                                      |
+| 03  | NeuroLens       | [MuzraFatima/NeuroLens](https://github.com/MuzraFatima/NeuroLens)             | Muzra Fatima (sole contributor) | None (local explorer only)                                                                |
+| 04  | AstroLM         | [MuzraFatima/AstroLM](https://github.com/MuzraFatima/AstroLM)                 | Muzra Fatima (sole contributor) | None (localhost-only interface; trained weights are not distributed)                      |
+| 05  | Compute Bazaar  | [MuzraFatima/Compute-bazar](https://github.com/MuzraFatima/Compute-bazar)     | Muzra Fatima (sole contributor) | None                                                                                      |
+| 06  | JOCKY Forensics | [MuzraFatima/jocky-forensics](https://github.com/MuzraFatima/jocky-forensics) | Muzra Fatima (sole contributor) | [jocky-forensic.netlify.app](https://jocky-forensic.netlify.app) (HTTP 200 on audit date) |
 
 ---
 
@@ -114,25 +115,51 @@ reduces it. The portfolio will describe it accurately and keep the name NeuroLen
 
 ---
 
-## 04 — Cost-Aware Agent Router (CAAR)
+## 04 — AstroLM
 
-**What it is:** A confidence-based multi-tier LLM router that starts each query at the cheapest capable tier
-and escalates only when confidence is insufficient.
+Audited on 27 November 2026 against `main` (18 commits, all by Muzra Fatima; MIT; renamed from
+"NebulaLM" in the same session). It replaces the Cost-Aware Agent Router in this slot, which has been
+removed from the site at Muzra's request.
 
-**Confirmed in code (blueprint items verified)**
+**What it is:** A decoder-only language model for astronomy, written from scratch, together with a
+preregistered study of what a 4.5M–29M model learns, stores and leaks when trained on repeated text.
 
-- Complexity pre-classification — `backend/app/core/router_engine.py` ✔
-- Confidence evaluation: syntactic checks (JSON / Python) plus semantic hedging detection — `core/confidence.py` ✔
-- Four routing tiers: Cheap → RAG → Frontier → Consensus — `backend/app/agents/` ✔
-- Token / cost tracking — `utils/cost_tracker.py` ✔
-- Latency tracking per execution step ✔
-- FastAPI + SQLite / SQLAlchemy persistence, LiteLLM client, offline mock mode, dashboard SPA, benchmark harness
+**Confirmed in code**
 
-**Results (mock mode, 38 queries, 3 runs):** 57.9% accuracy at 85.3% lower cost than the Tier-4
-consensus baseline. The repo itself states mock mode validates routing and cost accounting, **not** real
-accuracy — the portfolio must repeat that caveat if it quotes the number.
+- Corpus pipeline: pinned `wikimedia/wikipedia` 20231101.en dump, cleaning, quality filters,
+  cluster-based splits — `src/astrolm/data/`
+- Byte-level BPE tokenizer training, comparison and selection — `src/astrolm/tokenizer/`,
+  `artifacts/tokenizer/`
+- Pre-LayerNorm decoder with exact GELU, learned positions and a tied head — `src/astrolm/model/`
+- Training with FP16 AdamW, warmup-stable-decay schedules, atomic hashed checkpoints and a run queue —
+  `src/astrolm/training/`, `scripts/run_queue.py`
+- 5-gram Kneser-Ney baseline — `src/astrolm/baselines/`
+- Learn / Store / Leak audit kit — `scripts/audit_checkpoint.py`, `src/astrolm/evaluation/`
+- Localhost-only web interface and generation script on the standard library — `scripts/web_ui.py`,
+  `scripts/generate.py`
+- 21 test files under `tests/`; dependencies pinned in `requirements.lock` (PyTorch 2.10, NumPy,
+  Hugging Face `tokenizers`, PyArrow, jsonschema, PyYAML, pytest)
 
-**Visual assets:** 3 dashboard screenshots and a Pareto plot in `docs/` (MIT).
+**Results** (`reports/final_report.md`, dated 2026-11-14; every number traced to a checkpoint hash in
+`reports/study/results.json`):
+
+- 29.4M model reaches **1.060 test bits per byte**, 5.53% below the 10.3M model (1.1218, interval
+  5.34–5.77%) and 18.67% below the 5-gram baseline (1.3792, interval 17.96–19.34%). One main seed at
+  E* = 8.
+- Membership AUC rises to 0.660 (29.4M, 8 passes); verbatim extraction stays under 1%; canaries
+  inserted 16 times saturate the exposure cap.
+- An edited copy sharing only half its word 5-grams transfers **71–83%** of an exact copy's benefit.
+- Reported as **not supported**: H2a, the monotonicity half of H3a, H2c, H3c. H1c open (needs human
+  raters); H3b, H4 and H5 not run.
+- Corpus: 15,541 Wikipedia astronomy articles, 13,946,044 unique training tokens. 46 registered runs,
+  about 2.9 hours of training on one RTX 3050 laptop GPU.
+
+**Gaps:** no continuous integration (the repository has no `.github/`), and no public demo — the
+interface binds to `127.0.0.1` and `runs/` is gitignored, so a fresh clone has no weights.
+
+**Visual assets:** 4 screenshots in `docs/demo/` (light and dark), MIT. The README states they were
+captured against a small checkpoint trained on the sample slice, not the 29.4M model; the two used on
+the site repeat that caveat in their alt text.
 
 ---
 

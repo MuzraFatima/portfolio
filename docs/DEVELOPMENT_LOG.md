@@ -326,3 +326,32 @@ scroll behaviour, typography and text placement.
   its results (97.9% vs 92.2% for Always-MAS at 33% fewer tokens), the unmet 40% goal, the larger-model
   reduced runs and the test-set caveats, plus a deep dive and the new chat assistant and Docker deployment.
   Muzra's credited contribution is unchanged (agent layer, August–September).
+
+## Phase 19 — AstroLM replaces CAAR, HorizonGuard last
+
+- **AstroLM takes the Cost-Aware Agent Router's slot (world 04).** Audited against `MuzraFatima/AstroLM`
+  on 27 November 2026 (18 commits, sole author, MIT, renamed from "NebulaLM" the same day). The entry and
+  its deep dive come from the repository's README and `reports/final_report.md`, including the figures
+  traced to checkpoint hashes, the hypotheses reported as **not supported**, and the limits: one domain,
+  4–30M parameters, top-of-grid learning rate, no continuous integration, and no distributed weights.
+- **The Cost-Aware Agent Router is gone from the site**: project entry, planet, skill links, both
+  screenshots and the audit section. A test now fails if "caar", "CAAR", "Cost-Aware" or
+  "Cost-aware-agent" reappears in the project or skill data. It is still named in the résumé text, at
+  Muzra's request, until the new résumé PDF arrives.
+- **HorizonGuard moves from world 02 to world 07**, the outermost planet, as asked. Its orbit goes from
+  radius 23 to radius 95 at phase 7.2, continuing the spiral past JOCKY Forensics. Content unchanged: the
+  repository shows a built, working system, so it is not labelled "in progress", and the results keep the
+  repository's own caveat that every agent is synthetic.
+- **New planet order:** GateOrchestra, WhoToTrust, NeuroLens, AstroLM, Compute Bazaar, JOCKY Forensics,
+  HorizonGuard. Nothing else about the design, animations or the other projects changed.
+- AstroLM's planet reuses the Venus cloud-top map and gold palette that stood in this orbit before, so the
+  spiral keeps its colour progression.
+- Two AstroLM screenshots converted from `docs/demo/` (dark theme) to WebP. Their alt text repeats the
+  repository's statement that they were captured against a small checkpoint on the sample slice, not the
+  29.4M model.
+- Skill links rewritten rather than renamed: AstroLM joins Programming, AI & Machine Learning, LLM
+  Engineering, Data Science and Developer Tools; HorizonGuard, which was linked from none, joins
+  Programming, AI & Machine Learning, Agentic AI and Developer Tools. Agentic AI, AI Optimisation and
+  Backend simply lose CAAR, because AstroLM does not evidence those skills.
+- New tests: every planet has its own orbit, widening with the journey order, and no planet or landmark
+  sits within 20 units of another.

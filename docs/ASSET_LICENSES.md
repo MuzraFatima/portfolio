@@ -29,7 +29,7 @@ Required credit: **"Textures: Solar System Scope (solarsystemscope.com), CC BY 4
 | `neptune-2k/1k.webp`                                                              | 2k_neptune.jpg                          | GateOrchestra planet                                              | 2048 and 1024 px WebP   |
 | `uranus-2k/1k.webp`                                                               | 2k_uranus.jpg                           | WhoToTrust planet                                                 | 2048 and 1024 px WebP   |
 | `earth-daymap-2k/1k.webp`, `earth-nightmap-2k/1k.webp`, `earth-clouds-2k/1k.webp` | 2k_earth_daymap / nightmap / clouds.jpg | NeuroLens planet; clouds also reused for WhoToTrust's cloud layer | 2048 and 1024 px WebP   |
-| `venus-atmosphere-2k/1k.webp`                                                     | 2k_venus_atmosphere.jpg                 | Cost-Aware Agent Router planet                                    | 2048 and 1024 px WebP   |
+| `venus-atmosphere-2k/1k.webp`                                                     | 2k_venus_atmosphere.jpg                 | AstroLM planet                                                    | 2048 and 1024 px WebP   |
 | `jupiter-2k/1k.webp`                                                              | 2k_jupiter.jpg                          | Compute Bazaar planet                                             | 2048 and 1024 px WebP   |
 | `mars-2k/1k.webp`                                                                 | 2k_mars.jpg                             | JOCKY Forensics planet                                            | 2048 and 1024 px WebP   |
 | `saturn-2k/1k.webp`                                                               | 2k_saturn.jpg                           | HorizonGuard planet                                               | 2048 and 1024 px WebP   |
@@ -53,10 +53,13 @@ turns bright pixels into coloured particles in 3D. No altered copy of an image i
 
 ## Project screenshots (`public/assets/images/projects/`)
 
-Screenshots from Muzra Fatima's own MIT-licensed repositories (WhoToTrust, NeuroLens, Cost-aware-agent,
-Compute-bazar, HorizonGuard), resized to 1200 px WebP. The Compute Bazaar and HorizonGuard images were
-refreshed from each repository's `docs/screenshots/` on 12 November 2026. GateOrchestra screenshots are not used until the team agrees,
-and JOCKY Forensics has none in its repository.
+Screenshots from Muzra Fatima's own MIT-licensed repositories (WhoToTrust, NeuroLens, AstroLM,
+Compute-bazar, HorizonGuard), resized to 1200–1600 px WebP. The Compute Bazaar and HorizonGuard images
+were refreshed from each repository's `docs/screenshots/` on 12 November 2026. The two AstroLM images
+came from `docs/demo/` (dark theme) on 27 November 2026; the repository states they were captured
+against a small checkpoint trained on the sample slice, not the 29.4M model, and the site says so too.
+GateOrchestra screenshots are not used until the team agrees, and JOCKY Forensics has none in its
+repository. The Cost-Aware Agent Router screenshots were deleted when AstroLM replaced that project.
 
 ## Fonts
 

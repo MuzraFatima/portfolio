@@ -79,7 +79,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
     moons: [{ map: 'moon', radius: 0.55, distance: 5.4, period: 60, phase: 3 }],
     glow: '#34d399',
   },
-  caar: {
+  astrolm: {
     planet: {
       map: 'venus-atmosphere',
       radius: 2.0,
@@ -136,7 +136,7 @@ export const planetConfigs: Record<ProjectId, PlanetConfig> = {
       axialTilt: 0.47,
       spinSpeed: 0.14,
     },
-    orbit: orbit(23, 1.2),
+    orbit: orbit(95, 7.2),
     moons: [{ map: 'moon', radius: 0.34, distance: 8.4, period: 46, phase: 1.2, tilt: 0.15 }],
     // Watch satellites: the monitor keeping an eye on drifting agents.
     satellites: 3,

@@ -29,7 +29,7 @@ export interface Profile {
 }
 
 export type ProjectId =
-  'gateorchestra' | 'whototrust' | 'neurolens' | 'caar' | 'compute-bazaar' | 'jocky' | 'horizonguard';
+  'gateorchestra' | 'whototrust' | 'neurolens' | 'astrolm' | 'compute-bazaar' | 'jocky' | 'horizonguard';
 
 export interface ProjectImage {
   src: string;
